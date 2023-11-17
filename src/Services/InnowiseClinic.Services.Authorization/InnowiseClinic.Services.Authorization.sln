@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Services.Aut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Services.Authorization.Services", "InnowiseClinic.Services.Authorization.Services\InnowiseClinic.Services.Authorization.Services.csproj", "{DD195DDD-0EC6-47C9-8EE2-200D0678D007}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Services.Authorization.Data", "InnowiseClinic.Services.Authorization.Data\InnowiseClinic.Services.Authorization.Data.csproj", "{FCA254D3-47DF-42D5-BA91-56468CE4262D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{DD195DDD-0EC6-47C9-8EE2-200D0678D007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD195DDD-0EC6-47C9-8EE2-200D0678D007}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD195DDD-0EC6-47C9-8EE2-200D0678D007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA254D3-47DF-42D5-BA91-56468CE4262D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA254D3-47DF-42D5-BA91-56468CE4262D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA254D3-47DF-42D5-BA91-56468CE4262D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA254D3-47DF-42D5-BA91-56468CE4262D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
