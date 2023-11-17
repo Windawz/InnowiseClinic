@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InnowiseClinic.Services.Authorization.Services\InnowiseClinic.Services.Authorization.Services.csproj" />
+    <ProjectReference Include="..\InnowiseClinic.Services.Authorization.Data\InnowiseClinic.Services.Authorization.Data.csproj" />
+  </ItemGroup>
+
 </Project>
