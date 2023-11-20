@@ -4,6 +4,10 @@
     <ProjectReference Include="..\InnowiseClinic.Services.Authorization.Data\InnowiseClinic.Services.Authorization.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
