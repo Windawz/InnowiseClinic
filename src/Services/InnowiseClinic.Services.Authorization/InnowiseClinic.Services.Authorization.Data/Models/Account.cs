@@ -11,7 +11,6 @@ public class Account
     /// <summary>
     /// A unique identifier.
     /// </summary>
-    [Key]
     public int Id { get; set; }
 
     /// <summary>
@@ -48,17 +47,11 @@ public class Account
     public int? PhotoId { get; set; }
 
     /// <summary>
-    /// A unique identifier of the account that is responsible for creation of this account.
+    /// The account that is responsible for creation of this account.
     /// </summary>
     /// <remarks>
-    /// Equal to <see cref="Id"/> if the account has been created by the user it represents.
+    /// Equal to this account it has been created by the user it represents.
     /// </remarks>
-    public int CreatedById { get; set; }
-
-    /// <summary>
-    /// A navigation corresponding to <see cref="CreatedById"/>.
-    /// </summary>
-    [ForeignKey(nameof(CreatedById))]
     public Account CreatedBy { get; set; } = null!;
 
     /// <summary>
@@ -67,29 +60,20 @@ public class Account
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// A unique identifier of the account that is responsible for being the last one to update this account's information.
+    /// The account that is responsible for being the last one to update this account's information.
     /// </summary>
     /// <remarks>
-    /// Equal to <see cref="Id"/> if the account has been updated by the user it represents.
+    /// Equal to this account if it has been updated by the user it represents.
     /// <para/>
     /// Is null if the account has not been updated yet.
     /// </remarks>
-    public int? UpdatedById { get; set; }
-
-    /// <summary>
-    /// A navigation corresponding to <see cref="UpdatedById"/>.
-    /// </summary>
-    /// <remarks>
-    /// Is null if <see cref="UpdatedById"/> is null.
-    /// </remarks>
-    [ForeignKey(nameof(UpdatedById))]
     public Account? UpdatedBy { get; set; }
 
     /// <summary>
     /// A point in time denoting when the account was last updated.
     /// </summary>
     /// <remarks>
-    /// Is null if <see cref="UpdatedById"/> is null.
+    /// Is null if <see cref="UpdatedBy"/> is null.
     /// </remarks>
     public DateTime? UpdatedAt { get; set; }
 

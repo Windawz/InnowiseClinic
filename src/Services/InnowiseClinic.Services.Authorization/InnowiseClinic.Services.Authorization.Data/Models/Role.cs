@@ -8,7 +8,6 @@ public class Role
     /// <summary>
     /// A unique identifier.
     /// </summary>
-    [Key]
     public int Id { get; set; }
 
     /// <summary>
