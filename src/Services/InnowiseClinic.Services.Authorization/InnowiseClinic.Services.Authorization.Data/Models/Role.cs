@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using InnowiseClinic.Services.Authorization.Data.Models;
-
 namespace InnowiseClinic.Services.Authorization.Data.Models;
 
 public class Role
