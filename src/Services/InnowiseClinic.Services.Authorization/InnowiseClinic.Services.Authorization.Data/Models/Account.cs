@@ -92,4 +92,9 @@ public class Account
     /// Is null if <see cref="UpdatedById"/> is null.
     /// </remarks>
     public DateTime? UpdatedAt { get; set; }
+
+    /// <summary>
+    /// A navigation over roles assigned to the account.
+    /// </summary>
+    public ICollection<Role> Roles { get; set; } = new List<Role>();
 }

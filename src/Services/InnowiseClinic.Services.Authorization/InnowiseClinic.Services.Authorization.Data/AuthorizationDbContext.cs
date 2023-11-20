@@ -20,6 +20,11 @@ public class AuthorizationDbContext : DbContext
     /// </summary>
     public DbSet<Account> Accounts { get; } = null!;
 
+    /// <summary>
+    /// Provides access to the user roles table.
+    /// </summary>
+    public DbSet<Role> Roles { get; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
