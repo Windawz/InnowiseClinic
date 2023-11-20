@@ -11,7 +11,7 @@ internal class AccountConfiguration : IEntityTypeConfiguration<Account>
     /// <summary>
     /// Configures the <see cref="Account"/> entity.
     /// </summary>
-    /// <param name="builder"></param>
+    /// <param name="builder"><inheritdoc/></param>
     public void Configure(EntityTypeBuilder<Account> builder)
     {
         // Set up navigation properties for entries in the same table.
