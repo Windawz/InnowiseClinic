@@ -34,7 +34,7 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
 
                     b.HasIndex("RolesId");
 
-                    b.ToTable("AccountRole");
+                    b.ToTable("AccountRole", (string)null);
                 });
 
             modelBuilder.Entity("InnowiseClinic.Services.Authorization.Data.Models.Account", b =>
@@ -84,7 +84,7 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UpdatedById] IS NOT NULL");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("InnowiseClinic.Services.Authorization.Data.Role", b =>
@@ -104,7 +104,7 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("AccountRole", b =>
