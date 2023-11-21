@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InnowiseClinic.Services.Authorization.API;
+namespace InnowiseClinic.Services.Authorization.API.Infrastructure;
 
 /// <summary>
 /// Configures JWT authentication.
