@@ -1,3 +1,4 @@
+using InnowiseClinic.Services.Authorization.API.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Services.Authorization.API;
@@ -8,7 +9,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options =>
+        {
+            // Binding from user claims.
+            options.ValueProviderFactories.Add(
+                new ClaimsValueProviderFactory());
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
