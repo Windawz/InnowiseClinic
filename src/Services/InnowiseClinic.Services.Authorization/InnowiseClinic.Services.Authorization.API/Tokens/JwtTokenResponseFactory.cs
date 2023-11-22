@@ -20,9 +20,9 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
     /// Creates an instance of <see cref="JwtTokenResponseFactory"/>.
     /// </summary>
     /// <param name="jwtBearerOptions">JWT bearer authentication options.</param>
-    public JwtTokenResponseFactory(IOptions<JwtBearerOptions> jwtBearerOptions)
+    public JwtTokenResponseFactory(IOptionsMonitor<JwtBearerOptions> jwtBearerOptions)
     {
-        _jwtBearerOptions = jwtBearerOptions.Value;
+        _jwtBearerOptions = jwtBearerOptions.Get(JwtBearerDefaults.AuthenticationScheme);
     }
 
     /// <inheritdoc/>
