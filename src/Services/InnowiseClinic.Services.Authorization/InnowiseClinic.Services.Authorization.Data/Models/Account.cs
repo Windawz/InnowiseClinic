@@ -51,6 +51,7 @@ public class Account
     /// <remarks>
     /// Equal to this account it has been created by the user it represents.
     /// </remarks>
+    /// // TODO: Make nullable and consider this property being null as meaning that the account is self-registered.
     public Account CreatedBy { get; set; } = null!;
 
     /// <summary>

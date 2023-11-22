@@ -16,6 +16,7 @@ public class Role
     /// Whether a user with an account having this role can register new
     /// accounts or not.
     /// </summary>
+    /// // TODO: Keep track of a list of roles that are registerable by this role instead.
     public bool CanRegisterOthers { get; set; }
 
     /// <summary>
