@@ -1,4 +1,4 @@
-using InnowiseClinic.Services.Authorization.Data.Models;
+using InnowiseClinic.Services.Authorization.Services.Models;
 
 namespace InnowiseClinic.Services.Authorization.Services;
 
