@@ -2,8 +2,16 @@ using System.Collections.Immutable;
 
 namespace InnowiseClinic.Services.Authorization.Services.Models;
 
+/// <summary>
+/// Contains methods that map models from different layers to each other.
+/// </summary>
 public static class Mapping
 {
+    /// <summary>
+    /// Converts a service layer account to a data layer account.
+    /// </summary>
+    /// <param name="serviceAccount">A service layer account.</param>
+    /// <returns>A data layer account.</returns>
     public static Data.Models.Account ToDataAccount(Account serviceAccount)
     {
         return new()
@@ -28,6 +36,11 @@ public static class Mapping
         };
     }
 
+    /// <summary>
+    /// Converts a data layer account to a service layer account.
+    /// </summary>
+    /// <param name="dataAccount">A data layer account.</param>
+    /// <returns>A service layer account.</returns>
     public static Account FromDataAccount(Data.Models.Account dataAccount)
     {
         return new(
@@ -50,6 +63,11 @@ public static class Mapping
                 .ToImmutableHashSet());
     }
 
+    /// <summary>
+    /// Converts a service layer role to a data layer role.
+    /// </summary>
+    /// <param name="serviceRole">A service layer role.</param>
+    /// <returns>A data layer role.</returns>
     public static Data.Models.Role ToDataRole(Role serviceRole)
     {
         return new()
@@ -62,6 +80,11 @@ public static class Mapping
         };
     }
 
+    /// <summary>
+    /// Converts a data layer role to a service layer role.
+    /// </summary>
+    /// <param name="dataRole">A data layer role.</param>
+    /// <returns>A service layer role.</returns>
     public static Role FromDataRole(Data.Models.Role dataRole)
     {
         return new(

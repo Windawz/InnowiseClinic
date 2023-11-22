@@ -1,5 +1,8 @@
 namespace InnowiseClinic.Services.Authorization.Data.Models;
 
+/// <summary>
+/// Represents a user role.
+/// </summary>
 public class Role
 {
     /// <summary>
