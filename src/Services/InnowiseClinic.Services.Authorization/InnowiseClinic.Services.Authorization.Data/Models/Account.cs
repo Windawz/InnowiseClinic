@@ -49,10 +49,9 @@ public class Account
     /// The account that is responsible for creation of this account.
     /// </summary>
     /// <remarks>
-    /// Equal to this account it has been created by the user it represents.
+    /// Null if this account has been created by the user that it represents.
     /// </remarks>
-    /// // TODO: Make nullable and consider this property being null as meaning that the account is self-registered.
-    public Account CreatedBy { get; set; } = null!;
+    public Account? CreatedBy { get; set; }
 
     /// <summary>
     /// A point in time denoting when the account was created.

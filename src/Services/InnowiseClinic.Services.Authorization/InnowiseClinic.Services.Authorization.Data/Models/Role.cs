@@ -13,11 +13,9 @@ public class Role
     public string Name { get; set; } = null!;
 
     /// <summary>
-    /// Whether a user with an account having this role can register new
-    /// accounts or not.
+    /// A navigation over roles that the user with this account is allowed to register other accounts as.
     /// </summary>
-    /// // TODO: Keep track of a list of roles that are registerable by this role instead.
-    public bool CanRegisterOthers { get; set; }
+    public ICollection<Role> RegisterableRoles { get; } = new List<Role>();
 
     /// <summary>
     /// A navigation over accounts belonging to the role.
