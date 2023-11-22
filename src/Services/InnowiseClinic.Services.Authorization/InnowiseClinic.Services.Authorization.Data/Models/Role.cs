@@ -15,10 +15,10 @@ public class Role
     /// <summary>
     /// A navigation over roles that the user with this account is allowed to register other accounts as.
     /// </summary>
-    public ICollection<Role> RegisterableRoles { get; } = new List<Role>();
+    public ICollection<Role> RegisterableRoles { get; set; } = new List<Role>();
 
     /// <summary>
     /// A navigation over accounts belonging to the role.
     /// </summary>
-    public ICollection<Account> Accounts { get; } = new List<Account>();
+    public ICollection<Account> Accounts { get; set; } = new List<Account>();
 }
