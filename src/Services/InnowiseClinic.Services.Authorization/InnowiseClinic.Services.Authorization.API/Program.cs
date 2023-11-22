@@ -1,4 +1,5 @@
 using InnowiseClinic.Services.Authorization.API.Infrastructure;
+using InnowiseClinic.Services.Authorization.API.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Services.Authorization.API;
@@ -21,6 +22,7 @@ public class Program
             .AddJwtBearer();
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
         builder.Services.AddAuthorization();
+        builder.Services.AddSingleton<ITokenResponseFactory, JwtTokenResponseFactory>();
 
         var app = builder.Build();
 
