@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace InnowiseClinic.Services.Authorization.Data.Models;
 
 /// <summary>
@@ -15,10 +13,6 @@ public class Account
     /// <summary>
     /// An email address.
     /// </summary>
-    /// <remarks>
-    /// The string value must denote a valid email address.
-    /// </remarks>
-    [EmailAddress]
     public string Email { get; set; } = null!;
 
     /// <summary>
@@ -29,10 +23,6 @@ public class Account
     /// <summary>
     /// A phone number.
     /// </summary>
-    /// <remarks>
-    /// The string value must denote a valid phone number.
-    /// </remarks>
-    [Phone]
     public string? PhoneNumber { get; set; } = null!;
 
     /// <summary>
