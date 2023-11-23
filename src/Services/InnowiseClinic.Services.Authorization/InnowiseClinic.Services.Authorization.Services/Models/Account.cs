@@ -19,7 +19,7 @@ public record Account(
     int Id,
     string Email,
     string Password,
-    string PhoneNumber,
+    string? PhoneNumber,
     bool IsEmailVerified,
     int? PhotoId,
     Account? CreatedBy,

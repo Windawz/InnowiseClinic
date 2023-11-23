@@ -33,7 +33,7 @@ public class Account
     /// The string value must denote a valid phone number.
     /// </remarks>
     [Phone]
-    public string PhoneNumber { get; set; } = null!;
+    public string? PhoneNumber { get; set; } = null!;
 
     /// <summary>
     /// Whether the email has been verified or not.
