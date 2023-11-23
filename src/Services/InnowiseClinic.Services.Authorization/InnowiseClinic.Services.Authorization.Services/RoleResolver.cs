@@ -16,15 +16,7 @@ public class RoleResolver : IRoleResolver
     public Role? ResolveByName(string name)
     {
         var dataRole = _dbContext.Roles
-            // Filter first just in case, to not "scare away"
-            // the case-insensitive collation.
-            //
-            // May need to enforce ordinal caseless comparison
-            // and rethink the collation-utilizing approach
-            // if this ends up not working as expected.
-            .Where(role => role.Name == name)
-            .AsNoTracking()
-            .FirstOrDefault();
+            .SingleOrDefault(role => role.Name == name);
         
         if (dataRole is not null)
         {
