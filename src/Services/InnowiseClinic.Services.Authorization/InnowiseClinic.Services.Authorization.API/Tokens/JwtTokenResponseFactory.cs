@@ -28,7 +28,7 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
     /// <inheritdoc/>
     public TokenResponse Create(int accountId, IReadOnlyCollection<string> accountRoleNames)
     {
-        var currentDateTime = DateTime.Now;
+        var currentDateTime = DateTime.UtcNow;
 
         var accessToken = CreateAccessToken(accountId, accountRoleNames, currentDateTime);
         var refreshToken = CreateRefreshToken(accountId, currentDateTime);
