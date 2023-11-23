@@ -21,19 +21,9 @@ public class Account
     public string Password { get; set; } = null!;
 
     /// <summary>
-    /// A phone number.
-    /// </summary>
-    public string? PhoneNumber { get; set; } = null!;
-
-    /// <summary>
     /// Whether the email has been verified or not.
     /// </summary>
     public bool IsEmailVerified { get; set; }
-
-    /// <summary>
-    /// A unique identifier of the photo representing the account's user.
-    /// </summary>
-    public int? PhotoId { get; set; }
 
     /// <summary>
     /// The account that is responsible for creation of this account.

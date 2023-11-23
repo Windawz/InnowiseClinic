@@ -19,9 +19,7 @@ public static class Mapping
             Id = serviceAccount.Id,
             Email = serviceAccount.Email,
             Password = serviceAccount.Password,
-            PhoneNumber = serviceAccount.PhoneNumber,
             IsEmailVerified = serviceAccount.IsEmailVerified,
-            PhotoId = serviceAccount.PhotoId,
             CreatedBy = serviceAccount.CreatedBy is not null
                 ? ToDataAccount(serviceAccount.CreatedBy)
                 : null,
@@ -47,9 +45,7 @@ public static class Mapping
             Id: dataAccount.Id,
             Email: dataAccount.Email,
             Password: dataAccount.Password,
-            PhoneNumber: dataAccount.PhoneNumber,
             IsEmailVerified: dataAccount.IsEmailVerified,
-            PhotoId: dataAccount.PhotoId,
             CreatedBy: dataAccount.CreatedBy is not null
                 ? FromDataAccount(dataAccount.CreatedBy)
                 : null,
