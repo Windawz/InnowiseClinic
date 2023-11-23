@@ -75,6 +75,6 @@ public class AccountRegistrator : IAccountRegistrator
             CreatedAt: currentTime,
             UpdatedBy: null,
             UpdatedAt: null,
-            Roles: roles.ToImmutableHashSet());
+            Roles: roles);
     }
 }

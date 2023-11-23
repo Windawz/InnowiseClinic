@@ -26,4 +26,4 @@ public record Account(
     DateTime CreatedAt,
     Account? UpdatedBy,
     DateTime? UpdatedAt,
-    IImmutableSet<Role> Roles);
+    IReadOnlyCollection<Role> Roles);

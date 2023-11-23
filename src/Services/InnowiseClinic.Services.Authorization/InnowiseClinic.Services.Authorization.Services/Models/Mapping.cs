@@ -60,7 +60,7 @@ public static class Mapping
             UpdatedAt: dataAccount.UpdatedAt,
             Roles: dataAccount.Roles
                 .Select(role => FromDataRole(role))
-                .ToImmutableHashSet());
+                .ToArray());
     }
 
     /// <summary>
@@ -92,6 +92,6 @@ public static class Mapping
             Name: dataRole.Name,
             RegisterableRoles: dataRole.RegisterableRoles
                 .Select(role => FromDataRole(role))
-                .ToImmutableHashSet());
+                .ToArray());
     }
 }
