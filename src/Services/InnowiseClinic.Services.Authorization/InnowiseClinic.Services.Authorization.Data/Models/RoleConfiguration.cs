@@ -12,10 +12,5 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
     /// Configures the <see cref="Role"/> entity.
     /// </summary>
     /// <param name="builder"><inheritdoc/></param>
-    public void Configure(EntityTypeBuilder<Role> builder)
-    {
-        // Ensure case-insensitivity.
-        builder.Property(role => role.Name)
-            .UseCollation("Latin1_General_CI_AS");
-    }
+    public void Configure(EntityTypeBuilder<Role> builder) { }
 }
