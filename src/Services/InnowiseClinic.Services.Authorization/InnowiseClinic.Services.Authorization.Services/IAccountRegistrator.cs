@@ -15,7 +15,7 @@ public interface IAccountRegistrator
     /// <returns>
     /// The registered account.
     /// </returns>
-    Account RegisterSelf(string email, string password);
+    Account RegisterSelf(Email email, string password);
     /// <summary>
     /// Registers an account on behalf of <paramref name="initiator"/>.
     /// </summary>
@@ -26,5 +26,5 @@ public interface IAccountRegistrator
     /// <returns>
     /// The registered account.
     /// </returns>
-    Account RegisterOther(Account initiator, string email, string password, IReadOnlyCollection<Role> roles);
+    Account RegisterOther(Account initiator, Email email, string password, IReadOnlyCollection<Role> roles);
 }

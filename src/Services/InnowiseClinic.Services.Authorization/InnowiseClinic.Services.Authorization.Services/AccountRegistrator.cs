@@ -10,28 +10,24 @@ namespace InnowiseClinic.Services.Authorization.Services;
 public class AccountRegistrator : IAccountRegistrator
 {
     private readonly AuthorizationDbContext _dbContext;
-    private readonly IRoleResolver _roleResolver;
 
     /// <summary>
     /// Creates an instance of <see cref="AccountRegistrator"/>.
     /// </summary>
     /// <param name="dbContext">An instance of <see cref="AuthorizationDbContext"/>.</param>
     /// <param name="roleResolver">An instance of <see cref="IRoleResolver"/>.</param>
-    public AccountRegistrator(AuthorizationDbContext dbContext, IRoleResolver roleResolver)
+    public AccountRegistrator(AuthorizationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _roleResolver = roleResolver;
     }
 
     /// <inheritdoc/>
-    public Account RegisterOther(Account initiator, string email, string password, IReadOnlyCollection<Role> roles)
+    public Account RegisterOther(Account initiator, Email email, string password, IReadOnlyCollection<Role> roles)
     {
-        var account = CreateAccountFromRegistrationInfo(
-            email: email,
-            password: password,
-            initiator: initiator,
-            currentTime: DateTime.UtcNow,
-            roles: roles);
+        var account = new Account(default, email, password, roles)
+        {
+            CreatedBy = initiator,
+        };
         _dbContext.Accounts.Add(
             Mapping.ToDataAccount(account));
         _dbContext.SaveChanges();
@@ -39,40 +35,12 @@ public class AccountRegistrator : IAccountRegistrator
     }
 
     /// <inheritdoc/>
-    public Account RegisterSelf(string email, string password)
+    public Account RegisterSelf(Email email, string password)
     {
-        var account = CreateAccountFromRegistrationInfo(
-            email: email,
-            password: password,
-            initiator: null,
-            currentTime: DateTime.UtcNow,
-            roles: new[]
-            {
-                _roleResolver.ResolveByName("patient")
-                    ?? throw new InvalidOperationException("Role \"patient\" does not exist")
-            });
+        var account = new Account(default, email, password, Role.Patient);
         _dbContext.Accounts.Add(
             Mapping.ToDataAccount(account));
         _dbContext.SaveChanges();
         return account;
-    }
-
-    private static Account CreateAccountFromRegistrationInfo(
-        string email,
-        string password,
-        Account? initiator,
-        DateTime currentTime,
-        IReadOnlyCollection<Role> roles)
-    {
-        return new Account(
-            Id: default,
-            Email: email,
-            Password: password,
-            IsEmailVerified: false,
-            CreatedBy: initiator,
-            CreatedAt: currentTime,
-            UpdatedBy: null,
-            UpdatedAt: null,
-            Roles: roles);
     }
 }

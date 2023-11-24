@@ -17,7 +17,7 @@ public static class Mapping
         return new()
         {
             Id = serviceAccount.Id,
-            Email = serviceAccount.Email,
+            Email = serviceAccount.Email.Address,
             Password = serviceAccount.Password,
             IsEmailVerified = serviceAccount.IsEmailVerified,
             CreatedBy = serviceAccount.CreatedBy is not null
@@ -42,21 +42,23 @@ public static class Mapping
     public static Account FromDataAccount(Data.Models.Account dataAccount)
     {
         return new(
-            Id: dataAccount.Id,
-            Email: dataAccount.Email,
-            Password: dataAccount.Password,
-            IsEmailVerified: dataAccount.IsEmailVerified,
-            CreatedBy: dataAccount.CreatedBy is not null
+            dataAccount.Id,
+            new Email(dataAccount.Email),
+            dataAccount.Password,
+            dataAccount.Roles
+                .Select(role => FromDataRole(role))
+                .ToArray())
+        {
+            IsEmailVerified = dataAccount.IsEmailVerified,
+            CreatedBy = dataAccount.CreatedBy is not null
                 ? FromDataAccount(dataAccount.CreatedBy)
                 : null,
-            CreatedAt: dataAccount.CreatedAt,
-            UpdatedBy: dataAccount.UpdatedBy is not null
+            CreatedAt = dataAccount.CreatedAt,
+            UpdatedBy = dataAccount.UpdatedBy is not null
                 ? FromDataAccount(dataAccount.UpdatedBy)
                 : null,
-            UpdatedAt: dataAccount.UpdatedAt,
-            Roles: dataAccount.Roles
-                .Select(role => FromDataRole(role))
-                .ToArray());
+            UpdatedAt = dataAccount.UpdatedAt,
+        };
     }
 
     /// <summary>
@@ -68,11 +70,8 @@ public static class Mapping
     {
         return new()
         {
-            Id = serviceRole.Id,
+            Id = default,
             Name = serviceRole.Name,
-            RegisterableRoles = serviceRole.RegisterableRoles
-                .Select(role => ToDataRole(role))
-                .ToList(),
         };
     }
 
@@ -83,11 +82,6 @@ public static class Mapping
     /// <returns>A service layer role.</returns>
     public static Role FromDataRole(Data.Models.Role dataRole)
     {
-        return new(
-            Id: dataRole.Id,
-            Name: dataRole.Name,
-            RegisterableRoles: dataRole.RegisterableRoles
-                .Select(role => FromDataRole(role))
-                .ToArray());
+        return Role.Parse(dataRole.Name);
     }
 }

@@ -20,10 +20,10 @@ public class AccountResolver : IAccountResolver
     }
 
     /// <inheritdoc/>
-    public Account? ResolveByEmail(string email)
+    public Account? ResolveByEmail(Email email)
     {
         var dataAccount = _dbContext.Accounts
-            .FirstOrDefault(account => account.Email == email);
+            .FirstOrDefault(account => account.Email == email.Address);
 
         if (dataAccount is not null)
         {

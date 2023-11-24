@@ -22,5 +22,5 @@ public interface IAccountResolver
     /// <returns>
     /// The account if found, null otherwise.
     /// </returns>
-    Account? ResolveByEmail(string email);
+    Account? ResolveByEmail(Email email);
 }
