@@ -12,6 +12,9 @@ public interface IAccountRegistrator
     /// </summary>
     /// <param name="email">Account email.</param>
     /// <param name="password">Account password in plain text.</param>
+    /// <exception cref="AccountAlreadyExistsException">
+    /// Thrown when an account is already registered with the provided email.
+    /// </exception>
     /// <returns>
     /// The registered account.
     /// </returns>
@@ -23,6 +26,9 @@ public interface IAccountRegistrator
     /// <param name="email">Account email.</param>
     /// <param name="password">Account password in plain text.</param>
     /// <param name="roles">Account roles.</param>
+    /// <exception cref="AccountAlreadyExistsException">
+    /// Thrown when an account is already registered with the provided email.
+    /// </exception>
     /// <returns>
     /// The registered account.
     /// </returns>

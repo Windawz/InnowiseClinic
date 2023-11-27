@@ -12,6 +12,7 @@ internal class ServiceLayerExceptionFilter : StatusCodeMappingExceptionFilter<Se
     {
         return exception switch
         {
+            AccountAlreadyExistsException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status400BadRequest,
         };
     }
