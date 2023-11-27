@@ -15,6 +15,8 @@ public class Program
             // Binding from user claims.
             options.ValueProviderFactories.Add(
                 new ClaimsValueProviderFactory());
+            // Turns service layer exceptions into matching error codes.
+            options.Filters.Add<ServiceLayerExceptionFilter>();
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
