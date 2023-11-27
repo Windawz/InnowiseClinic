@@ -15,7 +15,6 @@ public class AccountRegistrator : IAccountRegistrator
     /// Creates an instance of <see cref="AccountRegistrator"/>.
     /// </summary>
     /// <param name="dbContext">An instance of <see cref="AuthorizationDbContext"/>.</param>
-    /// <param name="roleResolver">An instance of <see cref="IRoleResolver"/>.</param>
     public AccountRegistrator(AuthorizationDbContext dbContext)
     {
         _dbContext = dbContext;
