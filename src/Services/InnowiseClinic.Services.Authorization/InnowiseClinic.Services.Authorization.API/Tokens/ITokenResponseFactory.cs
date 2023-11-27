@@ -1,3 +1,5 @@
+using InnowiseClinic.Services.Authorization.Services.Models;
+
 namespace InnowiseClinic.Services.Authorization.API.Tokens;
 
 /// <summary>
@@ -6,14 +8,11 @@ namespace InnowiseClinic.Services.Authorization.API.Tokens;
 internal interface ITokenResponseFactory
 {
     /// <summary>
-    /// Creates a <see cref="TokenResponse"/> from given user info.
+    /// Creates a <see cref="TokenResponse"/> for given user account.
     /// </summary>
-    /// <param name="accountId">
-    /// User account ID to be used in generation of the access token.
-    /// </param>
-    /// <param name="accountRoleNames">
-    /// Names of the roles that the user belongs to to be used in generation of the access token.
+    /// <param name="account">
+    /// The user account to generate tokens for.
     /// </param>
     /// <returns>An instance of <see cref="TokenResponse"/>.</returns>
-    TokenResponse Create(int accountId, IReadOnlyCollection<string> accountRoleNames);
+    TokenResponse Create(Account account);
 }

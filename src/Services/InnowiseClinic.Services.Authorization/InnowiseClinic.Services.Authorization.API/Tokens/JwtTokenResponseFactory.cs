@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using InnowiseClinic.Services.Authorization.Services.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -26,12 +27,12 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
     }
 
     /// <inheritdoc/>
-    public TokenResponse Create(int accountId, IReadOnlyCollection<string> accountRoleNames)
+    public TokenResponse Create(Account account)
     {
         var currentDateTime = DateTime.UtcNow;
 
-        var accessToken = CreateAccessToken(accountId, accountRoleNames, currentDateTime);
-        var refreshToken = CreateRefreshToken(accountId, currentDateTime);
+        var accessToken = CreateAccessToken(account, currentDateTime);
+        var refreshToken = CreateRefreshToken(account, currentDateTime);
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -46,8 +47,7 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
     }
 
     private JwtSecurityToken CreateAccessToken(
-        int accountId,
-        IReadOnlyCollection<string> accountRoleNames,
+        Account account,
         DateTime currentDateTime)
     {
         return new JwtSecurityToken(
@@ -58,12 +58,12 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
             signingCredentials: new SigningCredentials(
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,
                 algorithm: _tokenSigningAlgorithm),
-            claims: accountRoleNames
-                .Select(roleName => new Claim(ClaimTypes.Role, roleName))
-                .Append(CreateSubjectClaim(accountId)));
+            claims: account.Roles
+                .Select(role => new Claim(ClaimTypes.Role, role.Name))
+                .Append(CreateSubjectClaim(account)));
     }
 
-    private JwtSecurityToken CreateRefreshToken(int accountId, DateTime currentDateTime)
+    private JwtSecurityToken CreateRefreshToken(Account account, DateTime currentDateTime)
     {
         return new JwtSecurityToken(
             issuer: _jwtBearerOptions.TokenValidationParameters.ValidIssuer,
@@ -74,11 +74,11 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,
                 algorithm: _tokenSigningAlgorithm),
             claims: Enumerable.Empty<Claim>()
-                .Append(CreateSubjectClaim(accountId)));
+                .Append(CreateSubjectClaim(account)));
     }
 
-    private static Claim CreateSubjectClaim(int accountId)
+    private static Claim CreateSubjectClaim(Account account)
     {
-        return new(JwtRegisteredClaimNames.Sub, accountId.ToString());
+        return new(JwtRegisteredClaimNames.Sub, account.Id.ToString());
     }
 }
