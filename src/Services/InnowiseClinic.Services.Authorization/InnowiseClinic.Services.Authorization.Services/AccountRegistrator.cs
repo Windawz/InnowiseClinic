@@ -25,6 +25,7 @@ public class AccountRegistrator : IAccountRegistrator
     /// <inheritdoc/>
     public Account RegisterOther(Account initiator, Email email, string password, IReadOnlyCollection<Role> roles)
     {
+        ThrowIfNotPermittedToAssignRoles(initiator, email, roles);
         ThrowIfEmailAlreadyOccupied(email);
         var account = new Account(default, email, password, roles)
         {
@@ -52,6 +53,18 @@ public class AccountRegistrator : IAccountRegistrator
         if (_resolver.ResolveByEmail(email) is not null)
         {
             throw new AccountAlreadyExistsException(email);
+        }
+    }
+
+    private static void ThrowIfNotPermittedToAssignRoles(Account initiator, Email accountEmail, IReadOnlyCollection<Role> roles)
+    {
+        var registerableRoles = initiator.Roles
+            .SelectMany(role => role.RegisterableRoles)
+            .Distinct();
+
+        if (roles.Any(role => !registerableRoles.Contains(role)))
+        {
+            throw new NotPermittedToAssignRoleException(initiator, accountEmail, roles);
         }
     }
 }

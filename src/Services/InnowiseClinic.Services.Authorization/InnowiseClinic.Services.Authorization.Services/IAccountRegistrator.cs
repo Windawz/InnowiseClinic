@@ -29,6 +29,10 @@ public interface IAccountRegistrator
     /// <exception cref="AccountAlreadyExistsException">
     /// Thrown when an account is already registered with the provided email.
     /// </exception>
+    /// <exception cref="NotPermittedToAssignRoleException">
+    /// Thrown when the <paramref name="initiator"/> account tries to
+    /// register an account and assign to it roles that it is not permitted to.
+    /// </exception>
     /// <returns>
     /// The registered account.
     /// </returns>
