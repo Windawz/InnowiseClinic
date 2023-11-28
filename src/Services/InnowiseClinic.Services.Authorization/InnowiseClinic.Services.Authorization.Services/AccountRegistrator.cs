@@ -9,17 +9,11 @@ namespace InnowiseClinic.Services.Authorization.Services;
 /// </summary>
 public class AccountRegistrator : IAccountRegistrator
 {
-    private readonly AuthorizationDbContext _dbContext;
-    private readonly IAccountResolver _resolver;
+    private readonly IAccountRepository _repository;
 
-    /// <summary>
-    /// Creates an instance of <see cref="AccountRegistrator"/>.
-    /// </summary>
-    /// <param name="dbContext">An instance of <see cref="AuthorizationDbContext"/>.</param>
-    public AccountRegistrator(AuthorizationDbContext dbContext, IAccountResolver resolver)
+    public AccountRegistrator(IAccountRepository repository)
     {
-        _dbContext = dbContext;
-        _resolver = resolver;
+        _repository = repository;
     }
 
     /// <inheritdoc/>
@@ -27,13 +21,13 @@ public class AccountRegistrator : IAccountRegistrator
     {
         ThrowIfNotPermittedToAssignRoles(initiator, email, roles);
         ThrowIfEmailAlreadyOccupied(email);
+
         var account = new Account(default, email, password, roles)
         {
             CreatedBy = initiator,
         };
-        _dbContext.Accounts.Add(
-            Mapping.ToDataAccount(account));
-        _dbContext.SaveChanges();
+        _repository.Insert(account);
+        _repository.Save();
         return account;
     }
 
@@ -41,16 +35,15 @@ public class AccountRegistrator : IAccountRegistrator
     public Account RegisterSelf(Email email, string password)
     {
         ThrowIfEmailAlreadyOccupied(email);
+
         var account = new Account(default, email, password, Role.Patient);
-        _dbContext.Accounts.Add(
-            Mapping.ToDataAccount(account));
-        _dbContext.SaveChanges();
+        _repository.Insert(account);
         return account;
     }
 
     private void ThrowIfEmailAlreadyOccupied(Email email)
     {
-        if (_resolver.ResolveByEmail(email) is not null)
+        if (_repository.TryGetByEmail(email, out _))
         {
             throw new AccountAlreadyExistsException(email);
         }
