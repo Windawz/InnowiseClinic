@@ -20,7 +20,7 @@ public record Role
     /// has no registerable roles.
     /// </remarks>
     public static readonly Role Patient = new(
-        "patient",
+        RoleNames.Patient,
         Array.Empty<Role>());
 
     /// <summary>
@@ -31,7 +31,7 @@ public record Role
     /// include <see cref="Patient"/>.
     /// </remarks>
     public static readonly Role Doctor = new(
-        "doctor",
+        RoleNames.Doctor,
         new[] { Patient });
 
     /// <summary>
@@ -42,14 +42,14 @@ public record Role
     /// include <see cref="Patient"/> and <see cref="Doctor"/>.
     /// </remarks>
     public static readonly Role Receptionist = new(
-        "receptionist",
+        RoleNames.Receptionist,
         new Role[] { Patient, Doctor });
 
-    private static readonly IReadOnlyDictionary<string, Role> _knownRolesPerName;
+    private static readonly IReadOnlyDictionary<string, Role> _knownRoles;
 
     static Role()
     {
-        _knownRolesPerName = Enumerable.Empty<Role>()
+        _knownRoles = Enumerable.Empty<Role>()
             .Append(Patient)
             .Append(Doctor)
             .Append(Receptionist)
@@ -88,7 +88,7 @@ public record Role
     /// </remarks>
     public static bool TryParse(string roleName, out Role role)
     {
-        return _knownRolesPerName.TryGetValue(roleName, out role!);
+        return _knownRoles.TryGetValue(roleName, out role!);
     }
 
     /// <summary>
