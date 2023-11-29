@@ -12,7 +12,7 @@ namespace InnowiseClinic.Services.Authorization.API.Tokens;
 /// </summary>
 internal class JwtTokenResponseFactory : ITokenResponseFactory
 {
-    private const string _tokenSigningAlgorithm = SecurityAlgorithms.Sha256;
+    private const string _tokenSigningAlgorithm = SecurityAlgorithms.HmacSha256Signature;
     private static readonly TimeSpan _accessTokenExpirationTime = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan _refreshTokenExpirationTime = TimeSpan.FromHours(6);
     private readonly JwtBearerOptions _jwtBearerOptions;

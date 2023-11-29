@@ -18,7 +18,7 @@ public class AuthorizationDbContext : DbContext
     /// <summary>
     /// Provides access to the user account table.
     /// </summary>
-    public DbSet<Account> Accounts { get; } = null!;
+    public DbSet<Account> Accounts { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

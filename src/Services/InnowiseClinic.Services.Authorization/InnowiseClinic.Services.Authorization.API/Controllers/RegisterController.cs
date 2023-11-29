@@ -4,7 +4,6 @@ using InnowiseClinic.Services.Authorization.Services;
 using InnowiseClinic.Services.Authorization.Services.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace InnowiseClinic.Services.Authorization.API.Controllers;
 
@@ -38,7 +37,7 @@ public class RegisterController : ControllerBase
             new Email(input.EmailAddress),
             new Password(input.PasswordText),
             new Role(input.RoleName));
-            
+
         return Ok();
     }
 
@@ -46,6 +45,7 @@ public class RegisterController : ControllerBase
     [HttpPost("self")]
     public IActionResult RegisterSelf(RegisterSelfInput input)
     {
+        _logger.LogDebug($"Input is \"{input}\"");
         return Ok(
             _responseFactory.Create(
                 _registrator.RegisterSelf(
