@@ -70,13 +70,9 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById")
-                        .IsUnique()
-                        .HasFilter("[CreatedById] IS NOT NULL");
+                    b.HasIndex("CreatedById");
 
-                    b.HasIndex("UpdatedById")
-                        .IsUnique()
-                        .HasFilter("[UpdatedById] IS NOT NULL");
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Accounts");
                 });
@@ -116,12 +112,14 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
             modelBuilder.Entity("InnowiseClinic.Services.Authorization.Data.Models.Account", b =>
                 {
                     b.HasOne("InnowiseClinic.Services.Authorization.Data.Models.Account", "CreatedBy")
-                        .WithOne()
-                        .HasForeignKey("InnowiseClinic.Services.Authorization.Data.Models.Account", "CreatedById");
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InnowiseClinic.Services.Authorization.Data.Models.Account", "UpdatedBy")
-                        .WithOne()
-                        .HasForeignKey("InnowiseClinic.Services.Authorization.Data.Models.Account", "UpdatedById");
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 

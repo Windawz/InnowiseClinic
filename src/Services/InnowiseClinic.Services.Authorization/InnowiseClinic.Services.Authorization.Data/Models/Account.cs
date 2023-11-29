@@ -25,6 +25,8 @@ public class Account
     /// </summary>
     public bool IsEmailVerified { get; set; }
 
+    public int? CreatedById { get; set; }
+
     /// <summary>
     /// The account that is responsible for creation of this account.
     /// </summary>
@@ -37,6 +39,8 @@ public class Account
     /// A point in time denoting when the account was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+
+    public int? UpdatedById { get; set; }
 
     /// <summary>
     /// The account that is responsible for being the last one to update this account's information.

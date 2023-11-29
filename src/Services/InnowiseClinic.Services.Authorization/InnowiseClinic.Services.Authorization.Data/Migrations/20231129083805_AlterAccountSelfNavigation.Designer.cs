@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InnowiseClinic.Services.Authorization.Data.Migrations
 {
     [DbContext(typeof(AuthorizationDbContext))]
-    [Migration("20231120102456_AddRole")]
-    partial class AddRole
+    [Migration("20231129083805_AlterAccountSelfNavigation")]
+    partial class AlterAccountSelfNavigation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,7 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedById")
+                    b.Property<int?>("CreatedById")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -63,13 +63,6 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PhotoId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -86,16 +79,13 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("InnowiseClinic.Services.Authorization.Data.Role", b =>
+            modelBuilder.Entity("InnowiseClinic.Services.Authorization.Data.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("CanRegisterOthers")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -114,7 +104,7 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InnowiseClinic.Services.Authorization.Data.Role", null)
+                    b.HasOne("InnowiseClinic.Services.Authorization.Data.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -126,12 +116,12 @@ namespace InnowiseClinic.Services.Authorization.Data.Migrations
                     b.HasOne("InnowiseClinic.Services.Authorization.Data.Models.Account", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InnowiseClinic.Services.Authorization.Data.Models.Account", "UpdatedBy")
                         .WithMany()
-                        .HasForeignKey("UpdatedById");
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 

@@ -16,9 +16,13 @@ internal class AccountConfiguration : IEntityTypeConfiguration<Account>
     {
         // Set up navigation properties for entries in the same table.
         builder.HasOne(account => account.CreatedBy)
-            .WithOne();
+            .WithMany()
+            .HasForeignKey(account => account.CreatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(account => account.UpdatedBy)
-            .WithOne();
+            .WithMany()
+            .HasForeignKey(account => account.UpdatedById)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
