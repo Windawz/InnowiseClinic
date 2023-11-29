@@ -14,7 +14,7 @@ namespace InnowiseClinic.Services.Authorization.API.Tokens;
 /// <param name="RefreshToken">An encoded refresh token. For example, a signed JWT token.</param>
 /// <param name="TokenType">The authentication type of the tokens. For example, "bearer".</param>
 /// <param name="ExpiresIn">Time after which the access token will have expired. Serialized to seconds.</param>
-internal record TokenResponse(
+public record TokenResponse(
     [property: JsonPropertyName("access_token")]
     string AccessToken,
     [property: JsonPropertyName("refresh_token")]

@@ -5,7 +5,7 @@ namespace InnowiseClinic.Services.Authorization.API.Tokens;
 /// <summary>
 /// Produces instances of <see cref="TokenResponse"/>.
 /// </summary>
-internal interface ITokenResponseFactory
+public interface ITokenResponseFactory
 {
     /// <summary>
     /// Creates a <see cref="TokenResponse"/> for given user account.
