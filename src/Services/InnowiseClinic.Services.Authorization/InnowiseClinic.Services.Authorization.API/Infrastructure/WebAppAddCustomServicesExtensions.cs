@@ -25,8 +25,8 @@ public static class WebAppAddCustomServicesExtensions
                 }
             })
             .AddSingleton<ITokenResponseFactory, JwtTokenResponseFactory>()
-            .AddScoped<IAccountRepository, AccountRepository>()
             .AddScoped<IRegistrator, Registrator>()
-            .AddScoped<IResolver, Resolver>();
+            .AddScoped<IResolver, Resolver>()
+            .AddTransient<IAccountRepository, AccountRepository>();
     }
 }

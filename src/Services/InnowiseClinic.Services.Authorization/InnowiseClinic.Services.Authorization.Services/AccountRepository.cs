@@ -7,13 +7,12 @@ namespace InnowiseClinic.Services.Authorization.Services;
 public class AccountRepository : IAccountRepository
 {
     private readonly AuthorizationDbContext _dbContext;
+    private bool _disposed;
 
     public AccountRepository(AuthorizationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-
-    protected bool Disposed { get; private set; }
 
     public IEnumerable<Account> GetAll()
     {
@@ -118,26 +117,17 @@ public class AccountRepository : IAccountRepository
 
     public void Dispose()
     {
-        if (!Disposed)
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-            Disposed = true;
-        }
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
+        if (!_disposed)
         {
             _dbContext.SaveChanges();
-            _dbContext.Dispose();
+            GC.SuppressFinalize(this);
+            _disposed = true;
         }
     }
 
     private void ThrowIfDisposed()
     {
-        if (Disposed)
+        if (_disposed)
         {
             throw new ObjectDisposedException(GetType().FullName);
         }
