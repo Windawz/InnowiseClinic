@@ -18,7 +18,7 @@ public static class Mapping
         {
             Id = serviceAccount.Id,
             Email = serviceAccount.Email.Address,
-            Password = serviceAccount.Password,
+            Password = serviceAccount.Password.Text,
             IsEmailVerified = serviceAccount.IsEmailVerified,
             CreatedBy = serviceAccount.CreatedBy is not null
                 ? ToDataAccount(serviceAccount.CreatedBy)
@@ -28,9 +28,7 @@ public static class Mapping
                 ? ToDataAccount(serviceAccount.UpdatedBy)
                 : null,
             UpdatedAt = serviceAccount.UpdatedAt,
-            Roles = serviceAccount.Roles
-                .Select(role => ToDataRole(role))
-                .ToList(),
+            Role = serviceAccount.Role.Name
         };
     }
 
@@ -44,10 +42,8 @@ public static class Mapping
         return new(
             dataAccount.Id,
             new Email(dataAccount.Email),
-            dataAccount.Password,
-            dataAccount.Roles
-                .Select(role => FromDataRole(role))
-                .ToArray())
+            new Password(dataAccount.Password),
+            new Role(dataAccount.Role))
         {
             IsEmailVerified = dataAccount.IsEmailVerified,
             CreatedBy = dataAccount.CreatedBy is not null
@@ -59,29 +55,5 @@ public static class Mapping
                 : null,
             UpdatedAt = dataAccount.UpdatedAt,
         };
-    }
-
-    /// <summary>
-    /// Converts a service layer role to a data layer role.
-    /// </summary>
-    /// <param name="serviceRole">A service layer role.</param>
-    /// <returns>A data layer role.</returns>
-    public static Data.Models.Role ToDataRole(Role serviceRole)
-    {
-        return new()
-        {
-            Id = default,
-            Name = serviceRole.Name,
-        };
-    }
-
-    /// <summary>
-    /// Converts a data layer role to a service layer role.
-    /// </summary>
-    /// <param name="dataRole">A data layer role.</param>
-    /// <returns>A service layer role.</returns>
-    public static Role FromDataRole(Data.Models.Role dataRole)
-    {
-        return Role.Parse(dataRole.Name);
     }
 }

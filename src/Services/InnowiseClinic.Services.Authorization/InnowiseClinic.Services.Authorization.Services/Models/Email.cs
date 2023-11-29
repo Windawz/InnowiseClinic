@@ -40,28 +40,21 @@ public record Email
         get => _address;
         init
         {
-            ThrowIfInvalidAddress(value);
+            if (!IsValid(value))
+            {
+                throw new InvalidEmailAddressFormatException(value);
+            }
             _address = value;
         }
     }
 
-    /// <summary>
-    /// Checks whether the address has a valid format.
-    /// </summary>
-    /// <param name="address">Email address.</param>
-    /// <returns>
-    /// Whether the address has a valid format.
-    /// </returns>
-    public static bool IsAddressValid(string address)
+    public static bool IsValid(string address)
     {
         return MailAddress.TryCreate(address, out _);
     }
 
     private static void ThrowIfInvalidAddress(string address)
     {
-        if (!IsAddressValid(address))
-        {
-            throw new InvalidEmailAddressFormatException(address);
-        }
+        
     }
 }

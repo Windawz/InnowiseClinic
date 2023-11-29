@@ -13,8 +13,8 @@ internal class ServiceLayerExceptionFilter : StatusCodeMappingExceptionFilter<Se
         return exception switch
         {
             AccountAlreadyExistsException => StatusCodes.Status409Conflict,
-            NotPermittedToAssignRoleException => StatusCodes.Status403Forbidden,
-            _ => StatusCodes.Status400BadRequest,
+            BusinessException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError,
         };
     }
 }

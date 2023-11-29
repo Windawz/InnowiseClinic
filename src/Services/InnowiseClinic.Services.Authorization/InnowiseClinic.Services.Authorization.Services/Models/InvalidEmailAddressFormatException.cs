@@ -3,7 +3,7 @@ namespace InnowiseClinic.Services.Authorization.Services.Models;
 /// <summary>
 /// Thrown when the format of an email address was invalid.
 /// </summary>
-public class InvalidEmailAddressFormatException : ModelValidationException
+public class InvalidEmailAddressFormatException : BusinessModelException
 {
     /// <summary>
     /// Creates an instance of <see cref="InvalidEmailAddressFormatException"/>.

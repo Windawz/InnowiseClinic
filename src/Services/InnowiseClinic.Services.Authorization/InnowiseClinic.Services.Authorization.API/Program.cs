@@ -24,7 +24,13 @@ public class Program
             .AddJwtBearer();
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
         builder.Services.AddAuthorization();
-        builder.Services.AddSingleton<ITokenResponseFactory, JwtTokenResponseFactory>();
+        builder.Services.AddCustomServices();
+        
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddLogging();
+        }
+
 
         var app = builder.Build();
 

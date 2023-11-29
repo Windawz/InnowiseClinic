@@ -6,7 +6,7 @@ namespace InnowiseClinic.Services.Authorization.Services;
 /// Thrown when an attempt is made to register an account with an email that is
 /// already used by a different, already registered account.
 /// </summary>
-public class AccountAlreadyExistsException : BusinessLogicException
+public class AccountAlreadyExistsException : BusinessServiceException
 {
     /// <summary>
     /// Creates an instance of <see cref="AccountAlreadyExistsException"/>.

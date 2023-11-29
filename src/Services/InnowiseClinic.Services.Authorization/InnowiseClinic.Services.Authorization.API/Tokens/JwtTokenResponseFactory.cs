@@ -58,9 +58,8 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
             signingCredentials: new SigningCredentials(
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,
                 algorithm: _tokenSigningAlgorithm),
-            claims: account.Roles
-                .Select(role => new Claim(ClaimTypes.Role, role.Name))
-                .Append(CreateSubjectClaim(account)));
+            claims: CreateBaseTokenClaims(account)
+                .Concat(CreateAccessTokenClaims(account)));
     }
 
     private JwtSecurityToken CreateRefreshToken(Account account, DateTime currentDateTime)
@@ -73,12 +72,29 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
             signingCredentials: new SigningCredentials(
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,
                 algorithm: _tokenSigningAlgorithm),
-            claims: Enumerable.Empty<Claim>()
-                .Append(CreateSubjectClaim(account)));
+            claims: CreateBaseTokenClaims(account)
+                .Concat(CreateRefreshTokenClaims(account)));
     }
 
-    private static Claim CreateSubjectClaim(Account account)
+    private static IEnumerable<Claim> CreateAccessTokenClaims(Account account)
     {
-        return new(JwtRegisteredClaimNames.Sub, account.Id.ToString());
+        return new Claim[]
+        {
+            new(ClaimTypes.Role, account.Role.Name),
+        };
+    }
+
+    private static IEnumerable<Claim> CreateRefreshTokenClaims(Account account)
+    {
+        return Enumerable.Empty<Claim>();
+    }
+
+    private static IEnumerable<Claim> CreateBaseTokenClaims(Account account)
+    {
+        return new Claim[]
+        {
+            new(ClaimTypes.NameIdentifier, account.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+        };
     }
 }

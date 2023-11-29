@@ -60,8 +60,5 @@ public class Account
     /// </remarks>
     public DateTime? UpdatedAt { get; set; }
 
-    /// <summary>
-    /// A navigation over roles assigned to the account.
-    /// </summary>
-    public ICollection<Role> Roles { get; set; } = new List<Role>();
+    public string Role { get; set; } = null!;
 }

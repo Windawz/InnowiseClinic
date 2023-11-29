@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using InnowiseClinic.Services.Authorization.Services.Models;
 
 namespace InnowiseClinic.Services.Authorization.Services;
