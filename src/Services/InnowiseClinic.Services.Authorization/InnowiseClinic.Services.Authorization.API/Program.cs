@@ -24,7 +24,8 @@ public class Program
             .AddJwtBearer();
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
         builder.Services.AddAuthorization();
-        builder.Services.AddCustomServices();
+        
+        builder.AddCustomServices();
         
         if (builder.Environment.IsDevelopment())
         {
