@@ -20,6 +20,6 @@ internal class ExpiresInJsonConverter : JsonConverter<TimeSpan>
     /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
     {
-        writer.WriteNumberValue(value.Seconds);
+        writer.WriteNumberValue(value.TotalSeconds);
     }
 }
