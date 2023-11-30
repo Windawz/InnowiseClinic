@@ -1,6 +1,6 @@
 namespace InnowiseClinic.Services.Authorization.Services.Services;
 
-public class FailedToResolveAccountException : InfrastructureServiceException
+public class FailedToResolveAccountException : InternalException
 {
     public FailedToResolveAccountException(int accountId) : base("Failed to resolve account with given id")
     {
