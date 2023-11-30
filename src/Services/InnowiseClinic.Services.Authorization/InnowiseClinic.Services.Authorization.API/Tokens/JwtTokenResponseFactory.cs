@@ -13,17 +13,20 @@ namespace InnowiseClinic.Services.Authorization.API.Tokens;
 internal class JwtTokenResponseFactory : ITokenResponseFactory
 {
     private const string _tokenSigningAlgorithm = SecurityAlgorithms.HmacSha256Signature;
-    private static readonly TimeSpan _accessTokenExpirationTime = TimeSpan.FromSeconds(30);
-    private static readonly TimeSpan _refreshTokenExpirationTime = TimeSpan.FromHours(6);
     private readonly JwtBearerOptions _jwtBearerOptions;
+    private readonly JwtOptions _jwtGenerationOptions;
 
     /// <summary>
     /// Creates an instance of <see cref="JwtTokenResponseFactory"/>.
     /// </summary>
     /// <param name="jwtBearerOptions">JWT bearer authentication options.</param>
-    public JwtTokenResponseFactory(IOptionsMonitor<JwtBearerOptions> jwtBearerOptions)
+    public JwtTokenResponseFactory(
+        IOptionsMonitor<JwtBearerOptions> jwtBearerOptions,
+        IOptionsMonitor<JwtOptions> jwtGenerationOptions,
+        ILogger<JwtTokenResponseFactory> logger)
     {
         _jwtBearerOptions = jwtBearerOptions.Get(JwtBearerDefaults.AuthenticationScheme);
+        _jwtGenerationOptions = jwtGenerationOptions.CurrentValue;
     }
 
     /// <inheritdoc/>
@@ -31,29 +34,35 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
     {
         var currentDateTime = DateTime.UtcNow;
 
-        var accessToken = CreateAccessToken(account, currentDateTime);
-        var refreshToken = CreateRefreshToken(account, currentDateTime);
+        var accessTokenExpirationTime = TimeSpan.FromSeconds(_jwtGenerationOptions.Generation.AccessTokenExpirationSeconds);
+        var refreshTokenExpirationTime = TimeSpan.FromSeconds(_jwtGenerationOptions.Generation.RefreshTokenExpirationSeconds);
+
+        var accessToken = CreateAccessToken(account, currentDateTime, accessTokenExpirationTime);
+        var refreshToken = CreateRefreshToken(account, currentDateTime, refreshTokenExpirationTime);
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var signedAccessToken = tokenHandler.WriteToken(accessToken);
         var signedRefreshToken = tokenHandler.WriteToken(refreshToken);
 
-        return new TokenResponse(
+        var response = new TokenResponse(
             signedAccessToken,
             signedRefreshToken,
             JwtBearerDefaults.AuthenticationScheme,
-            _accessTokenExpirationTime);
+            accessTokenExpirationTime);
+
+        return response;
     }
 
     private JwtSecurityToken CreateAccessToken(
         Account account,
-        DateTime currentDateTime)
+        DateTime currentDateTime,
+        TimeSpan expirationTime)
     {
         return new JwtSecurityToken(
             issuer: _jwtBearerOptions.TokenValidationParameters.ValidIssuer,
             audience: _jwtBearerOptions.TokenValidationParameters.ValidAudience,
-            expires: currentDateTime.Add(_accessTokenExpirationTime),
+            expires: currentDateTime.Add(expirationTime),
             notBefore: currentDateTime,
             signingCredentials: new SigningCredentials(
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,
@@ -62,12 +71,15 @@ internal class JwtTokenResponseFactory : ITokenResponseFactory
                 .Concat(CreateAccessTokenClaims(account)));
     }
 
-    private JwtSecurityToken CreateRefreshToken(Account account, DateTime currentDateTime)
+    private JwtSecurityToken CreateRefreshToken(
+        Account account,
+        DateTime currentDateTime,
+        TimeSpan expirationTime)
     {
         return new JwtSecurityToken(
             issuer: _jwtBearerOptions.TokenValidationParameters.ValidIssuer,
             audience: _jwtBearerOptions.TokenValidationParameters.ValidAudience,
-            expires: currentDateTime.Add(_refreshTokenExpirationTime),
+            expires: currentDateTime.Add(expirationTime),
             notBefore: currentDateTime,
             signingCredentials: new SigningCredentials(
                 key: _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey,

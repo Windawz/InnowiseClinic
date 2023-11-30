@@ -23,6 +23,7 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
+        builder.Services.ConfigureOptions<ConfigureJwtOptions>();
         builder.Services.AddAuthorization();
         
         builder.AddCustomServices();

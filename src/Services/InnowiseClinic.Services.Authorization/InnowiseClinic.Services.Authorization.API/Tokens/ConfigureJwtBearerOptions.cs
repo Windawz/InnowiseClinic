@@ -5,38 +5,20 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Services.Authorization.API.Tokens;
 
-/// <summary>
-/// Configures JWT authentication.
-/// </summary>
-/// <remarks>
-/// Valid audience, valid issuer, and the secret are
-/// extracted from the current configuration.
-/// <para/>
-/// The secret is assumed to be a UTF8 string.
-/// </remarks>
 internal class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private const string ValidAudienceConfigurationKey = "Auth:Jwt:ValidAudience";
-    private const string ValidIssuerConfigurationKey = "Auth:Jwt:ValidIssuer";
-    private const string SecretConfigurationKey = "Auth:Jwt:Secret";
-    private readonly IConfiguration _configuration;
+    private readonly JwtOptions _jwtOptions;
 
-    /// <summary>
-    /// Creates an instance of <see cref="ConfigureJwtBearerOptions"/>.
-    /// </summary>
-    /// <param name="configuration">An instance of <see cref="IConfiguration"/>.</param>
-    public ConfigureJwtBearerOptions(IConfiguration configuration)
+    public ConfigureJwtBearerOptions(IOptionsMonitor<JwtOptions> jwtOptions)
     {
-        _configuration = configuration;
+        _jwtOptions = jwtOptions.CurrentValue;
     }
 
-    /// <inheritdoc/>
     public void Configure(string name, JwtBearerOptions options)
     {
         Configure(options);
     }
 
-    /// <inheritdoc/>
     public void Configure(JwtBearerOptions options)
     {
         options.RequireHttpsMetadata = false;
@@ -44,11 +26,11 @@ internal class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptio
 
         options.TokenValidationParameters = new()
         {
-            ValidAudience = _configuration[ValidAudienceConfigurationKey],
-            ValidIssuer = _configuration[ValidIssuerConfigurationKey],
+            ValidAudience = _jwtOptions.Audience,
+            ValidIssuer = _jwtOptions.Issuer,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
-                    _configuration[SecretConfigurationKey])),
+                    _jwtOptions.SigningKey)),
             ValidateAudience = true,
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
