@@ -4,6 +4,6 @@ namespace InnowiseClinic.Services.Authorization.Services.Services;
 
 public interface IRegistrator
 {
-    Account RegisterSelf(Email email, Password password);
+    Account RegisterSelf(Email email, Password password, Role role);
     Account RegisterOther(Account initiator, Email email, Password password, Role role);
 }

@@ -24,11 +24,11 @@ public class Registrator : IRegistrator
         return account;
     }
 
-    public Account RegisterSelf(Email email, Password password)
+    public Account RegisterSelf(Email email, Password password, Role role)
     {
         ThrowIfEmailAlreadyOccupied(email);
 
-        var account = new Account(default, email, password, new Role(RoleNames.Patient));
+        var account = new Account(default, email, password, role);
         _repository.Insert(account);
         return account;
     }

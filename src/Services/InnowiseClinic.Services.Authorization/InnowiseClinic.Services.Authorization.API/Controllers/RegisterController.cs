@@ -51,7 +51,8 @@ public class RegisterController : ControllerBase
             _responseFactory.Create(
                 _registrator.RegisterSelf(
                     new Email(input.EmailAddress),
-                    new Password(input.PasswordText)))
+                    new Password(input.PasswordText),
+                    new Role(RoleNames.Patient)))
                 .ToDataTransferTokenPair());
     }
 }
