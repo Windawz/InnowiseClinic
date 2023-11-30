@@ -1,9 +1,10 @@
-using InnowiseClinic.Services.Authorization.API.Models;
-using InnowiseClinic.Services.Authorization.API.Tokens;
-using InnowiseClinic.Services.Authorization.Services;
+using InnowiseClinic.Services.Authorization.Services.Services;
 using InnowiseClinic.Services.Authorization.Services.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using InnowiseClinic.Services.Authorization.API.Services;
+using InnowiseClinic.Services.Authorization.API.DataTransfer;
+using InnowiseClinic.Services.Authorization.API.Models;
 
 namespace InnowiseClinic.Services.Authorization.API.Controllers;
 
@@ -13,13 +14,13 @@ public class RegisterController : ControllerBase
 {
     private readonly IRegistrator _registrator;
     private readonly IResolver _resolver;
-    private readonly ITokenResponseFactory _responseFactory;
+    private readonly ITokenPairFactory _responseFactory;
     private readonly ILogger _logger;
 
     public RegisterController(
         IRegistrator registrator,
         IResolver resolver,
-        ITokenResponseFactory responseFactory,
+        ITokenPairFactory responseFactory,
         ILogger<RegisterController> logger)
     {
         _registrator = registrator;
@@ -50,6 +51,7 @@ public class RegisterController : ControllerBase
             _responseFactory.Create(
                 _registrator.RegisterSelf(
                     new Email(input.EmailAddress),
-                    new Password(input.PasswordText))));
+                    new Password(input.PasswordText)))
+                .ToDataTransferTokenPair());
     }
 }

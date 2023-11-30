@@ -1,5 +1,7 @@
-using InnowiseClinic.Services.Authorization.API.Infrastructure;
-using InnowiseClinic.Services.Authorization.API.Tokens;
+using InnowiseClinic.Services.Authorization.API.Binding;
+using InnowiseClinic.Services.Authorization.API.Composition;
+using InnowiseClinic.Services.Authorization.API.Configuration;
+using InnowiseClinic.Services.Authorization.API.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Services.Authorization.API;
