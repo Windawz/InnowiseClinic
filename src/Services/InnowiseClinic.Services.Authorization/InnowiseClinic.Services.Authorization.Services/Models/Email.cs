@@ -16,6 +16,7 @@ public record Email
         get => _address;
         init
         {
+            value = value.Trim();
             if (!IsValid(value))
             {
                 throw new InvalidEmailAddressFormatException(value);
@@ -26,11 +27,6 @@ public record Email
 
     public static bool IsValid(string address)
     {
-        return MailAddress.TryCreate(address, out _);
-    }
-
-    private static void ThrowIfInvalidAddress(string address)
-    {
-        
+        return !string.IsNullOrEmpty(address);
     }
 }

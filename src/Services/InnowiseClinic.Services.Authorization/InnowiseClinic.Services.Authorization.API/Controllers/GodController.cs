@@ -32,7 +32,7 @@ public class GodController : DevelopmentController
                     new Email(input.EmailAddress),
                     new Password(input.PasswordText),
                     new Role(roleName)))
-                .ToDataTransferTokenPair());
+                .MapToAPILayer());
     }
 
     [AllowAnonymous]

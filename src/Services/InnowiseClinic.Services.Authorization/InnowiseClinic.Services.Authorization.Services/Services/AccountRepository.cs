@@ -21,7 +21,7 @@ public class AccountRepository : IAccountRepository
         return _dbContext.Accounts
             .AsNoTracking()
             .AsEnumerable()
-            .Select(account => Mapping.ToServiceAccount(account));
+            .Select(account => Mapping.MapToServiceLayer(account));
     }
 
     public bool TryGetById(int id, out Account account)
@@ -36,7 +36,7 @@ public class AccountRepository : IAccountRepository
 
         if (dataAccount is not null)
         {
-            account = Mapping.ToServiceAccount(dataAccount);
+            account = Mapping.MapToServiceLayer(dataAccount);
             return true;
         }
         else
@@ -71,7 +71,7 @@ public class AccountRepository : IAccountRepository
 
         if (dataAccount is not null)
         {
-            account = Mapping.ToServiceAccount(dataAccount);
+            account = Mapping.MapToServiceLayer(dataAccount);
             return true;
         }
         else
@@ -85,7 +85,7 @@ public class AccountRepository : IAccountRepository
     {
         ThrowIfDisposed();
 
-        var dataAccount = Mapping.ToDataAccount(account with
+        var dataAccount = Mapping.MapToDataLayer(account with
         {
             // Just in case, to not mess up the change tracker.
             Id = default,
@@ -108,7 +108,7 @@ public class AccountRepository : IAccountRepository
     {
         ThrowIfDisposed();
 
-        var dataAccount = Mapping.ToDataAccount(account);
+        var dataAccount = Mapping.MapToDataLayer(account);
         _dbContext.Accounts.Update(dataAccount);
     }
 

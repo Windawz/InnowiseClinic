@@ -4,7 +4,7 @@ namespace InnowiseClinic.Services.Authorization.Services.Models;
 
 public static class Mapping
 {
-    public static Data.Models.Account ToDataAccount(this Account serviceAccount)
+    public static Data.Models.Account MapToDataLayer(this Account serviceAccount)
     {
         return new()
         {
@@ -20,7 +20,7 @@ public static class Mapping
         };
     }
 
-    public static Account ToServiceAccount(this Data.Models.Account dataAccount)
+    public static Account MapToServiceLayer(this Data.Models.Account dataAccount)
     {
         return new(
             dataAccount.Id,
@@ -29,9 +29,9 @@ public static class Mapping
             new Role(dataAccount.Role))
         {
             IsEmailVerified = dataAccount.IsEmailVerified,
-            CreatedBy = dataAccount.CreatedBy?.ToServiceAccount(),
+            CreatedBy = dataAccount.CreatedBy?.MapToServiceLayer(),
             CreatedAt = dataAccount.CreatedAt,
-            UpdatedBy = dataAccount.UpdatedBy?.ToServiceAccount(),
+            UpdatedBy = dataAccount.UpdatedBy?.MapToServiceLayer(),
             UpdatedAt = dataAccount.UpdatedAt,
         };
     }

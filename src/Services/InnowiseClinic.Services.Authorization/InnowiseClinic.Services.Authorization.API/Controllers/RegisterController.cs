@@ -17,29 +17,25 @@ public class RegisterController : ControllerBase
     private readonly IRegistrator _registrator;
     private readonly IResolver _resolver;
     private readonly ITokenPairFactory _responseFactory;
-    private readonly ILogger _logger;
 
     public RegisterController(
         IRegistrator registrator,
         IResolver resolver,
-        ITokenPairFactory responseFactory,
-        ILogger<RegisterController> logger)
+        ITokenPairFactory responseFactory)
     {
         _registrator = registrator;
         _resolver = resolver;
         _responseFactory = responseFactory;
-        _logger = logger;
     }
 
     [Authorize(Roles = RoleNames.Receptionist)]
     [HttpPost("other")]
     public IActionResult RegisterOther([FromClaims(ClaimTypes.NameIdentifier)] int initiatorId, RegisterOtherInput input)
     {
-        _registrator.RegisterOther(
-            _resolver.Resolve(initiatorId),
-            new Email(input.EmailAddress),
-            new Password(input.PasswordText),
-            new Role(input.RoleName));
+        var initiator = _resolver.Resolve(initiatorId);
+        var (email, password, role) = input.MapToServiceLayer();
+
+        _registrator.RegisterOther(initiator, email, password, role);
 
         return Ok();
     }
@@ -48,13 +44,14 @@ public class RegisterController : ControllerBase
     [HttpPost("self")]
     public IActionResult RegisterSelf(RegisterSelfInput input)
     {
-        _logger.LogDebug($"Input is \"{input}\"");
+        var (email, password) = input.MapToServiceLayer();
+
         return Ok(
             _responseFactory.Create(
                 _registrator.RegisterSelf(
-                    new Email(input.EmailAddress),
-                    new Password(input.PasswordText),
+                    email,
+                    password,
                     new Role(RoleNames.Patient)))
-                .ToDataTransferTokenPair());
+                .MapToAPILayer());
     }
 }
