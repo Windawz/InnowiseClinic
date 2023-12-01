@@ -1,8 +1,8 @@
 using FluentValidation;
-using InnowiseClinic.Services.Authorization.API.Configuration;
-using InnowiseClinic.Services.Authorization.API.DataTransfer;
-using InnowiseClinic.Services.Authorization.API.Services;
-using InnowiseClinic.Services.Authorization.API.Services.Validation.Input;
+using InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+using InnowiseClinic.Services.Authorization.API.Auth.Services;
+using InnowiseClinic.Services.Authorization.API.Auth.Validation;
 using InnowiseClinic.Services.Authorization.Data;
 using InnowiseClinic.Services.Authorization.Services.Services;
 using Microsoft.EntityFrameworkCore;
