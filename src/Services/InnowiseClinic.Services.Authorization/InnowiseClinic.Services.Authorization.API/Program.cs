@@ -1,7 +1,6 @@
-using InnowiseClinic.Services.Authorization.API.Binding;
 using InnowiseClinic.Services.Authorization.API.Composition;
-using InnowiseClinic.Services.Authorization.API.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace InnowiseClinic.Services.Authorization.API;
 
@@ -14,10 +13,9 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
-        
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
         builder.Services.AddAuthorization();
+        builder.Services.AddFluentValidationAutoValidation();
         
         builder.AddCustomComponents();
         

@@ -1,5 +1,8 @@
+using FluentValidation;
 using InnowiseClinic.Services.Authorization.API.Configuration;
+using InnowiseClinic.Services.Authorization.API.DataTransfer;
 using InnowiseClinic.Services.Authorization.API.Services;
+using InnowiseClinic.Services.Authorization.API.Services.Validation.Input;
 using InnowiseClinic.Services.Authorization.Data;
 using InnowiseClinic.Services.Authorization.Services.Services;
 using Microsoft.EntityFrameworkCore;
@@ -27,14 +30,16 @@ public static class CustomComponentsWebAppExtensions
 
     private static void AddAPILayerServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<ITokenPairFactory, JwtTokenPairFactory>();
+        builder.Services.AddScoped<ITokenPairFactory, JwtTokenPairFactory>()
+            .AddScoped<IValidator<RegisterSelfInput>, RegisterSelfInputValidator>()
+            .AddScoped<IValidator<RegisterOtherInput>, RegisterOtherInputValidator>();
     }
 
     private static void AddServiceLayerServices(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IRegistrator, Registrator>()
-        .AddScoped<IResolver, Resolver>()
-        .AddTransient<IAccountRepository, AccountRepository>();
+            .AddScoped<IResolver, Resolver>()
+            .AddScoped<IAccountRepository, AccountRepository>();
     }
 
     private static void AddDataLayerServices(WebApplicationBuilder builder)
