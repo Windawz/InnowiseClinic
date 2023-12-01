@@ -1,6 +1,5 @@
 using InnowiseClinic.Services.Authorization.API.Binding;
 using InnowiseClinic.Services.Authorization.API.Composition;
-using InnowiseClinic.Services.Authorization.API.Configuration;
 using InnowiseClinic.Services.Authorization.API.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -12,23 +11,15 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers(options =>
-        {
-            // Binding from user claims.
-            options.ValueProviderFactories.Add(
-                new ClaimsValueProviderFactory());
-            // Turns service layer exceptions into matching error codes.
-            options.Filters.Add<ServiceLayerExceptionFilter>();
-        });
+        builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
-        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
-        builder.Services.ConfigureOptions<ConfigureJwtOptions>();
+        
         builder.Services.AddAuthorization();
         
-        builder.AddCustomServices();
+        builder.AddCustomComponents();
         
         if (builder.Environment.IsDevelopment())
         {
