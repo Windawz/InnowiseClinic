@@ -39,7 +39,8 @@ public static class CustomComponentsWebAppExtensions
     {
         builder.Services.AddScoped<IRegistrator, Registrator>()
             .AddScoped<IResolver, Resolver>()
-            .AddScoped<IAccountRepository, AccountRepository>();
+            .AddScoped<IAccountRepository, AccountRepository>()
+            .AddScoped<ILogInAccessor, LogInAccessor>();
     }
 
     private static void AddDataLayerServices(WebApplicationBuilder builder)

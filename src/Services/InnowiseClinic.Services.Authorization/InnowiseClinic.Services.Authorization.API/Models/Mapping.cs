@@ -23,4 +23,9 @@ public static class Mapping
     {
         return (new Email(input.EmailAddress), new Password(input.PasswordText), new Role(input.RoleName));
     }
+
+    public static (Email, Password) MapToServiceLayer(this LogInInput input)
+    {
+        return (new Email(input.EmailAddress), new Password(input.PasswordText));
+    }
 }
