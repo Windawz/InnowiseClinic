@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using InnowiseClinic.Services.Authorization.API.ErrorHandling.ActionOutputVerification;
 
 namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 
+[ActionOutput]
 public record TokenPairOutput(
     [property: JsonPropertyName("access_token")]
     string AccessToken,

@@ -1,10 +1,9 @@
-using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 using InnowiseClinic.Services.Authorization.API.Auth.Models;
 using InnowiseClinic.Services.Authorization.Services.Models;
 
-namespace InnowiseClinic.Services.Authorization.API.Mapping;
+namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 
-public static class Mapping
+public static class DataTransferModelMappingExtensions
 {
     public static TokenPairOutput MapToAPILayer(this TokenPair tokenPair)
     {

@@ -2,7 +2,6 @@ using System.Security.Claims;
 using InnowiseClinic.Services.Authorization.API.Auth.Binding;
 using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 using InnowiseClinic.Services.Authorization.API.Auth.Services;
-using InnowiseClinic.Services.Authorization.API.Mapping;
 using InnowiseClinic.Services.Authorization.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

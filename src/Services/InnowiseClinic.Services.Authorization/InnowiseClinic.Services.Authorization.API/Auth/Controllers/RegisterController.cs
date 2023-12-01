@@ -6,7 +6,6 @@ using System.Security.Claims;
 using InnowiseClinic.Services.Authorization.API.Auth.Services;
 using InnowiseClinic.Services.Authorization.API.Auth.Binding;
 using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
-using InnowiseClinic.Services.Authorization.API.Mapping;
 
 namespace InnowiseClinic.Services.Authorization.API.Auth.Controllers;
 
