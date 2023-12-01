@@ -7,10 +7,23 @@ public class ClaimsValueProviderFactory : IValueProviderFactory
 {
     public Task CreateValueProviderAsync(ValueProviderFactoryContext context)
     {
-        ClaimsPrincipal? principal = context.ActionContext.HttpContext.User;
-        context.ValueProviders.Add(
-            new ClaimsValueProvider(principal));
-
+        ClaimsPrincipal? user = context.ActionContext.HttpContext.User;
+        if (user is not null)
+        {
+            var valueProviders = context
+                .ActionContext
+                .ActionDescriptor
+                .Parameters
+                .Select(parameter => parameter.BindingInfo?.BindingSource)
+                .Where(source => source is not null)
+                .OfType<ClaimsBindingSource>()
+                .Select(source => new ClaimsValueProvider(user, source));
+            
+            foreach (var provider in valueProviders)
+            {
+                context.ValueProviders.Insert(0, provider);
+            }
+        }
         return Task.CompletedTask;
     }
 }

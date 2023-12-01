@@ -12,9 +12,9 @@ public static class Mapping
             Email = serviceAccount.Email.Address,
             Password = serviceAccount.Password.Text,
             IsEmailVerified = serviceAccount.IsEmailVerified,
-            CreatedBy = serviceAccount.CreatedBy?.ToDataAccount(),
+            CreatedById = serviceAccount.CreatedBy?.Id,
             CreatedAt = serviceAccount.CreatedAt,
-            UpdatedBy = serviceAccount.UpdatedBy?.ToDataAccount(),
+            UpdatedById = serviceAccount.UpdatedBy?.Id,
             UpdatedAt = serviceAccount.UpdatedAt,
             Role = serviceAccount.Role.Name
         };

@@ -14,6 +14,7 @@ public class JwtTokenPairFactory : ITokenPairFactory
     private const string _tokenSigningAlgorithm = SecurityAlgorithms.HmacSha256Signature;
     private readonly JwtBearerOptions _jwtBearerOptions;
     private readonly JwtOptions _jwtGenerationOptions;
+    private readonly ILogger _logger;
 
     public JwtTokenPairFactory(
         IOptionsMonitor<JwtBearerOptions> jwtBearerOptions,
@@ -22,6 +23,7 @@ public class JwtTokenPairFactory : ITokenPairFactory
     {
         _jwtBearerOptions = jwtBearerOptions.Get(JwtBearerDefaults.AuthenticationScheme);
         _jwtGenerationOptions = jwtGenerationOptions.CurrentValue;
+        _logger = logger;
     }
 
     public TokenPair Create(Account account)
@@ -53,6 +55,8 @@ public class JwtTokenPairFactory : ITokenPairFactory
         DateTime currentDateTime,
         TimeSpan expirationTime)
     {
+        _logger.LogDebug($"Creating access JWT for account {account}");
+        
         return new JwtSecurityToken(
             issuer: _jwtBearerOptions.TokenValidationParameters.ValidIssuer,
             audience: _jwtBearerOptions.TokenValidationParameters.ValidAudience,
@@ -97,6 +101,7 @@ public class JwtTokenPairFactory : ITokenPairFactory
 
     private static IEnumerable<Claim> CreateBaseTokenClaims(Account account)
     {
+        
         return new Claim[]
         {
             new(ClaimTypes.NameIdentifier, account.Id.ToString()),

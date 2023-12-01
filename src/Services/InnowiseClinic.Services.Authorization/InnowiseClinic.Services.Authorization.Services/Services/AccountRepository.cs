@@ -30,6 +30,8 @@ public class AccountRepository : IAccountRepository
 
         var dataAccount = _dbContext.Accounts
             .AsNoTracking()
+            .Include(account => account.CreatedBy)
+            .Include(account => account.UpdatedBy)
             .SingleOrDefault(account => account.Id == id);
 
         if (dataAccount is not null)
@@ -50,6 +52,9 @@ public class AccountRepository : IAccountRepository
 
         var dataAccount = _dbContext.Accounts
             .AsNoTracking()
+            .Where(account => account.Email == email.Address)
+            .Include(account => account.CreatedBy)
+            .Include(account => account.UpdatedBy)
             // Emails may have special comparison rules in business logic
             // (case insensitivity, for example),
             // but it's not guranateed that we will be able to use that logic
@@ -61,7 +66,6 @@ public class AccountRepository : IAccountRepository
             // This may fail if the comparison that happens at the database level
             // for some reason rejects some of the entries that the business logic
             // comparison would accept.
-            .Where(account => account.Email == email.Address)
             .AsEnumerable()
             .SingleOrDefault(account => new Email(account.Email) == email);
 

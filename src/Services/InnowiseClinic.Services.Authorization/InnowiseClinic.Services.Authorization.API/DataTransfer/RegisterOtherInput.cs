@@ -5,8 +5,6 @@ using InnowiseClinic.Services.Authorization.API.Binding;
 namespace InnowiseClinic.Services.Authorization.API.DataTransfer;
 
 public record RegisterOtherInput(
-    [FromClaims(ClaimTypes.NameIdentifier)]
-    int InitiatorId,
     [property: JsonPropertyName("email")]
     string EmailAddress,
     [property: JsonPropertyName("password")]

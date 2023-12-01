@@ -1,34 +1,32 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace InnowiseClinic.Services.Authorization.API.Binding;
 
-public class ClaimsValueProvider : IValueProvider
+public class ClaimsValueProvider : BindingSourceValueProvider
 {
-    private readonly ClaimsPrincipal? _principal;
+    private readonly ClaimsPrincipal _user;
+    private readonly string _claimType;
 
-    public ClaimsValueProvider(ClaimsPrincipal? principal)
+    public ClaimsValueProvider(ClaimsPrincipal user, ClaimsBindingSource source) : base(source)
     {
-        _principal = principal;
+        _user = user;
+        _claimType = source.ClaimType;
     }
 
-    public bool ContainsPrefix(string prefix)
+    public override bool ContainsPrefix(string prefix)
     {
-        return _principal?.FindFirst(type: prefix) is not null;
+        //return _user.Claims.Any(
+        //    claim => claim.Type.Equals(prefix, StringComparison.Ordinal));
+        return true;
     }
 
-    public ValueProviderResult GetValue(string key)
+    public override ValueProviderResult GetValue(string key)
     {
-        if (_principal is null)
-        {
-            return ValueProviderResult.None;
-        }
-        else
-        {
-            return new ValueProviderResult(
-                _principal.FindAll(key)
-                    .Select(claim => claim.Value)
-                    .ToArray());
-        }
+        return new ValueProviderResult(
+            _user.FindAll(_claimType)
+                .Select(claim => claim.Value)
+                .ToArray());
     }
 }

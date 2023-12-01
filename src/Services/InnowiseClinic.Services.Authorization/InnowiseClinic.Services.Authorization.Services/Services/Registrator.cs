@@ -21,6 +21,7 @@ public class Registrator : IRegistrator
         };
         _repository.Insert(account);
         _repository.Save();
+        _ = _repository.TryGetByEmail(account.Email, out account);
         return account;
     }
 
@@ -30,6 +31,8 @@ public class Registrator : IRegistrator
 
         var account = new Account(default, email, password, role);
         _repository.Insert(account);
+        _repository.Save();
+        _ = _repository.TryGetByEmail(account.Email, out account);
         return account;
     }
 

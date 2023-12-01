@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using InnowiseClinic.Services.Authorization.API.Services;
 using InnowiseClinic.Services.Authorization.API.DataTransfer;
 using InnowiseClinic.Services.Authorization.API.Models;
+using InnowiseClinic.Services.Authorization.API.Binding;
+using System.Security.Claims;
 
 namespace InnowiseClinic.Services.Authorization.API.Controllers;
 
@@ -31,10 +33,10 @@ public class RegisterController : ControllerBase
 
     [Authorize(Roles = RoleNames.Receptionist)]
     [HttpPost("other")]
-    public IActionResult RegisterOther(RegisterOtherInput input)
+    public IActionResult RegisterOther([FromClaims(ClaimTypes.NameIdentifier)] int initiatorId, RegisterOtherInput input)
     {
         _registrator.RegisterOther(
-            _resolver.Resolve(input.InitiatorId),
+            _resolver.Resolve(initiatorId),
             new Email(input.EmailAddress),
             new Password(input.PasswordText),
             new Role(input.RoleName));

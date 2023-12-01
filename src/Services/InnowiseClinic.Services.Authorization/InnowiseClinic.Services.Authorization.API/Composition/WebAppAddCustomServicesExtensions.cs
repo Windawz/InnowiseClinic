@@ -16,6 +16,7 @@ public static class WebAppAddCustomServicesExtensions
                 
                 if (builder.Environment.IsDevelopment())
                 {
+                    options.EnableSensitiveDataLogging();
                     connectionString = builder.Configuration.GetConnectionString("Local");
                 }
 
