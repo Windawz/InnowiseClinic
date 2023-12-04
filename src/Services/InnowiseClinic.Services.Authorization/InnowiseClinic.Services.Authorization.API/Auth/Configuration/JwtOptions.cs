@@ -10,12 +10,16 @@ public class JwtOptions
 
     public string SigningKey { get; set; } = string.Empty;
 
-    public GenerationOptions Generation { get; set; } = null!;
+    public GenerationOptions Generation { get; set; } = new()
+    {
+        AccessTokenExpirationSeconds = 30,
+        RefreshTokenExpirationSeconds = 3600,
+    };
 
     public class GenerationOptions
     {
-        public int AccessTokenExpirationSeconds { get; set; } = 30;
+        public int AccessTokenExpirationSeconds { get; set; }
     
-        public int RefreshTokenExpirationSeconds { get; set; } = 3600;
+        public int RefreshTokenExpirationSeconds { get; set; }
     }
 }
