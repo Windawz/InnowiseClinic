@@ -7,7 +7,6 @@ namespace InnowiseClinic.Services.Authorization.Services.Services;
 public class AccountRepository : IAccountRepository
 {
     private readonly AuthorizationDbContext _dbContext;
-    private bool _disposed;
 
     public AccountRepository(AuthorizationDbContext dbContext)
     {
@@ -16,8 +15,6 @@ public class AccountRepository : IAccountRepository
 
     public IEnumerable<Account> GetAll()
     {
-        ThrowIfDisposed();
-
         return _dbContext.Accounts
             .AsNoTracking()
             .AsEnumerable()
@@ -26,8 +23,6 @@ public class AccountRepository : IAccountRepository
 
     public bool TryGetById(int id, out Account account)
     {
-        ThrowIfDisposed();
-
         var dataAccount = _dbContext.Accounts
             .AsNoTracking()
             .Include(account => account.CreatedBy)
@@ -48,8 +43,6 @@ public class AccountRepository : IAccountRepository
 
     public bool TryGetByEmail(Email email, out Account account)
     {
-        ThrowIfDisposed();
-
         var dataAccount = _dbContext.Accounts
             .AsNoTracking()
             .Where(account => account.Email == email.Address)
@@ -83,8 +76,6 @@ public class AccountRepository : IAccountRepository
 
     public void Insert(Account account)
     {
-        ThrowIfDisposed();
-
         var dataAccount = Mapping.MapToDataLayer(account with
         {
             // Just in case, to not mess up the change tracker.
@@ -95,8 +86,6 @@ public class AccountRepository : IAccountRepository
 
     public void Delete(int id)
     {
-        ThrowIfDisposed();
-
         var dataAccount = _dbContext.Accounts.Find(id);
         if (dataAccount is not null)
         {
@@ -106,34 +95,12 @@ public class AccountRepository : IAccountRepository
 
     public void Update(Account account)
     {
-        ThrowIfDisposed();
-
         var dataAccount = Mapping.MapToDataLayer(account);
         _dbContext.Accounts.Update(dataAccount);
     }
 
     public void Save()
     {
-        ThrowIfDisposed();
-
         _dbContext.SaveChanges();
-    }
-
-    public void Dispose()
-    {
-        if (!_disposed)
-        {
-            _dbContext.SaveChanges();
-            GC.SuppressFinalize(this);
-            _disposed = true;
-        }
-    }
-
-    private void ThrowIfDisposed()
-    {
-        if (_disposed)
-        {
-            throw new ObjectDisposedException(GetType().FullName);
-        }
     }
 }

@@ -2,7 +2,7 @@ using InnowiseClinic.Services.Authorization.Services.Models;
 
 namespace InnowiseClinic.Services.Authorization.Services.Services;
 
-public interface IAccountRepository : IDisposable
+public interface IAccountRepository
 {
     IEnumerable<Account> GetAll();
     bool TryGetById(int id, out Account account);
