@@ -47,12 +47,11 @@ public static class CustomComponentsWebAppExtensions
     {
         builder.Services.AddDbContext<AuthorizationDbContext>(options =>
         {
-            string? connectionString = null;
+            string? connectionString = DetermineConnectionString(builder.Configuration, builder.Environment);
             
             if (builder.Environment.IsDevelopment())
             {
                 options.EnableSensitiveDataLogging();
-                connectionString = builder.Configuration.GetConnectionString("Local");
             }
 
             if (connectionString is not null)
@@ -60,5 +59,23 @@ public static class CustomComponentsWebAppExtensions
                 options.UseSqlServer(connectionString);
             }
         });
+    }
+
+    private static string? DetermineConnectionString(IConfiguration configuration, IWebHostEnvironment environment)
+    {
+        string? connectionString = configuration.GetConnectionString("Default");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            connectionString = null;
+            if (environment.IsDevelopment())
+            {
+                connectionString = configuration.GetConnectionString("Local");
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    connectionString = null;
+                }
+            }
+        }
+        return connectionString;
     }
 }

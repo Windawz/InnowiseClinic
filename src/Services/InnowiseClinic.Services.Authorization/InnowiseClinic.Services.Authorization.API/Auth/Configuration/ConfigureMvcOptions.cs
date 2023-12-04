@@ -23,13 +23,5 @@ public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
         // Turn layer exceptions into matching error codes.
         options.Filters.Add<ServiceLayerExceptionFilter>();
         options.Filters.Add<APILayerExceptionFilter>();
-
-        if (_environment.IsDevelopment())
-        {
-            // Ensures that no object of type that isn't explicitly marked
-            // as action output type (such as an output DTO) is returned
-            // from actions.
-            options.Filters.Add<VerifyActionOutputTypeFilter>();
-        }
     }
 }

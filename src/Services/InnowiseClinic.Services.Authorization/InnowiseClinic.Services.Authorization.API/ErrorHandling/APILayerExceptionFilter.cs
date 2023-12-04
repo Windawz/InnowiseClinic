@@ -11,7 +11,7 @@ public class APILayerExceptionFilter : StatusCodeMappingExceptionFilter<APILayer
     {
         return exception switch
         {
-            _ => null,
+            _ => StatusCodes.Status500InternalServerError,
         };
     }
 }

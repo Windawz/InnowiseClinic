@@ -3,7 +3,6 @@ using InnowiseClinic.Services.Authorization.API.Debugging;
 
 namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 
-[ActionOutput]
 public record TokenPairOutput(
     [property: JsonPropertyName("access_token")]
     string AccessToken,
