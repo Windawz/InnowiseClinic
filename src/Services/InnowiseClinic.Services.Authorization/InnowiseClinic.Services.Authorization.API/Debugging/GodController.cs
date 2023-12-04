@@ -1,12 +1,11 @@
 using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 using InnowiseClinic.Services.Authorization.API.Auth.Services;
-using InnowiseClinic.Services.Authorization.API.Debugging.Attributes;
 using InnowiseClinic.Services.Authorization.Services.Models;
 using InnowiseClinic.Services.Authorization.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InnowiseClinic.Services.Authorization.API.Debugging.Controllers;
+namespace InnowiseClinic.Services.Authorization.API.Debugging;
 
 [Route("god")]
 [ApiController]

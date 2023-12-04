@@ -1,6 +1,5 @@
 using InnowiseClinic.Services.Authorization.API.Auth.Binding;
-using InnowiseClinic.Services.Authorization.API.ErrorHandling.ActionOutputVerification;
-using InnowiseClinic.Services.Authorization.API.ErrorHandling.ExceptionFilters;
+using InnowiseClinic.Services.Authorization.API.Debugging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

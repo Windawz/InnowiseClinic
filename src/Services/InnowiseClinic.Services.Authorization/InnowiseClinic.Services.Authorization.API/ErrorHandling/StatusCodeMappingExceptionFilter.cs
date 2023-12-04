@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-namespace InnowiseClinic.Services.Authorization.API.ErrorHandling.ExceptionFilters;
+namespace InnowiseClinic.Services.Authorization.API.Debugging;
 
 public abstract class StatusCodeMappingExceptionFilter<TRootException> : IExceptionFilter where TRootException : Exception
 {

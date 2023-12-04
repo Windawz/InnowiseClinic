@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using InnowiseClinic.Services.Authorization.API.ErrorHandling.ActionOutputVerification;
+using InnowiseClinic.Services.Authorization.API.Debugging;
 
 namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
 

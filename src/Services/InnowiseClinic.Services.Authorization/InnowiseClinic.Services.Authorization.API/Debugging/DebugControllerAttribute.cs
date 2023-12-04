@@ -1,7 +1,6 @@
-using InnowiseClinic.Services.Authorization.API.Debugging.Filters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InnowiseClinic.Services.Authorization.API.Debugging.Attributes;
+namespace InnowiseClinic.Services.Authorization.API.Debugging;
 
 public class DebugControllerAttribute : TypeFilterAttribute
 {

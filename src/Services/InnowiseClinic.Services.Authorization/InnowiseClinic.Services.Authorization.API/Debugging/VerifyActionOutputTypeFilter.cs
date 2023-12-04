@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace InnowiseClinic.Services.Authorization.API.ErrorHandling.ActionOutputVerification;
+namespace InnowiseClinic.Services.Authorization.API.Debugging;
 
 public class VerifyActionOutputTypeFilter : IResultFilter
 {

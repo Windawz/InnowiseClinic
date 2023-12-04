@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Abstractions;
 
-namespace InnowiseClinic.Services.Authorization.API.ErrorHandling.ActionOutputVerification;
+namespace InnowiseClinic.Services.Authorization.API.Debugging;
 
 public class InvalidActionOutputTypeException : APILayerException
 {
