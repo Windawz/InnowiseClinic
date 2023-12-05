@@ -1,6 +1,7 @@
+using InnowiseClinic.Services.Authorization.API.Auth.Configuration.Options;
 using Microsoft.Extensions.Options;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration.Configurators;
 
 public class ConfigureJwtOptions : IConfigureOptions<JwtOptions>
 {

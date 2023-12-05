@@ -1,7 +1,7 @@
 using FluentValidation;
-using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Input;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Validation;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Validators;
 
 public class RegisterSelfInputValidator : AbstractValidator<RegisterSelfInput>
 {

@@ -3,9 +3,10 @@ using InnowiseClinic.Services.Authorization.Services.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using InnowiseClinic.Services.Authorization.API.Auth.Services;
-using InnowiseClinic.Services.Authorization.API.Auth.Binding;
-using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+using InnowiseClinic.Services.Authorization.API.Auth.Binding.Attributes;
+using InnowiseClinic.Services.Authorization.API.Auth.Services.Interfaces;
+using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Input;
+using InnowiseClinic.Services.Authorization.API.Auth.Mapping;
 
 namespace InnowiseClinic.Services.Authorization.API.Auth.Controllers;
 

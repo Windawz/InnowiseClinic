@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
-using InnowiseClinic.Services.Authorization.Services.Models;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Input;
 
 public record RegisterOtherInput(
     [property: JsonPropertyName("email")]

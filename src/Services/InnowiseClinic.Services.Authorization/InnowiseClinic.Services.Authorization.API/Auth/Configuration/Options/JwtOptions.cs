@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration.Options;
 
 public class JwtOptions
 {

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Validation;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Validators;
 
 public static class RuleBuilderExtensions
 {

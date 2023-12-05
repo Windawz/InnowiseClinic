@@ -2,7 +2,7 @@ using InnowiseClinic.Services.Authorization.Services;
 using InnowiseClinic.Services.Authorization.Services.Services;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-namespace InnowiseClinic.Services.Authorization.API.Debugging;
+namespace InnowiseClinic.Services.Authorization.API.Debugging.Filters;
 
 public class ServiceLayerExceptionFilter : StatusCodeMappingExceptionFilter<ServiceLayerException>
 {

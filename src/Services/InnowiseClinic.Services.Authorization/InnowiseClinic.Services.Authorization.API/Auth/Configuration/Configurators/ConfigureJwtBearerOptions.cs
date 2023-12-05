@@ -1,9 +1,10 @@
 using System.Text;
+using InnowiseClinic.Services.Authorization.API.Auth.Configuration.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration.Configurators;
 
 public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {

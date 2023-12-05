@@ -1,6 +1,7 @@
+using InnowiseClinic.Services.Authorization.API.Auth.Binding.BindingSources;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Binding;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Binding.Attributes;
 
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
 public class FromClaimsAttribute : Attribute, IBindingSourceMetadata

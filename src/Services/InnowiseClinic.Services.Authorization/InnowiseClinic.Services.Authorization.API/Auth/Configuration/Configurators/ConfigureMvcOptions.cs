@@ -1,9 +1,9 @@
-using InnowiseClinic.Services.Authorization.API.Auth.Binding;
-using InnowiseClinic.Services.Authorization.API.Debugging;
+using InnowiseClinic.Services.Authorization.API.Auth.Binding.ValueProviders.Factories;
+using InnowiseClinic.Services.Authorization.API.Debugging.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Configuration.Configurators;
 
 public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
 {

@@ -1,13 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using InnowiseClinic.Services.Authorization.API.Auth.Configuration;
+using InnowiseClinic.Services.Authorization.API.Auth.Configuration.Options;
 using InnowiseClinic.Services.Authorization.API.Auth.Models;
+using InnowiseClinic.Services.Authorization.API.Auth.Services.Interfaces;
 using InnowiseClinic.Services.Authorization.Services.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Services;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Services.Implementations;
 
 public class JwtTokenPairFactory : ITokenPairFactory
 {

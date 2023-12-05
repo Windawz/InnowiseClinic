@@ -1,7 +1,9 @@
+using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Input;
+using InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Output;
 using InnowiseClinic.Services.Authorization.API.Auth.Models;
 using InnowiseClinic.Services.Authorization.Services.Models;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Mapping;
 
 public static class DataTransferModelMappingExtensions
 {

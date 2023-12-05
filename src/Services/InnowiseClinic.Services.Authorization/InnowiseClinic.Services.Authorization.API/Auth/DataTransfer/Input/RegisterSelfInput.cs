@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer;
+namespace InnowiseClinic.Services.Authorization.API.Auth.DataTransfer.Input;
 
-public record LogInInput(
+public record RegisterSelfInput(
     [property: JsonPropertyName("email")]
     string EmailAddress,
     [property: JsonPropertyName("password")]

@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Services.Authorization.API;
+namespace InnowiseClinic.Services.Authorization.API.Exceptions;
 
 public class APILayerException : Exception
 {

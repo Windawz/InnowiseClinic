@@ -1,7 +1,8 @@
 using System.Security.Claims;
+using InnowiseClinic.Services.Authorization.API.Auth.Binding.BindingSources;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace InnowiseClinic.Services.Authorization.API.Auth.Binding;
+namespace InnowiseClinic.Services.Authorization.API.Auth.Binding.ValueProviders.Factories;
 
 public class ClaimsValueProviderFactory : IValueProviderFactory
 {
