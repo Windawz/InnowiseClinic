@@ -8,20 +8,23 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Controllers;
 public class AccountsController : ControllerBase
 {
     [HttpPost("login")]
-    public LogInResponse LogIn(LogInRequest request)
+    public async Task<LogInResponse> LogIn(LogInRequest request)
     {
+        await Task.CompletedTask;
         throw new NotImplementedException();
     }
 
     [HttpPost("register")]
-    public IActionResult Regitster(RegisterRequest request)
+    public async Task<IActionResult> Regitster(RegisterRequest request)
     {
+        await Task.CompletedTask;
         throw new NotImplementedException();
     }
 
     [HttpGet("refresh")]
-    public RefreshResponse Refresh(RefreshRequest request)
+    public async Task<RefreshResponse> Refresh(RefreshRequest request)
     {
+        await Task.CompletedTask;
         throw new NotImplementedException();
     }
 }
