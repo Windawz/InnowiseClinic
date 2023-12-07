@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Api", "Api\InnowiseClinic.Microservices.Authorization.Api.csproj", "{EC74B90F-99CC-4881-8840-6A79B70DD18B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Application", "Application\InnowiseClinic.Microservices.Authorization.Application.csproj", "{83CBDAD9-7D8B-4825-8213-86D7A4FEDFC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Data", "Data\InnowiseClinic.Microservices.Authorization.Data.csproj", "{A39FEB3D-59F3-4278-B3A2-780B35C417A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC74B90F-99CC-4881-8840-6A79B70DD18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC74B90F-99CC-4881-8840-6A79B70DD18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC74B90F-99CC-4881-8840-6A79B70DD18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC74B90F-99CC-4881-8840-6A79B70DD18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83CBDAD9-7D8B-4825-8213-86D7A4FEDFC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83CBDAD9-7D8B-4825-8213-86D7A4FEDFC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83CBDAD9-7D8B-4825-8213-86D7A4FEDFC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83CBDAD9-7D8B-4825-8213-86D7A4FEDFC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39FEB3D-59F3-4278-B3A2-780B35C417A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39FEB3D-59F3-4278-B3A2-780B35C417A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39FEB3D-59F3-4278-B3A2-780B35C417A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39FEB3D-59F3-4278-B3A2-780B35C417A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
