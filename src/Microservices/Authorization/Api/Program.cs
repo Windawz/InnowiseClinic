@@ -1,5 +1,6 @@
 
 using InnowiseClinic.Microservices.Authorization.Api.Configuration.Configurators.Auth;
+using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Microservices.Authorization.Api;
@@ -15,6 +16,9 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
+        builder.Services.AddLogging();
 
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
@@ -26,6 +30,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseExceptionHandler();
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
