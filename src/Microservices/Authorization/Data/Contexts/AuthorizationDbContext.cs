@@ -11,6 +11,9 @@ public class AuthorizationDbContext : DbContext
     public DbSet<AccountEntity> Accounts =>
         Set<AccountEntity>();
 
+    public DbSet<RefreshTokenEntity> RefreshTokens =>
+        Set<RefreshTokenEntity>();
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
