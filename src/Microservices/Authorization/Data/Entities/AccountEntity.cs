@@ -1,6 +1,6 @@
 namespace InnowiseClinic.Microservices.Authorization.Data.Entities;
 
-public class Account : Entity
+public class AccountEntity : Entity
 {
     public required string Email { get; set; }
 

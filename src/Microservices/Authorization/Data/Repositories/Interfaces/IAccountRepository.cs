@@ -2,7 +2,7 @@ using InnowiseClinic.Microservices.Authorization.Data.Entities;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 
-public interface IAccountRepository : IAsyncRepository<Account>
+public interface IAccountRepository : IAsyncRepository<AccountEntity>
 {
-    Task<Account?> GetAsync(string email);
+    Task<AccountEntity?> GetAsync(string email);
 }

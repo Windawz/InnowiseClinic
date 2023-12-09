@@ -14,31 +14,31 @@ public class AccountRepository : IAccountRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddAsync(Account entity)
+    public async Task AddAsync(AccountEntity entity)
     {
         await _dbContext.Accounts.AddAsync(entity);
     }
 
-    public async Task DeleteAsync(Account entity)
+    public async Task DeleteAsync(AccountEntity entity)
     {
         _dbContext.Accounts.Remove(entity);
         await Task.CompletedTask;
     }
 
-    public async Task<Account?> GetAsync(string email)
+    public async Task<AccountEntity?> GetAsync(string email)
     {
         return await _dbContext.Accounts
             .FirstOrDefaultAsync(account => account.Email
                 .Equals(email, StringComparison.OrdinalIgnoreCase));
     }
 
-    public async Task<Account?> GetAsync(Guid id)
+    public async Task<AccountEntity?> GetAsync(Guid id)
     {
         return await _dbContext.Accounts
             .FirstOrDefaultAsync(account => account.Id.Equals(id));
     }
 
-    public async Task UpdateAsync(Account entity)
+    public async Task UpdateAsync(AccountEntity entity)
     {
         _dbContext.Update(entity);
         await Task.CompletedTask;

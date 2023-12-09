@@ -8,8 +8,8 @@ public class AuthorizationDbContext : DbContext
 {
     public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options) { }
 
-    public DbSet<Account> Accounts =>
-        Set<Account>();
+    public DbSet<AccountEntity> Accounts =>
+        Set<AccountEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
