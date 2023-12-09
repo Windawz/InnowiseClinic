@@ -1,6 +1,7 @@
 
 using InnowiseClinic.Microservices.Authorization.Api.Configuration.Configurators.Auth;
 using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Microservices.Authorization.Api;
@@ -16,6 +17,12 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
+        builder.Services.AddMappingExceptionHandler(options =>
+        {
+            options.MapStatusCode<AccountAlreadyExistsException>(StatusCodes.Status409Conflict)
+                .MapStatusCode<AccountNotFoundException>(StatusCodes.Status404NotFound)
+                .MapStatusCode<InvalidPasswordException>(StatusCodes.Status400BadRequest);
+        });
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
         builder.Services.AddLogging();

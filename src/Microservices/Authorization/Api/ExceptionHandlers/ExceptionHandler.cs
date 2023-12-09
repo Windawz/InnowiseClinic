@@ -3,37 +3,36 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 
-public abstract class StatusCodeMappingExceptionHandler<TException> : IExceptionHandler where TException : Exception
+public abstract class ExceptionHandler : IExceptionHandler
 {
     private readonly ProblemDetailsFactory _problemDetailsFactory;
-    private readonly ILogger _logger;
 
-    protected StatusCodeMappingExceptionHandler(
+    protected ExceptionHandler(
         ProblemDetailsFactory problemDetailsFactory,
-        ILogger<StatusCodeMappingExceptionHandler<TException>> logger)
+        ILogger logger,
+        IWebHostEnvironment environment)
     {
         _problemDetailsFactory = problemDetailsFactory;
-        _logger = logger;
+        Logger = logger;
+        IsDevelopment = environment.IsDevelopment();
     }
+
+    protected ILogger Logger { get; }
+    protected bool IsDevelopment { get; }
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        if (exception is TException specificException)
+        if (MapToStatusCode(exception) is int statusCode)
         {
-            _logger.LogError(exception, $"Exception caught by {GetType().Name}: \"{exception.Message}\"");
-
-            int statusCode = MapToStatusCode(specificException);
-            string? detailMessage = GetDetailMessage(specificException);
-
             var problemDetails = _problemDetailsFactory.CreateProblemDetails(
                 httpContext: httpContext,
                 statusCode: statusCode,
-                detail: detailMessage);
-            
+                detail: GetMessage(exception));
+
             httpContext.Response.StatusCode = statusCode;
 
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
-
+            
             return true;
         }
         else
@@ -42,7 +41,20 @@ public abstract class StatusCodeMappingExceptionHandler<TException> : IException
         }
     }
 
-    protected abstract int MapToStatusCode(TException exception);
+    protected abstract int? MapToStatusCode(Exception exception);
 
-    protected virtual string? GetDetailMessage(TException exception) => null;
+    protected virtual string? GetSecureMessage(Exception exception) =>
+        null;
+
+    private string? GetMessage(Exception exception)
+    {
+        if (IsDevelopment)
+        {
+            return exception.Message;
+        }
+        else
+        {
+            return GetSecureMessage(exception);
+        }
+    }
 }
