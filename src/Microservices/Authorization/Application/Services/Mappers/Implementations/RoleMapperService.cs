@@ -1,8 +1,8 @@
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 
-namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
+namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
 
 public class RoleMapperService : IRoleMapperService
 {

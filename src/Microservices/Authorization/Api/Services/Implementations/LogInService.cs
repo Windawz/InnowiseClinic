@@ -1,6 +1,7 @@
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;

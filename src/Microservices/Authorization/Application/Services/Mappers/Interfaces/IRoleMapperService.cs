@@ -1,6 +1,6 @@
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 
-namespace InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
+namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 
 public interface IRoleMapperService
 {

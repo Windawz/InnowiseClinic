@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
