@@ -8,12 +8,10 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implem
 
 public class AccountService(
     IAccountRepository accountRepository,
-    IAccountMapperService accountMapperService,
-    IRoleMapperService roleMapperService) : IAccountService
+    IAccountMapperService accountMapperService) : IAccountService
 {
     private readonly IAccountRepository _accountRepository = accountRepository;
     private readonly IAccountMapperService _accountMapperService = accountMapperService;
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
 
     public async Task<Account> AccessAccountAsync(string email, string password)
     {
@@ -29,7 +27,7 @@ public class AccountService(
         return account;
     }
 
-    public async Task CreateAccountAsync(string email, string password, string roleName)
+    public async Task CreateAccountAsync(string email, string password, Role role)
     {
         var now = DateTime.UtcNow;
 
@@ -48,7 +46,7 @@ public class AccountService(
                 CreatedAt: now,
                 UpdatedByEmail: null,
                 UpdatedAt: null,
-                Role: _roleMapperService.MapFromRoleName(roleName)));
+                Role: role));
 
         await _accountRepository.AddAsync(account);
         await _accountRepository.SaveAsync();

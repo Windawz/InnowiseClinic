@@ -10,5 +10,5 @@ public interface IAccountService
     Task<Account> AccessAccountAsync(string email, string password);
 
     /// <exception cref="AccountAlreadyExistsException"/>
-    Task CreateAccountAsync(string email, string password, string roleName);
+    Task CreateAccountAsync(string email, string password, Role role);
 }
