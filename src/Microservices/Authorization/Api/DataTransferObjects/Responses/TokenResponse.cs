@@ -1,6 +1,6 @@
 namespace InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Responses;
 
-public class LogInResponse
+public abstract class TokenResponse
 {
     public required string AccessToken { get; init; }
     public required string RefreshToken { get; init; }

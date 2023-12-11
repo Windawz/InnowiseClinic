@@ -5,5 +5,5 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interf
 
 public interface IRefreshResponseMapperService
 {
-    RefreshResponse MapToRefreshResponse(RefreshToken refreshToken);
+    TokenResponse MapToRefreshResponse(RefreshToken refreshToken);
 }

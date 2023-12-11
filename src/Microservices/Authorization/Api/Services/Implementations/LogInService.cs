@@ -17,7 +17,7 @@ public class LogInService(
     private readonly IRefreshTokenService _refreshTokenService = refreshTokenService;
     private readonly ILogInResponseMapperService _logInResponseMapperService = logInResponseMapperService;
 
-    public async Task<LogInResponse> LogInAsync(LogInRequest request)
+    public async Task<TokenResponse> LogInAsync(LogInRequest request)
     {
         var account = await _accountService.AccessAccountAsync(request.Email, request.Password);
         var accessToken = await _accessTokenService.GenerateTokenAsync(account.Role);

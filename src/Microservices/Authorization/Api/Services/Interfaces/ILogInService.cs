@@ -5,5 +5,5 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 
 public interface ILogInService
 {
-    Task<LogInResponse> LogInAsync(LogInRequest request);
+    Task<TokenResponse> LogInAsync(LogInRequest request);
 }

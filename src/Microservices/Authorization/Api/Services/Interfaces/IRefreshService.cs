@@ -5,5 +5,5 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 
 public interface IRefreshService
 {
-    Task<RefreshResponse> RefreshAsync(RefreshRequest request);
+    Task<TokenResponse> RefreshAsync(RefreshRequest request);
 }

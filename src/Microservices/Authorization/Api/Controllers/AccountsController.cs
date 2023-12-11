@@ -20,7 +20,7 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<LogInResponse> LogIn(LogInRequest request)
+    public async Task<TokenResponse> LogIn(LogInRequest request)
     {
         return await _logInService.LogInAsync(request);
     }
@@ -32,7 +32,7 @@ public class AccountsController : ControllerBase
     }
 
     [HttpGet("refresh")]
-    public async Task<RefreshResponse> Refresh(RefreshRequest request)
+    public async Task<TokenResponse> Refresh(RefreshRequest request)
     {
         return await _refreshService.RefreshAsync(request);
     }
