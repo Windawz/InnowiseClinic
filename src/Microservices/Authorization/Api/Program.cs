@@ -21,7 +21,9 @@ public class Program
         {
             options.MapStatusCode<AccountAlreadyExistsException>(StatusCodes.Status409Conflict)
                 .MapStatusCode<AccountNotFoundException>(StatusCodes.Status404NotFound)
-                .MapStatusCode<InvalidPasswordException>(StatusCodes.Status400BadRequest);
+                .MapStatusCode<InvalidPasswordException>(StatusCodes.Status400BadRequest)
+                .MapStatusCode<InvalidRefreshTokenException>(StatusCodes.Status401Unauthorized)
+                .MapStatusCode<UnknownRoleException>(StatusCodes.Status400BadRequest);
         });
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
