@@ -1,5 +1,6 @@
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Options;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
@@ -15,7 +16,7 @@ public class RefreshTokenService(
     private readonly IRefreshTokenMapperService _refreshTokenMapperService = refreshTokenMapperService;
     private readonly RefreshTokenServiceOptions _options = options.Value;
 
-    public async Task<RefreshToken> GenerateRefreshTokenAsync()
+    public async Task<RefreshToken> CreateRefreshTokenAsync()
     {
         var now = DateTime.UtcNow;
         var id = Guid.NewGuid();
@@ -28,6 +29,13 @@ public class RefreshTokenService(
         await _refreshTokenRepository.SaveAsync();
 
         return token;
+    }
+
+    public async Task<RefreshToken> GetRefreshTokenAsync(Guid tokenId)
+    {
+        return _refreshTokenMapperService.MapToRefreshToken(
+            await _refreshTokenRepository.GetAsync(tokenId)
+                ?? throw new InvalidRefreshTokenException(tokenId));
     }
 
     public async Task InvalidateAsync(RefreshToken refreshToken)
