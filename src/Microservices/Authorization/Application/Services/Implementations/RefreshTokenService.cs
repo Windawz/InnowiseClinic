@@ -17,12 +17,16 @@ public class RefreshTokenService(
     private readonly IRefreshTokenMapperService _refreshTokenMapperService = refreshTokenMapperService;
     private readonly RefreshTokenServiceOptions _options = options.Value;
 
-    public async Task<RefreshToken> CreateRefreshTokenAsync()
+    public async Task<RefreshToken> CreateRefreshTokenAsync(Role role)
     {
         var now = DateTime.UtcNow;
         var id = Guid.NewGuid();
 
-        var token = new RefreshToken(id, now, now.AddSeconds(_options.ExpirationSeconds));
+        var token = new RefreshToken(
+            TokenId: id,
+            Role: role,
+            CreatedAt: now,
+            ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
 
         await _refreshTokenRepository.AddAsync(
             _refreshTokenMapperService.MapFromRefreshToken(token));

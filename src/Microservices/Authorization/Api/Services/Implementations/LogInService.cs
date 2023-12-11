@@ -21,7 +21,7 @@ public class LogInService(
     {
         var account = await _accountService.AccessAccountAsync(request.Email, request.Password);
         var accessToken = await _accessTokenService.GenerateTokenAsync(account.Role);
-        var refreshToken = await _refreshTokenService.CreateRefreshTokenAsync();
+        var refreshToken = await _refreshTokenService.CreateRefreshTokenAsync(account.Role);
         return _logInResponseMapperService.MapToLogInResponse(accessToken, refreshToken);
     }
 }
