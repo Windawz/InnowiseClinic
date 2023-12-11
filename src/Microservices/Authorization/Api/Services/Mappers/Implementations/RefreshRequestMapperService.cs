@@ -8,7 +8,7 @@ public class RefreshRequestMapperService(IRefreshTokenStringMapperService refres
 {
     private readonly IRefreshTokenStringMapperService _refreshTokenStringMapperService = refreshTokenStringMapperService;
 
-    public RefreshToken MapFromRefreshRequest(RefreshRequest request)
+    public RefreshToken MapToRefreshToken(RefreshRequest request)
     {
         return _refreshTokenStringMapperService.MapToRefreshToken(
             request.RefreshToken.Trim());
