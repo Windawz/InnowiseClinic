@@ -17,9 +17,10 @@ public class RefreshTokenService(
 
     public async Task<RefreshToken> GenerateRefreshTokenAsync()
     {
+        var now = DateTime.UtcNow;
         var id = Guid.NewGuid();
 
-        var token = new RefreshToken(id);
+        var token = new RefreshToken(id, now, now.AddSeconds(_options.ExpirationSeconds));
 
         await _refreshTokenRepository.AddAsync(
             _refreshTokenMapperService.MapFromRefreshToken(token));
