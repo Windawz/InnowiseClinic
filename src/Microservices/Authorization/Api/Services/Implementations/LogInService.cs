@@ -10,18 +10,18 @@ public class LogInService(
     IAccountService accountService,
     IAccessTokenService accessTokenService,
     IRefreshTokenService refreshTokenService,
-    ILogInResponseMapperService logInResponseMapperService) : ILogInService
+    ITokenResponseMapperService tokenResponseMapperService) : ILogInService
 {
     private readonly IAccountService _accountService = accountService;
     private readonly IAccessTokenService _accessTokenService = accessTokenService;
     private readonly IRefreshTokenService _refreshTokenService = refreshTokenService;
-    private readonly ILogInResponseMapperService _logInResponseMapperService = logInResponseMapperService;
+    private readonly ITokenResponseMapperService _tokenResponseMapperService = tokenResponseMapperService;
 
     public async Task<TokenResponse> LogInAsync(LogInRequest request)
     {
         var account = await _accountService.AccessAccountAsync(request.Email, request.Password);
         var accessToken = await _accessTokenService.GenerateTokenAsync(account.Role);
         var refreshToken = await _refreshTokenService.CreateRefreshTokenAsync(account.Role);
-        return _logInResponseMapperService.MapToLogInResponse(accessToken, refreshToken);
+        return _tokenResponseMapperService.MapFromTokenPair(accessToken, refreshToken);
     }
 }

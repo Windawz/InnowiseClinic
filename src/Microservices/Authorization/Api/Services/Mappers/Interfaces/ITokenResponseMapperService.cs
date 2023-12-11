@@ -3,7 +3,7 @@ using InnowiseClinic.Microservices.Authorization.Application.Models;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 
-public interface ILogInResponseMapperService
+public interface ITokenResponseMapperService
 {
-    TokenResponse MapToLogInResponse(AccessToken accessToken, RefreshToken refreshToken);
+    TokenResponse MapFromTokenPair(AccessToken accessToken, RefreshToken refreshToken);
 }
