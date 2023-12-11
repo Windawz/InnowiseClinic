@@ -36,6 +36,21 @@ public class RefreshTokenService(
         return token;
     }
 
+    public async Task<RefreshToken> CreateReplacementRefreshTokenAsync(RefreshToken refreshToken)
+    {
+        if (await IsValidAsync(refreshToken))
+        {
+            var role = refreshToken.Role;
+            await InvalidateAsync(refreshToken);
+            
+            return await CreateRefreshTokenAsync(role);
+        }
+        else
+        {
+            throw new InvalidRefreshTokenException(refreshToken.TokenId);
+        }
+    }
+
     public async Task<RefreshToken> GetRefreshTokenAsync(Guid tokenId)
     {
         return _refreshTokenMapperService.MapToRefreshToken(
@@ -43,7 +58,7 @@ public class RefreshTokenService(
                 ?? throw new InvalidRefreshTokenException(tokenId));
     }
 
-    public async Task InvalidateAsync(RefreshToken refreshToken)
+    private async Task InvalidateAsync(RefreshToken refreshToken)
     {
         await _refreshTokenRepository.DeleteAsync(
             _refreshTokenMapperService.MapFromRefreshToken(refreshToken));
@@ -51,9 +66,17 @@ public class RefreshTokenService(
         await _refreshTokenRepository.SaveAsync();
     }
 
-    public async Task<bool> IsValidAsync(RefreshToken refreshToken)
+    private async Task<bool> IsValidAsync(RefreshToken refreshToken)
     {
-        return await _refreshTokenRepository.GetAsync(
-            _refreshTokenMapperService.MapFromRefreshToken(refreshToken).Id) is not null;
+        var now = DateTime.UtcNow;
+        if (now < refreshToken.CreatedAt || now >= refreshToken.ExpiresAt)
+        {
+            return false;
+        }
+        else
+        {
+            return await _refreshTokenRepository.GetAsync(
+                _refreshTokenMapperService.MapFromRefreshToken(refreshToken).Id) is not null;
+        }
     }
 }
