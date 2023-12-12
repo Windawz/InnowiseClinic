@@ -6,14 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
-public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
+public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IConfiguration _configuration;
-
-    public ConfigureJwtBearerOptions(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     private const string BaseConfigurationKey = "Auth:JwtBearer";
     private const bool DefaultValidateLifetimeValue = false;
