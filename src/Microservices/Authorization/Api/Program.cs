@@ -1,5 +1,4 @@
-
-using InnowiseClinic.Microservices.Authorization.Api.Configuration.Configurators.Auth;
+using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;

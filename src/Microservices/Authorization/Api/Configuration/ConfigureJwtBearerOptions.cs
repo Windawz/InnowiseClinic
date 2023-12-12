@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.Configuration.Configurators.Auth;
+namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
 public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
