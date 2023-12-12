@@ -8,8 +8,9 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Contexts.DesignTimeFac
 public class AuthorizationDbContextDesignTimeFactory : IDesignTimeDbContextFactory<AuthorizationDbContext>
 {
     public const string ConfigurationFileNameConfigurationKey = "File";
-    public const string DefaultConfigurationFileName = "settings.json";
-    public const string ConnectionStringConfigurationKey = "ConnectionString";
+    public const string ConnectionStringConfigurationKey = "ConnectionStrings:Default";
+    public static readonly string DefaultConfigurationFileName = Path.GetFullPath(
+        Path.Combine("..", "Api", "appsettings.Development.json"));
 
     public AuthorizationDbContext CreateDbContext(string[] args)
     {
