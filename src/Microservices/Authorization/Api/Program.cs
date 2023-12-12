@@ -4,6 +4,7 @@ using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
@@ -55,7 +56,9 @@ public class Program
             .AddScoped<IRefreshTokenMapperService, RefreshTokenMapperService>()
             .AddScoped<IRoleMapperService, RoleMapperService>();
 
-        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
+        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>()
+            .ConfigureOptions<ConfigureAccessTokenServiceOptions>()
+            .ConfigureOptions<ConfigureRefreshTokenServiceOptions>();
 
         var app = builder.Build();
 
