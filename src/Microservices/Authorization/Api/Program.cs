@@ -15,6 +15,7 @@ using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementatio
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Api;
 
@@ -51,7 +52,11 @@ public class Program
             .AddScoped<IRefreshTokenService, RefreshTokenService>()
             .AddScoped<IPasswordHasher<string>, PasswordHasher<string>>()
             .AddScoped<JwtSecurityTokenHandler>()
-            .AddDbContext<AuthorizationDbContext>();
+            .AddDbContext<AuthorizationDbContext>(dbContextOptionsBuilder =>
+            {
+                dbContextOptionsBuilder.UseSqlServer(
+                    builder.Configuration.GetConnectionString("Default"));
+            });
 
         builder.Services
             .AddScoped<ILogInRequestMapperService, LogInRequestMapperService>()
