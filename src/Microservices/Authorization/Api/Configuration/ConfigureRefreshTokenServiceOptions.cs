@@ -9,7 +9,7 @@ public class ConfigureRefreshTokenServiceOptions(IConfiguration configuration) :
 
     public void Configure(RefreshTokenServiceOptions options)
     {
-        _configuration.GetRequiredSection("RefreshTokens")
+        _configuration.GetRequiredSection("Auth:Generation:RefreshTokens")
             .Bind(options);
     }
 }

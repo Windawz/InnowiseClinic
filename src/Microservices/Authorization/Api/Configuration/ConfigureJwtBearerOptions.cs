@@ -10,7 +10,7 @@ public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigur
 {
     private readonly IConfiguration _configuration = configuration;
 
-    private const string BaseConfigurationKey = "Auth:JwtBearer";
+    private const string BaseConfigurationKey = "Auth:Authentication:JwtBearer";
     private const bool DefaultValidateLifetimeValue = false;
     private const int DefaultClockSkewSecondsValue = 5;
     private const string NameClaimType = ClaimTypes.Name;

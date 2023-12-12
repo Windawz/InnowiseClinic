@@ -13,7 +13,7 @@ public class ConfigureAccessTokenServiceOptions(
 
     public void Configure(AccessTokenServiceOptions options)
     {
-        _configuration.GetRequiredSection("AccessTokens")
+        _configuration.GetRequiredSection("Auth:Generation:AccessTokens")
             .Bind(options);
 
         options.SecurityKey = _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey;
