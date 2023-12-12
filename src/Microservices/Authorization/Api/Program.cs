@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
@@ -10,7 +11,11 @@ using InnowiseClinic.Microservices.Authorization.Application.Services.Implementa
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Data.Contexts;
+using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
+using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 
 namespace InnowiseClinic.Microservices.Authorization.Api;
 
@@ -44,7 +49,10 @@ public class Program
             .AddScoped<IRegisterService, RegisterService>()
             .AddScoped<IAccessTokenService, AccessTokenService>()
             .AddScoped<IAccountService, AccountService>()
-            .AddScoped<IRefreshTokenService, RefreshTokenService>();
+            .AddScoped<IRefreshTokenService, RefreshTokenService>()
+            .AddScoped<IPasswordHasher<string>, PasswordHasher<string>>()
+            .AddScoped<JwtSecurityTokenHandler>()
+            .AddDbContext<AuthorizationDbContext>();
 
         builder.Services
             .AddScoped<ILogInRequestMapperService, LogInRequestMapperService>()
@@ -55,6 +63,10 @@ public class Program
             .AddScoped<IAccountMapperService, AccountMapperService>()
             .AddScoped<IRefreshTokenMapperService, RefreshTokenMapperService>()
             .AddScoped<IRoleMapperService, RoleMapperService>();
+
+        builder.Services
+            .AddScoped<IAccountRepository, AccountRepository>()
+            .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>()
             .ConfigureOptions<ConfigureAccessTokenServiceOptions>()
