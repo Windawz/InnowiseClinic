@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InnowiseClinic.Microservices.Authorization.Api.Controllers;
 
 [ApiController]
+[Route("accounts")]
 public class AccountsController : ControllerBase
 {
     private readonly ILogInService _logInService;
