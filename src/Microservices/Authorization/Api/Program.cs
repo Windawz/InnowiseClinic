@@ -5,7 +5,6 @@ using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
-using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
