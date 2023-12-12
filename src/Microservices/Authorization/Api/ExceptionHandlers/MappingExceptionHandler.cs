@@ -48,15 +48,19 @@ public class MappingExceptionHandler : ExceptionHandler
         [MaybeNullWhen(false)] out T value)
     {
         Type? currentExceptionType = exception.GetType();
+        value = default;
         
-        do
+        while (true)
         {
-            if (!dictionary.TryGetValue(currentExceptionType, out value))
+            if (currentExceptionType is null || dictionary.TryGetValue(currentExceptionType, out value))
+            {
+                break;
+            }
+            else
             {
                 currentExceptionType = currentExceptionType?.BaseType;
             }
         }
-        while (currentExceptionType is not null);
 
         return currentExceptionType is not null;
     }
