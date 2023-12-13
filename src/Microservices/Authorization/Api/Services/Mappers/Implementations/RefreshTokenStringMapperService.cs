@@ -25,13 +25,24 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
 
     public RefreshToken MapToRefreshToken(string refreshTokenString)
     {
-        var valueStrings = Base64UrlEncoder
-            .Decode(refreshTokenString.Trim())
-            .Split(
-                separator: _valueSeparator,
-                count: 4,
-                options: StringSplitOptions.RemoveEmptyEntries 
-                    | StringSplitOptions.TrimEntries);
+        refreshTokenString = refreshTokenString.Trim();
+
+        string decodedString;
+
+        try
+        {
+            decodedString = Base64UrlEncoder.Decode(refreshTokenString);
+        }
+        catch (FormatException)
+        {
+            throw new InvalidRefreshTokenFormatException(refreshTokenString);
+        }
+
+        var valueStrings = decodedString.Split(
+            separator: _valueSeparator,
+            count: 4,
+            options: StringSplitOptions.RemoveEmptyEntries 
+                | StringSplitOptions.TrimEntries);
 
         Guid tokenId;
         DateTime createdAt;
