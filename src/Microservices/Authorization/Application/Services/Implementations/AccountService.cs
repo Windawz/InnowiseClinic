@@ -38,7 +38,7 @@ public class AccountService(
 
         var account = _accountMapperService.MapToAccountEntity(
             new Account(
-                Id: default,
+                Id: Guid.NewGuid(),
                 Email: email,
                 Password: password,
                 IsEmailVerified: false,

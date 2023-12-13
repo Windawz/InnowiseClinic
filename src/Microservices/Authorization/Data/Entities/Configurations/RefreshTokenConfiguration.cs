@@ -5,9 +5,5 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Entities.Configuration
 
 public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTokenEntity>
 {
-    public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
-    {
-        builder.Property(entity => entity.Id)
-            .ValueGeneratedNever();
-    }
+    public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder) { }
 }

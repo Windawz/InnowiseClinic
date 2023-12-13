@@ -9,7 +9,7 @@ public class EntityConfiguration : IEntityTypeConfiguration<Entity>
     {
         builder.UseTpcMappingStrategy();
         
-        builder.Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+        builder.Property(entity => entity.Id)
+            .ValueGeneratedNever();
     }
 }
