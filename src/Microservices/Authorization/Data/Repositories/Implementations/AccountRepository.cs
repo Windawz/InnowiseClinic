@@ -28,8 +28,7 @@ public class AccountRepository : IAccountRepository
     public async Task<AccountEntity?> GetAsync(string email)
     {
         return await _dbContext.Accounts
-            .FirstOrDefaultAsync(account => account.Email
-                .Equals(email, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefaultAsync(account => EF.Functions.Like(account.Email, email));
     }
 
     public async Task<AccountEntity?> GetAsync(Guid id)
