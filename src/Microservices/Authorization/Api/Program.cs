@@ -44,7 +44,6 @@ public class Program
 
         builder.Services
             .AddScoped<ILogInService, LogInService>()
-            .AddScoped<IPasswordHashingService, PasswordHashingService>()
             .AddScoped<IRefreshService, RefreshService>()
             .AddScoped<IRegisterService, RegisterService>()
             .AddScoped<IAccessTokenService, AccessTokenService>()

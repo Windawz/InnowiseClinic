@@ -6,17 +6,14 @@ using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.In
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 
-public class RegisterRequestMapperService(
-    IPasswordHashingService passwordHashingService,
-    IRoleMapperService roleMapperService) : IRegisterRequestMapperService
+public class RegisterRequestMapperService(IRoleMapperService roleMapperService) : IRegisterRequestMapperService
 {
-    private readonly IPasswordHashingService _passwordHashingService = passwordHashingService;
     private readonly IRoleMapperService _roleMapperService = roleMapperService;
 
     public (string Email, string Password, Role Role) MapToEmailPasswordAndRole(RegisterRequest request)
     {
         var email = request.Email.Trim();
-        var password = _passwordHashingService.GetHashedPassword(email, request.Password.Trim());
+        var password = request.Password.Trim();
         var role = _roleMapperService.MapFromRoleName(request.Role.Trim());
 
         return (email, password, role);

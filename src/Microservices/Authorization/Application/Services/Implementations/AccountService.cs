@@ -3,23 +3,31 @@ using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 
 public class AccountService(
     IAccountRepository accountRepository,
-    IAccountMapperService accountMapperService) : IAccountService
+    IAccountMapperService accountMapperService,
+    IPasswordHasher<string> passwordHasher) : IAccountService
 {
     private readonly IAccountRepository _accountRepository = accountRepository;
     private readonly IAccountMapperService _accountMapperService = accountMapperService;
+    private readonly IPasswordHasher<string> _passwordHasher = passwordHasher;
 
     public async Task<Account> AccessAccountAsync(string email, string password)
     {
         var account = _accountMapperService.MapFromAccountEntity(
             await _accountRepository.GetAsync(email)
                 ?? throw new AccountNotFoundException(email));
+
+        var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(
+            user: email,
+            hashedPassword: account.Password,
+            providedPassword: password);
         
-        if (!account.Password.Equals(password, StringComparison.Ordinal))
+        if (passwordVerificationResult is PasswordVerificationResult.Failed)
         {
             throw new InvalidPasswordException(email, password);
         }
@@ -35,6 +43,8 @@ public class AccountService(
         {
             throw new AccountAlreadyExistsException(email);
         }
+
+        password = _passwordHasher.HashPassword(email, password);
 
         var account = _accountMapperService.MapToAccountEntity(
             new Account(
