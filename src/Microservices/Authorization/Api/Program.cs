@@ -1,11 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
+using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
+using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Api.Validators;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
@@ -69,6 +72,10 @@ public class Program
             .AddScoped<IAccountMapperService, AccountMapperService>()
             .AddScoped<IRefreshTokenMapperService, RefreshTokenMapperService>()
             .AddScoped<IRoleMapperService, RoleMapperService>();
+
+        builder.Services
+            .AddScoped<IValidator<LogInRequest>, LogInRequestValidator>()
+            .AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 
         builder.Services
             .AddScoped<IAccountRepository, AccountRepository>()
