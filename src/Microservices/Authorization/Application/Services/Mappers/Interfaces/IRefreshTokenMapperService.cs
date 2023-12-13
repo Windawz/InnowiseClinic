@@ -5,6 +5,6 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mapper
 
 public interface IRefreshTokenMapperService
 {
-    RefreshToken MapToRefreshToken(RefreshTokenEntity entity);
-    RefreshTokenEntity MapFromRefreshToken(RefreshToken token);
+    RefreshToken MapFromRefreshTokenEntity(RefreshTokenEntity entity);
+    RefreshTokenEntity MapToRefreshTokenEntity(RefreshToken token);
 }

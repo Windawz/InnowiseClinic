@@ -6,7 +6,7 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mapper
 
 public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : IRefreshTokenMapperService
 {
-    public RefreshTokenEntity MapFromRefreshToken(RefreshToken token)
+    public RefreshTokenEntity MapToRefreshTokenEntity(RefreshToken token)
     {
         return new()
         {
@@ -17,7 +17,7 @@ public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : I
         };
     }
 
-    public RefreshToken MapToRefreshToken(RefreshTokenEntity entity)
+    public RefreshToken MapFromRefreshTokenEntity(RefreshTokenEntity entity)
     {
         return new(
             TokenId: entity.Id,

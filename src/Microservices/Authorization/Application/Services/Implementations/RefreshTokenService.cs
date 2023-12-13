@@ -3,6 +3,7 @@ using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Data.Entities;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 
@@ -27,7 +28,7 @@ public class RefreshTokenService(
             ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
 
         await refreshTokenRepository.AddAsync(
-            refreshTokenMapperService.MapFromRefreshToken(token));
+            refreshTokenMapperService.MapToRefreshTokenEntity(token));
         
         await refreshTokenRepository.SaveAsync();
 
@@ -36,45 +37,33 @@ public class RefreshTokenService(
 
     public async Task<RefreshToken> CreateReplacementRefreshTokenAsync(RefreshToken refreshToken)
     {
-        if (await IsValidAsync(refreshToken))
+        var now = DateTime.UtcNow;
+        RefreshToken? replacementRefreshToken = null;
+
+        if (IsValid(refreshToken, now))
         {
-            var role = refreshToken.Role;
-            await InvalidateAsync(refreshToken);
-            
-            return await CreateRefreshTokenAsync(role);
+            var id = refreshTokenMapperService.MapToRefreshTokenEntity(refreshToken).Id;
+            var entity = await refreshTokenRepository.GetAsync(id);
+            if (entity is not null)
+            {
+                await refreshTokenRepository.DeleteAsync(entity);
+                await refreshTokenRepository.SaveAsync();
+                replacementRefreshToken = await CreateRefreshTokenAsync(refreshToken.Role);
+            }
         }
-        else
+
+        if (replacementRefreshToken is null)
         {
             throw new InvalidRefreshTokenException(refreshToken.TokenId);
         }
-    }
-
-    public async Task<RefreshToken> GetRefreshTokenAsync(Guid tokenId)
-    {
-        return refreshTokenMapperService.MapToRefreshToken(
-            await refreshTokenRepository.GetAsync(tokenId)
-                ?? throw new InvalidRefreshTokenException(tokenId));
-    }
-
-    private async Task InvalidateAsync(RefreshToken refreshToken)
-    {
-        await refreshTokenRepository.DeleteAsync(
-            refreshTokenMapperService.MapFromRefreshToken(refreshToken));
-        
-        await refreshTokenRepository.SaveAsync();
-    }
-
-    private async Task<bool> IsValidAsync(RefreshToken refreshToken)
-    {
-        var now = DateTime.UtcNow;
-        if (now < refreshToken.CreatedAt || now >= refreshToken.ExpiresAt)
-        {
-            return false;
-        }
         else
         {
-            return await refreshTokenRepository.GetAsync(
-                refreshTokenMapperService.MapFromRefreshToken(refreshToken).Id) is not null;
+            return replacementRefreshToken;
         }
+    }
+
+    private static bool IsValid(RefreshToken refreshToken, DateTime currentDateTime)
+    {
+        return currentDateTime >= refreshToken.CreatedAt && currentDateTime < refreshToken.ExpiresAt;
     }
 }
