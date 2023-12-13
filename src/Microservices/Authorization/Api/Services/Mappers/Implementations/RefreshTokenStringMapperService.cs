@@ -26,7 +26,7 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
     public RefreshToken MapToRefreshToken(string refreshTokenString)
     {
         var valueStrings = Base64UrlEncoder
-            .Decode(refreshTokenString)
+            .Decode(refreshTokenString.Trim())
             .Split(
                 separator: _valueSeparator,
                 count: 4,
