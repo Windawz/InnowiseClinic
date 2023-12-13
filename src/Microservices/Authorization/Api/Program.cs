@@ -16,6 +16,7 @@ using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace InnowiseClinic.Microservices.Authorization.Api;
 
@@ -41,6 +42,7 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
         builder.Services.AddLogging();
+        builder.Services.AddFluentValidationAutoValidation();
 
         builder.Services
             .AddScoped<ILogInService, LogInService>()
