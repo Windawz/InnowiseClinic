@@ -1,4 +1,5 @@
 using System.Globalization;
+using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
@@ -32,10 +33,25 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
                 options: StringSplitOptions.RemoveEmptyEntries 
                     | StringSplitOptions.TrimEntries);
 
+        Guid tokenId;
+        DateTime createdAt;
+        DateTime expiresAt;
+
+        try
+        {
+            tokenId = Guid.Parse(valueStrings[0]);
+            createdAt = DateTime.Parse(valueStrings[2], _dateTimeFormat);
+            expiresAt = DateTime.Parse(valueStrings[3], _dateTimeFormat);
+        }
+        catch (FormatException)
+        {
+            throw new InvalidRefreshTokenFormatException(refreshTokenString);
+        }
+
         return new(
-            TokenId: Guid.Parse(valueStrings[0]),
+            TokenId: tokenId,
             Role: roleMapperService.MapFromRoleName(valueStrings[1]),
-            CreatedAt: DateTime.Parse(valueStrings[2], _dateTimeFormat),
-            ExpiresAt: DateTime.Parse(valueStrings[3], _dateTimeFormat));
+            CreatedAt: createdAt,
+            ExpiresAt: expiresAt);
     }
 }

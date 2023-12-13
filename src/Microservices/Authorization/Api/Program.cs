@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
+using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
@@ -37,6 +38,7 @@ public class Program
                 .MapStatusCode<AccountNotFoundException>(StatusCodes.Status404NotFound)
                 .MapStatusCode<InvalidPasswordException>(StatusCodes.Status400BadRequest)
                 .MapStatusCode<InvalidRefreshTokenException>(StatusCodes.Status401Unauthorized)
+                .MapStatusCode<InvalidRefreshTokenFormatException>(StatusCodes.Status400BadRequest);
         });
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
