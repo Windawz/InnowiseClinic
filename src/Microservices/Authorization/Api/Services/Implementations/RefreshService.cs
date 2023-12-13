@@ -17,6 +17,6 @@ public class RefreshService(
         var refreshToken = refreshRequestMapperService.MapToRefreshToken(request);
         var newRefreshToken = await refreshTokenService.CreateReplacementRefreshTokenAsync(refreshToken);
         var accessToken = await accessTokenService.GenerateTokenAsync(newRefreshToken.Role);
-        return tokenResponseMapperService.MapFromTokenPair(accessToken, refreshToken);
+        return tokenResponseMapperService.MapFromTokenPair(accessToken, newRefreshToken);
     }
 }
