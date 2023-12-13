@@ -24,7 +24,7 @@ public class AccountsController(
         await registerService.RegisterAsync(request);
     }
 
-    [HttpGet("refresh")]
+    [HttpPost("refresh")]
     public async Task<TokenResponse> Refresh(RefreshRequest request)
     {
         return await refreshService.RefreshAsync(request);
