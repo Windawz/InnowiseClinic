@@ -85,6 +85,8 @@ public class Program
             .ConfigureOptions<ConfigureAccessTokenServiceOptions>()
             .ConfigureOptions<ConfigureRefreshTokenServiceOptions>();
 
+        ValidatorOptions.Global.LanguageManager.Enabled = false;
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
