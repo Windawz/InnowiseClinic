@@ -1,13 +1,8 @@
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 
-public class UnknownRoleException : Exception
+public class UnknownRoleException(string roleName) : Exception
 {
-    public UnknownRoleException(string roleName)
-    {
-        RoleName = roleName;
-    }
-
-    public string RoleName { get; }
+    public string RoleName { get; } = roleName;
 
     public override string Message =>
         $"Unknown role with name \"{RoleName}\"";

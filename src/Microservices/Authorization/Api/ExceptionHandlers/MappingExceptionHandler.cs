@@ -5,18 +5,13 @@ using Microsoft.Extensions.Options;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 
-public class MappingExceptionHandler : ExceptionHandler
+public class MappingExceptionHandler(
+    ProblemDetailsFactory problemDetailsFactory,
+    ILogger<MappingExceptionHandler> logger,
+    IWebHostEnvironment environment,
+    IOptions<MappingExceptionHandlerOptions> options) : ExceptionHandler(problemDetailsFactory, logger, environment)
 {
-    private readonly MappingExceptionHandlerOptions _options;
-
-    public MappingExceptionHandler(
-        ProblemDetailsFactory problemDetailsFactory,
-        ILogger<MappingExceptionHandler> logger,
-        IWebHostEnvironment environment,
-        IOptions<MappingExceptionHandlerOptions> options) : base(problemDetailsFactory, logger, environment)
-    {
-        _options = options.Value;
-    }
+    private readonly MappingExceptionHandlerOptions _options = options.Value;
 
     protected override int? MapToStatusCode(Exception exception)
     {

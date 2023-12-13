@@ -6,14 +6,12 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mapper
 
 public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : IRefreshTokenMapperService
 {
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
-
     public RefreshTokenEntity MapFromRefreshToken(RefreshToken token)
     {
         return new()
         {
             Id = token.TokenId,
-            Role = _roleMapperService.MapToRoleName(token.Role),
+            Role = roleMapperService.MapToRoleName(token.Role),
             CreatedAt = token.CreatedAt,
             ExpiresAt = token.ExpiresAt,
         };
@@ -23,7 +21,7 @@ public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : I
     {
         return new(
             TokenId: entity.Id,
-            Role: _roleMapperService.MapFromRoleName(entity.Role),
+            Role: roleMapperService.MapFromRoleName(entity.Role),
             CreatedAt: entity.CreatedAt,
             ExpiresAt: entity.ExpiresAt);
     }

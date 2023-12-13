@@ -5,11 +5,9 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
 public class ConfigureRefreshTokenServiceOptions(IConfiguration configuration) : IConfigureOptions<RefreshTokenServiceOptions>
 {
-    private readonly IConfiguration _configuration = configuration;
-
     public void Configure(RefreshTokenServiceOptions options)
     {
-        _configuration.GetRequiredSection("Auth:Generation:RefreshTokens")
+        configuration.GetRequiredSection("Auth:Generation:RefreshTokens")
             .Bind(options);
     }
 }

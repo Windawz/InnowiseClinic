@@ -6,8 +6,6 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mapper
 
 public class AccountMapperService(IRoleMapperService roleMapperService) : IAccountMapperService
 {
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
-
     public Account MapFromAccountEntity(AccountEntity entity)
     {
         return new(
@@ -19,7 +17,7 @@ public class AccountMapperService(IRoleMapperService roleMapperService) : IAccou
             CreatedAt: entity.CreatedAt,
             UpdatedByEmail: entity.UpdatedByEmail,
             UpdatedAt: entity.UpdatedAt,
-            Role: _roleMapperService.MapFromRoleName(entity.Role));
+            Role: roleMapperService.MapFromRoleName(entity.Role));
     }
 
     public AccountEntity MapToAccountEntity(Account account)
@@ -34,7 +32,7 @@ public class AccountMapperService(IRoleMapperService roleMapperService) : IAccou
             CreatedAt = account.CreatedAt,
             UpdatedByEmail = account.UpdatedByEmail,
             UpdatedAt = account.UpdatedAt,
-            Role = _roleMapperService.MapToRoleName(account.Role),
+            Role = roleMapperService.MapToRoleName(account.Role),
         };
     }
 }

@@ -10,7 +10,6 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
 {
     private const char _valueSeparator = '.';
     private static readonly CultureInfo _dateTimeFormat = CultureInfo.InvariantCulture;
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
 
     public string MapFromRefreshToken(RefreshToken refreshToken)
     {
@@ -18,7 +17,7 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
             string.Join(
                 _valueSeparator,
                 refreshToken.TokenId.ToString(),
-                _roleMapperService.MapToRoleName(refreshToken.Role),
+                roleMapperService.MapToRoleName(refreshToken.Role),
                 refreshToken.CreatedAt.ToString(_dateTimeFormat),
                 refreshToken.ExpiresAt.ToString(_dateTimeFormat)));
     }
@@ -35,7 +34,7 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
 
         return new(
             TokenId: Guid.Parse(valueStrings[0]),
-            Role: _roleMapperService.MapFromRoleName(valueStrings[1]),
+            Role: roleMapperService.MapFromRoleName(valueStrings[1]),
             CreatedAt: DateTime.Parse(valueStrings[2], _dateTimeFormat),
             ExpiresAt: DateTime.Parse(valueStrings[3], _dateTimeFormat));
     }

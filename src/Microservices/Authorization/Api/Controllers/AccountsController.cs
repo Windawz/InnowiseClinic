@@ -7,34 +7,26 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Controllers;
 
 [ApiController]
 [Route("accounts")]
-public class AccountsController : ControllerBase
+public class AccountsController(
+    ILogInService logInService,
+    IRegisterService registerService,
+    IRefreshService refreshService) : ControllerBase
 {
-    private readonly ILogInService _logInService;
-    private readonly IRegisterService _registerService;
-    private readonly IRefreshService _refreshService;
-
-    public AccountsController(ILogInService logInService, IRegisterService registerService, IRefreshService refreshService)
-    {
-        _logInService = logInService;
-        _registerService = registerService;
-        _refreshService = refreshService;
-    }
-
     [HttpPost("login")]
     public async Task<TokenResponse> LogIn(LogInRequest request)
     {
-        return await _logInService.LogInAsync(request);
+        return await logInService.LogInAsync(request);
     }
 
     [HttpPost("register")]
     public async Task Register(RegisterRequest request)
     {
-        await _registerService.RegisterAsync(request);
+        await registerService.RegisterAsync(request);
     }
 
     [HttpGet("refresh")]
     public async Task<TokenResponse> Refresh(RefreshRequest request)
     {
-        return await _refreshService.RefreshAsync(request);
+        return await refreshService.RefreshAsync(request);
     }
 }

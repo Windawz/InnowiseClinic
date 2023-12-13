@@ -1,13 +1,8 @@
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 
-public class InvalidRefreshTokenException : Exception
+public class InvalidRefreshTokenException(Guid tokenId) : Exception
 {
-    public InvalidRefreshTokenException(Guid tokenId)
-    {
-        TokenId = tokenId;
-    }
-
-    public Guid TokenId { get; }
+    public Guid TokenId { get; } = tokenId;
 
     public override string Message =>
         $"Refresh token with id \"{TokenId}\" is not valid";

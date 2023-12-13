@@ -13,8 +13,6 @@ public class RefreshTokenService(
     IRefreshTokenMapperService refreshTokenMapperService,
     IOptions<RefreshTokenServiceOptions> options) : IRefreshTokenService
 {
-    private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
-    private readonly IRefreshTokenMapperService _refreshTokenMapperService = refreshTokenMapperService;
     private readonly RefreshTokenServiceOptions _options = options.Value;
 
     public async Task<RefreshToken> CreateRefreshTokenAsync(Role role)
@@ -28,10 +26,10 @@ public class RefreshTokenService(
             CreatedAt: now,
             ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
 
-        await _refreshTokenRepository.AddAsync(
-            _refreshTokenMapperService.MapFromRefreshToken(token));
+        await refreshTokenRepository.AddAsync(
+            refreshTokenMapperService.MapFromRefreshToken(token));
         
-        await _refreshTokenRepository.SaveAsync();
+        await refreshTokenRepository.SaveAsync();
 
         return token;
     }
@@ -53,17 +51,17 @@ public class RefreshTokenService(
 
     public async Task<RefreshToken> GetRefreshTokenAsync(Guid tokenId)
     {
-        return _refreshTokenMapperService.MapToRefreshToken(
-            await _refreshTokenRepository.GetAsync(tokenId)
+        return refreshTokenMapperService.MapToRefreshToken(
+            await refreshTokenRepository.GetAsync(tokenId)
                 ?? throw new InvalidRefreshTokenException(tokenId));
     }
 
     private async Task InvalidateAsync(RefreshToken refreshToken)
     {
-        await _refreshTokenRepository.DeleteAsync(
-            _refreshTokenMapperService.MapFromRefreshToken(refreshToken));
+        await refreshTokenRepository.DeleteAsync(
+            refreshTokenMapperService.MapFromRefreshToken(refreshToken));
         
-        await _refreshTokenRepository.SaveAsync();
+        await refreshTokenRepository.SaveAsync();
     }
 
     private async Task<bool> IsValidAsync(RefreshToken refreshToken)
@@ -75,8 +73,8 @@ public class RefreshTokenService(
         }
         else
         {
-            return await _refreshTokenRepository.GetAsync(
-                _refreshTokenMapperService.MapFromRefreshToken(refreshToken).Id) is not null;
+            return await refreshTokenRepository.GetAsync(
+                refreshTokenMapperService.MapFromRefreshToken(refreshToken).Id) is not null;
         }
     }
 }

@@ -9,12 +9,9 @@ public class RegisterService(
     IRegisterRequestMapperService registerRequestMapperService,
     IAccountService accountService) : IRegisterService
 {
-    private readonly IRegisterRequestMapperService _registerRequestMapperService = registerRequestMapperService;
-    private readonly IAccountService _accountService = accountService;
-
     public async Task RegisterAsync(RegisterRequest request)
     {
-        var (email, password, role) = _registerRequestMapperService.MapToEmailPasswordAndRole(request);
-        await _accountService.CreateAccountAsync(email, password, role);
+        var (email, password, role) = registerRequestMapperService.MapToEmailPasswordAndRole(request);
+        await accountService.CreateAccountAsync(email, password, role);
     }
 }

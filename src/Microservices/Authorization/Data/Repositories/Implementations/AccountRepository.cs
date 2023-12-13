@@ -5,46 +5,39 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 
-public class AccountRepository : IAccountRepository
+public class AccountRepository(AuthorizationDbContext dbContext) : IAccountRepository
 {
-    private readonly AuthorizationDbContext _dbContext;
-
-    public AccountRepository(AuthorizationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task AddAsync(AccountEntity entity)
     {
-        await _dbContext.Accounts.AddAsync(entity);
+        await dbContext.Accounts.AddAsync(entity);
     }
 
     public async Task DeleteAsync(AccountEntity entity)
     {
-        _dbContext.Accounts.Remove(entity);
+        dbContext.Accounts.Remove(entity);
         await Task.CompletedTask;
     }
 
     public async Task<AccountEntity?> GetAsync(string email)
     {
-        return await _dbContext.Accounts
+        return await dbContext.Accounts
             .FirstOrDefaultAsync(account => EF.Functions.Like(account.Email, email));
     }
 
     public async Task<AccountEntity?> GetAsync(Guid id)
     {
-        return await _dbContext.Accounts
+        return await dbContext.Accounts
             .FirstOrDefaultAsync(account => account.Id.Equals(id));
     }
 
     public async Task UpdateAsync(AccountEntity entity)
     {
-        _dbContext.Update(entity);
+        dbContext.Update(entity);
         await Task.CompletedTask;
     }
 
     public async Task SaveAsync()
     {
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }

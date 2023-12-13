@@ -14,8 +14,6 @@ public class AccessTokenService(
     IOptions<AccessTokenServiceOptions> options) : IAccessTokenService
 {
     private const string _tokenType = "Bearer";
-    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
     private readonly AccessTokenServiceOptions _options = options.Value;
 
     public async Task<AccessToken> GenerateTokenAsync(Role role)
@@ -32,10 +30,10 @@ public class AccessTokenService(
                 algorithm: _options.Algorithm),
             claims:
             [
-                new(_options.RoleClaimType, _roleMapperService.MapToRoleName(role)),
+                new(_options.RoleClaimType, roleMapperService.MapToRoleName(role)),
             ]);
 
-        var signedToken = _jwtSecurityTokenHandler.WriteToken(token);
+        var signedToken = jwtSecurityTokenHandler.WriteToken(token);
 
         await Task.CompletedTask;
 

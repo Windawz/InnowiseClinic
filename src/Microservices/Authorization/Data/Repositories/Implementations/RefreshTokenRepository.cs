@@ -5,40 +5,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 
-public class RefreshTokenRepository : IRefreshTokenRepository
+public class RefreshTokenRepository(AuthorizationDbContext dbContext) : IRefreshTokenRepository
 {
-    private readonly AuthorizationDbContext _dbContext;
-
-    public RefreshTokenRepository(AuthorizationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task AddAsync(RefreshTokenEntity entity)
     {
-        await _dbContext.RefreshTokens.AddAsync(entity);
+        await dbContext.RefreshTokens.AddAsync(entity);
     }
 
     public async Task DeleteAsync(RefreshTokenEntity entity)
     {
-        _dbContext.Remove(entity);
+        dbContext.Remove(entity);
         await Task.CompletedTask;
     }
 
     public async Task<RefreshTokenEntity?> GetAsync(Guid id)
     {
-        return await _dbContext.RefreshTokens.FirstOrDefaultAsync(
+        return await dbContext.RefreshTokens.FirstOrDefaultAsync(
             entity => entity.Id == id);
     }
 
     public async Task SaveAsync()
     {
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(RefreshTokenEntity entity)
     {
-        _dbContext.Update(entity);
+        dbContext.Update(entity);
         await Task.CompletedTask;
     }
 }

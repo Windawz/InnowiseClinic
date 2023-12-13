@@ -8,12 +8,11 @@ public class ConfigureAccessTokenServiceOptions(
     IConfiguration configuration,
     IOptions<JwtBearerOptions> jwtBearerOptions) : IConfigureOptions<AccessTokenServiceOptions>
 {
-    private readonly IConfiguration _configuration = configuration;
     private readonly JwtBearerOptions _jwtBearerOptions = jwtBearerOptions.Value;
 
     public void Configure(AccessTokenServiceOptions options)
     {
-        _configuration.GetRequiredSection("Auth:Generation:AccessTokens")
+        configuration.GetRequiredSection("Auth:Generation:AccessTokens")
             .Bind(options);
 
         options.SecurityKey = _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey;

@@ -8,8 +8,6 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
 public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IConfiguration _configuration = configuration;
-
     private const string BaseConfigurationKey = "Auth:Authentication:JwtBearer";
     private const bool DefaultValidateLifetimeValue = false;
     private const int DefaultClockSkewSecondsValue = 5;
@@ -23,7 +21,7 @@ public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigur
 
     public void Configure(JwtBearerOptions options)
     {
-        var section = _configuration.GetRequiredSection(BaseConfigurationKey);
+        var section = configuration.GetRequiredSection(BaseConfigurationKey);
 
         string? validAudience = section.GetValue<string>("ValidAudience");
         string? validIssuer = section.GetValue<string>("ValidIssuer");

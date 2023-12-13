@@ -3,28 +3,19 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 
-public abstract class ExceptionHandler : IExceptionHandler
+public abstract class ExceptionHandler(
+    ProblemDetailsFactory problemDetailsFactory,
+    ILogger logger,
+    IWebHostEnvironment environment) : IExceptionHandler
 {
-    private readonly ProblemDetailsFactory _problemDetailsFactory;
-
-    protected ExceptionHandler(
-        ProblemDetailsFactory problemDetailsFactory,
-        ILogger logger,
-        IWebHostEnvironment environment)
-    {
-        _problemDetailsFactory = problemDetailsFactory;
-        Logger = logger;
-        IsDevelopment = environment.IsDevelopment();
-    }
-
-    protected ILogger Logger { get; }
-    protected bool IsDevelopment { get; }
+    protected ILogger Logger { get; } = logger;
+    protected bool IsDevelopment { get; } = environment.IsDevelopment();
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         if (MapToStatusCode(exception) is int statusCode)
         {
-            var problemDetails = _problemDetailsFactory.CreateProblemDetails(
+            var problemDetails = problemDetailsFactory.CreateProblemDetails(
                 httpContext: httpContext,
                 statusCode: statusCode,
                 detail: GetMessage(exception));

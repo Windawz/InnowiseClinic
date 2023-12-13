@@ -8,13 +8,11 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implem
 
 public class RegisterRequestMapperService(IRoleMapperService roleMapperService) : IRegisterRequestMapperService
 {
-    private readonly IRoleMapperService _roleMapperService = roleMapperService;
-
     public (string Email, string Password, Role Role) MapToEmailPasswordAndRole(RegisterRequest request)
     {
         var email = request.Email.Trim();
         var password = request.Password.Trim();
-        var role = _roleMapperService.MapFromRoleName(request.Role.Trim());
+        var role = roleMapperService.MapFromRoleName(request.Role.Trim());
 
         return (email, password, role);
     }
