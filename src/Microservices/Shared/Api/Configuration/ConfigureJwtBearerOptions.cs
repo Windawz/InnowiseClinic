@@ -10,7 +10,7 @@ namespace InnowiseClinic.Microservices.Shared.Api.Configuration;
 public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigureNamedOptions<JwtBearerOptions>
 {
     private const string BaseConfigurationKey = "Auth:Authentication:JwtBearer";
-    private const bool DefaultValidateLifetimeValue = false;
+    private const bool DefaultValidateLifetimeValue = true;
     private const int DefaultClockSkewSecondsValue = 5;
     private const string NameClaimType = ClaimTypes.Name;
     private const string RoleClaimType = ClaimTypes.Role;
