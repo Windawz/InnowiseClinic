@@ -1,6 +1,7 @@
-using InnowiseClinic.Microservices.Authorization.Api.Options;
+using InnowiseClinic.Microservices.Shared.Api.Options;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
+namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
 public static class MappingExceptionHandlerServiceCollectionExtensions
 {

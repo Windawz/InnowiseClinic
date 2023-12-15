@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Authorization.Api.Options;
+namespace InnowiseClinic.Microservices.Shared.Api.Options;
 
 public class MappingExceptionHandlerOptions
 {

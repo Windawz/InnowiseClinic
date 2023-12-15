@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
-using InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
@@ -17,6 +16,7 @@ using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.In
 using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
+using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

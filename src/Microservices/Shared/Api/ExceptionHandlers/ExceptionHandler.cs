@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
+namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
 public abstract class ExceptionHandler(
     ProblemDetailsFactory problemDetailsFactory,

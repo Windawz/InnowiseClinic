@@ -1,9 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using InnowiseClinic.Microservices.Authorization.Api.Options;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
+using InnowiseClinic.Microservices.Shared.Api.Options;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.ExceptionHandlers;
+namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
 public class MappingExceptionHandler(
     ProblemDetailsFactory problemDetailsFactory,
