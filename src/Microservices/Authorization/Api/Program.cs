@@ -16,6 +16,7 @@ using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.In
 using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
+using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
