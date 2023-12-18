@@ -1,5 +1,6 @@
 using FluentValidation;
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
+using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ public class Program
             dbContextOptionsBuilder.UseNpgsql(
                 builder.Configuration.GetConnectionString("Default"));
         });
+
+        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         ValidatorOptions.Global.LanguageManager.Enabled = false;
 
