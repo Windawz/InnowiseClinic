@@ -48,7 +48,7 @@ This file provides a list of configuration options that must be filled in. Confi
 - `Auth:Authentication:JwtBearer:ValidateLifetime`
     - Type: bool
     - Optional
-    - Default: true
+    - Default: false
     - Whether access token lifetime is validated or not
 - `Auth:Authentication:JwtBearer:ClockSkewSeconds`
     - Type: positive int
