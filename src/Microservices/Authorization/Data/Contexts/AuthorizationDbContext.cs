@@ -1,10 +1,11 @@
 using System.Reflection;
 using InnowiseClinic.Microservices.Authorization.Data.Entities;
+using InnowiseClinic.Microservices.Shared.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Contexts;
 
-public class AuthorizationDbContext : DbContext
+public class AuthorizationDbContext : BasicDbContext<AuthorizationDbContext>
 {
     public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options) { }
 

@@ -1,3 +1,5 @@
+using InnowiseClinic.Microservices.Shared.Data.Entities;
+
 namespace InnowiseClinic.Microservices.Authorization.Data.Entities;
 
 public class AccountEntity : Entity
