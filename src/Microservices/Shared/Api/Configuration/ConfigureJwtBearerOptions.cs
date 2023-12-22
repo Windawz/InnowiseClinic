@@ -7,13 +7,19 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Microservices.Shared.Api.Configuration;
 
-public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigureNamedOptions<JwtBearerOptions>
+public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
     private const string BaseConfigurationKey = "Auth:Authentication:JwtBearer";
     private const bool DefaultValidateLifetimeValue = false;
     private const int DefaultClockSkewSecondsValue = 5;
     private const string NameClaimType = ClaimTypes.Name;
     private const string RoleClaimType = ClaimTypes.Role;
+    private readonly IConfiguration _configuration;
+
+    public ConfigureJwtBearerOptions(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     public void Configure(string? name, JwtBearerOptions options)
     {
@@ -22,7 +28,7 @@ public class ConfigureJwtBearerOptions(IConfiguration configuration) : IConfigur
 
     public void Configure(JwtBearerOptions options)
     {
-        var section = configuration.GetRequiredSection(BaseConfigurationKey);
+        var section = _configuration.GetRequiredSection(BaseConfigurationKey);
 
         string? validAudience = section.GetValue<string>("ValidAudience");
         string? validIssuer = section.GetValue<string>("ValidIssuer");
