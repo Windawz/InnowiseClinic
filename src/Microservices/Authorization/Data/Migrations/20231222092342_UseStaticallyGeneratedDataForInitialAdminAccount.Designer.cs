@@ -4,6 +4,7 @@ using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InnowiseClinic.Microservices.Authorization.Data.Migrations
 {
     [DbContext(typeof(AuthorizationDbContext))]
-    partial class AuthorizationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231222092342_UseStaticallyGeneratedDataForInitialAdminAccount")]
+    partial class UseStaticallyGeneratedDataForInitialAdminAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,7 +68,7 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Migrations
                     b.Property<string>("UpdatedByEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
 
                     b.HasData(
                         new
@@ -93,7 +96,7 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
