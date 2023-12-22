@@ -12,6 +12,5 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
         RuleFor(request => request.Password).Password();
         RuleFor(request => request.ConfirmationPassword).Password()
             .Equal(request => request.Password);
-        RuleFor(request => request.Role).IsEnumName(typeof(Role), caseSensitive: false);
     }
 }

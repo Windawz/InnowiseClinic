@@ -1,19 +1,14 @@
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
-using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 
-public class RegisterRequestMapperService(IRoleMapperService roleMapperService) : IRegisterRequestMapperService
+public class RegisterRequestMapperService : IRegisterRequestMapperService
 {
-    public (string Email, string Password, Role Role) MapToEmailPasswordAndRole(RegisterRequest request)
+    public (string Email, string Password) MapToEmailPassword(RegisterRequest request)
     {
-        var email = request.Email.Trim();
-        var password = request.Password.Trim();
-        var role = roleMapperService.MapFromRoleName(request.Role.Trim());
-
-        return (email, password, role);
+        return (
+            Email: request.Email.Trim(),
+            Password: request.Password.Trim());
     }
 }
