@@ -7,10 +7,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 
-public class RefreshTokenStringMapperService(IRoleMapperService roleMapperService) : IRefreshTokenStringMapperService
+public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
 {
     private const char _valueSeparator = '.';
     private static readonly CultureInfo _dateTimeFormat = CultureInfo.InvariantCulture;
+    private readonly IRoleMapperService _roleMapperService;
+
+    public RefreshTokenStringMapperService(IRoleMapperService roleMapperService)
+    {
+        _roleMapperService = roleMapperService;
+    }
 
     public string MapFromRefreshToken(RefreshToken refreshToken)
     {
@@ -18,7 +24,7 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
             string.Join(
                 _valueSeparator,
                 refreshToken.TokenId.ToString(),
-                roleMapperService.MapToRoleName(refreshToken.Role),
+                _roleMapperService.MapToRoleName(refreshToken.Role),
                 refreshToken.CreatedAt.ToString(_dateTimeFormat),
                 refreshToken.ExpiresAt.ToString(_dateTimeFormat)));
     }
@@ -61,7 +67,7 @@ public class RefreshTokenStringMapperService(IRoleMapperService roleMapperServic
 
         return new(
             TokenId: tokenId,
-            Role: roleMapperService.MapFromRoleName(valueStrings[1]),
+            Role: _roleMapperService.MapFromRoleName(valueStrings[1]),
             CreatedAt: createdAt,
             ExpiresAt: expiresAt);
     }

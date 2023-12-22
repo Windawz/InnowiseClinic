@@ -4,14 +4,21 @@ using InnowiseClinic.Microservices.Authorization.Data.Entities;
 
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
 
-public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : IRefreshTokenMapperService
+public class RefreshTokenMapperService : IRefreshTokenMapperService
 {
+    private readonly IRoleMapperService _roleMapperService;
+
+    public RefreshTokenMapperService(IRoleMapperService roleMapperService)
+    {
+        _roleMapperService = roleMapperService;
+    }
+
     public RefreshTokenEntity MapToRefreshTokenEntity(RefreshToken token)
     {
         return new()
         {
             Id = token.TokenId,
-            Role = roleMapperService.MapToRoleName(token.Role),
+            Role = _roleMapperService.MapToRoleName(token.Role),
             CreatedAt = token.CreatedAt,
             ExpiresAt = token.ExpiresAt,
         };
@@ -21,7 +28,7 @@ public class RefreshTokenMapperService(IRoleMapperService roleMapperService) : I
     {
         return new(
             TokenId: entity.Id,
-            Role: roleMapperService.MapFromRoleName(entity.Role),
+            Role: _roleMapperService.MapFromRoleName(entity.Role),
             CreatedAt: entity.CreatedAt,
             ExpiresAt: entity.ExpiresAt);
     }

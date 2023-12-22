@@ -1,10 +1,16 @@
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 
-public class InvalidPasswordException(string email, string password) : Exception
+public class InvalidPasswordException : Exception
 {
-    public string Email { get; } = email;
+    public InvalidPasswordException(string email, string password)
+    {
+        Email = email;
+        Password = password;
+    }
 
-    public string Password { get; } = password;
+    public string Email { get; }
+
+    public string Password { get; }
 
     public override string Message =>
         $"Password provided to gain access to account with email \"{Email}\" is invalid";

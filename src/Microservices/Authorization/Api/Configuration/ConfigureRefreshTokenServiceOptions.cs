@@ -3,11 +3,18 @@ using Microsoft.Extensions.Options;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
-public class ConfigureRefreshTokenServiceOptions(IConfiguration configuration) : IConfigureOptions<RefreshTokenServiceOptions>
+public class ConfigureRefreshTokenServiceOptions : IConfigureOptions<RefreshTokenServiceOptions>
 {
+    private readonly IConfiguration _configuration;
+
+    public ConfigureRefreshTokenServiceOptions(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public void Configure(RefreshTokenServiceOptions options)
     {
-        configuration.GetRequiredSection("Auth:Generation:RefreshTokens")
+        _configuration.GetRequiredSection("Auth:Generation:RefreshTokens")
             .Bind(options);
     }
 }

@@ -4,15 +4,20 @@ using Microsoft.Extensions.Options;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Configuration;
 
-public class ConfigureAccessTokenServiceOptions(
-    IConfiguration configuration,
-    IOptions<JwtBearerOptions> jwtBearerOptions) : IConfigureOptions<AccessTokenServiceOptions>
+public class ConfigureAccessTokenServiceOptions : IConfigureOptions<AccessTokenServiceOptions>
 {
-    private readonly JwtBearerOptions _jwtBearerOptions = jwtBearerOptions.Value;
+    private readonly IConfiguration _configuration;
+    private readonly JwtBearerOptions _jwtBearerOptions;
+
+    public ConfigureAccessTokenServiceOptions(IConfiguration configuration, IOptions<JwtBearerOptions> jwtBearerOptions)
+    {
+        _configuration = configuration;
+        _jwtBearerOptions = jwtBearerOptions.Value;
+    }
 
     public void Configure(AccessTokenServiceOptions options)
     {
-        configuration.GetRequiredSection("Auth:Generation:AccessTokens")
+        _configuration.GetRequiredSection("Auth:Generation:AccessTokens")
             .Bind(options);
 
         options.SecurityKey = _jwtBearerOptions.TokenValidationParameters.IssuerSigningKey;

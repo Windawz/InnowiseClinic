@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.Validators;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Validators;

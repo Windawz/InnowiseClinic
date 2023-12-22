@@ -7,18 +7,29 @@ using Microsoft.AspNetCore.Identity;
 
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 
-public class AccountService(
-    IAccountRepository accountRepository,
-    IAccountMapperService accountMapperService,
-    IPasswordHasher<string> passwordHasher) : IAccountService
+public class AccountService : IAccountService
 {
+    private readonly IAccountRepository _accountRepository;
+    private readonly IAccountMapperService _accountMapperService;
+    private readonly IPasswordHasher<string> _passwordHasher;
+
+    public AccountService(
+        IAccountRepository accountRepository,
+        IAccountMapperService accountMapperService,
+        IPasswordHasher<string> passwordHasher)
+    {
+        _accountRepository = accountRepository;
+        _accountMapperService = accountMapperService;
+        _passwordHasher = passwordHasher;
+    }
+
     public async Task<Account> AccessAccountAsync(string email, string password)
     {
-        var account = accountMapperService.MapFromAccountEntity(
-            await accountRepository.GetAsync(email)
+        var account = _accountMapperService.MapFromAccountEntity(
+            await _accountRepository.GetAsync(email)
                 ?? throw new AccountNotFoundException(email));
 
-        var passwordVerificationResult = passwordHasher.VerifyHashedPassword(
+        var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(
             user: email,
             hashedPassword: account.Password,
             providedPassword: password);
@@ -35,14 +46,14 @@ public class AccountService(
     {
         var now = DateTime.UtcNow;
 
-        if (await accountRepository.GetAsync(email) is not null)
+        if (await _accountRepository.GetAsync(email) is not null)
         {
             throw new AccountAlreadyExistsException(email);
         }
 
-        password = passwordHasher.HashPassword(email, password);
+        password = _passwordHasher.HashPassword(email, password);
 
-        var account = accountMapperService.MapToAccountEntity(
+        var account = _accountMapperService.MapToAccountEntity(
             new Account(
                 Id: Guid.NewGuid(),
                 Email: email,
@@ -54,7 +65,7 @@ public class AccountService(
                 UpdatedAt: null,
                 Role: role));
 
-        await accountRepository.AddAsync(account);
-        await accountRepository.SaveAsync();
+        await _accountRepository.AddAsync(account);
+        await _accountRepository.SaveAsync();
     }
 }

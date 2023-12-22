@@ -8,13 +8,22 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 
-public class AccessTokenService(
-    JwtSecurityTokenHandler jwtSecurityTokenHandler,
-    IRoleMapperService roleMapperService,
-    IOptions<AccessTokenServiceOptions> options) : IAccessTokenService
+public class AccessTokenService : IAccessTokenService
 {
     private const string _tokenType = "Bearer";
-    private readonly AccessTokenServiceOptions _options = options.Value;
+    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+    private readonly IRoleMapperService _roleMapperService;
+    private readonly AccessTokenServiceOptions _options;
+
+    public AccessTokenService(
+        JwtSecurityTokenHandler jwtSecurityTokenHandler,
+        IRoleMapperService roleMapperService,
+        IOptions<AccessTokenServiceOptions> options)
+    {
+        _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
+        _roleMapperService = roleMapperService;
+        _options = options.Value;
+    }
 
     public async Task<AccessToken> GenerateTokenAsync(Role role)
     {
@@ -30,10 +39,10 @@ public class AccessTokenService(
                 algorithm: _options.Algorithm),
             claims:
             [
-                new(_options.RoleClaimType, roleMapperService.MapToRoleName(role)),
+                new(_options.RoleClaimType, _roleMapperService.MapToRoleName(role)),
             ]);
 
-        var signedToken = jwtSecurityTokenHandler.WriteToken(token);
+        var signedToken = _jwtSecurityTokenHandler.WriteToken(token);
 
         await Task.CompletedTask;
 

@@ -6,9 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 
-public class AccountRepository(AuthorizationDbContext dbContext)
-    : AsyncRepository<AccountEntity, AuthorizationDbContext>(dbContext), IAccountRepository
+public class AccountRepository : AsyncRepository<AccountEntity, AuthorizationDbContext>, IAccountRepository
 {
+    public AccountRepository(AuthorizationDbContext dbContext) : base(dbContext) { }
+
     public async Task<AccountEntity?> GetAsync(string email)
     {
         return await DbContext.Accounts

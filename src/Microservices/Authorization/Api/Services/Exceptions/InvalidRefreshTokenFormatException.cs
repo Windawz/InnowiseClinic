@@ -1,8 +1,13 @@
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 
-public class InvalidRefreshTokenFormatException(string refreshTokenString) : Exception
+public class InvalidRefreshTokenFormatException : Exception
 {
-    public string RefreshTokenString { get; } = refreshTokenString;
+    public InvalidRefreshTokenFormatException(string refreshTokenString)
+    {
+        RefreshTokenString = refreshTokenString;
+    }
+
+    public string RefreshTokenString { get; }
 
     public override string Message =>
         $"Cannot parse refresh token from string \"{RefreshTokenString}\"";
