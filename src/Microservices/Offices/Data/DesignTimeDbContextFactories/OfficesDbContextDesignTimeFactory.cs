@@ -6,8 +6,8 @@ namespace InnowiseClinic.Microservices.Offices.Data.DesignTimeDbContextFactories
 
 public class OfficesDbContextDesignTimeFactory : DesignTimeDbContextFactory<OfficesDbContext>
 {
-    protected override string? DefaultJsonConfigurationFileName => Path.Combine(
-        "..", "Api", "appsettings.Development.json");
+    protected override string? DefaultJsonConfigurationFileName => Path.GetFullPath(
+        Path.Combine("..", "Api", "appsettings.Development.json"));
 
     protected override void ConfigureDbContextOptions(DbContextOptionsBuilder<OfficesDbContext> optionsBuilder, string connectionString)
     {
