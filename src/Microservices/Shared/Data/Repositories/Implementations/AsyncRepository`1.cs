@@ -4,11 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Shared.Data.Repositories.Implementations;
 
-public abstract class AsyncRepository<TEntity, TContext>(TContext dbContext) : IAsyncRepository<TEntity>
+public abstract class AsyncRepository<TEntity, TContext> : IAsyncRepository<TEntity>
     where TEntity : Entity
     where TContext : DbContext
 {
-    protected TContext DbContext { get; } = dbContext;
+    public AsyncRepository(TContext dbContext)
+    {
+        DbContext = dbContext;
+    }
+
+    protected TContext DbContext { get; }
 
     public async virtual Task<TEntity?> GetAsync(Guid id)
     {

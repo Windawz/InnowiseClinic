@@ -7,19 +7,25 @@ using Microsoft.Extensions.Logging;
 
 namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
-public abstract class ExceptionHandler(
-    ProblemDetailsFactory problemDetailsFactory,
-    ILogger logger,
-    IWebHostEnvironment environment) : IExceptionHandler
+public abstract class ExceptionHandler : IExceptionHandler
 {
-    protected ILogger Logger { get; } = logger;
-    protected bool IsDevelopment { get; } = environment.IsDevelopment();
+    private readonly ProblemDetailsFactory _problemDetailsFactory;
+
+    protected ExceptionHandler(ProblemDetailsFactory problemDetailsFactory, ILogger logger, IWebHostEnvironment environment)
+    {
+        _problemDetailsFactory = problemDetailsFactory;
+        Logger = logger;
+        IsDevelopment = environment.IsDevelopment();
+    }
+
+    protected ILogger Logger { get; }
+    protected bool IsDevelopment { get; }
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         if (MapToStatusCode(exception) is int statusCode)
         {
-            var problemDetails = problemDetailsFactory.CreateProblemDetails(
+            var problemDetails = _problemDetailsFactory.CreateProblemDetails(
                 httpContext: httpContext,
                 statusCode: statusCode,
                 detail: GetMessage(exception));
