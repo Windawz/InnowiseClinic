@@ -1,5 +1,7 @@
 using FluentValidation;
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
+using InnowiseClinic.Microservices.Offices.Data.Repositories.Implementations;
+using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,11 +26,13 @@ public class Program
         builder.Services.AddLogging();
         builder.Services.AddFluentValidationAutoValidation();
 
-        builder.Services.AddDbContext<OfficesDbContext>(dbContextOptionsBuilder =>
-        {
-            dbContextOptionsBuilder.UseNpgsql(
-                builder.Configuration.GetConnectionString("Default"));
-        });
+        builder.Services
+            .AddScoped<IOfficeRepository, OfficeRepository>()
+            .AddDbContext<OfficesDbContext>(dbContextOptionsBuilder =>
+            {
+                dbContextOptionsBuilder.UseNpgsql(
+                    builder.Configuration.GetConnectionString("Default"));
+            });
 
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
