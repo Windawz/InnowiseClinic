@@ -1,5 +1,7 @@
 using FluentValidation;
 
+namespace InnowiseClinic.Microservices.Authorization.Api.Validators;
+
 public static class RuleBuilderExtensions
 {
     public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> builder)
