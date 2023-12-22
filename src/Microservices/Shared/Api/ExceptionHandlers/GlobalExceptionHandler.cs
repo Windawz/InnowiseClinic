@@ -5,11 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
-public class GlobalExceptionHandler(
-    ProblemDetailsFactory problemDetailsFactory,
-    ILogger<GlobalExceptionHandler> logger,
-    IWebHostEnvironment environment) : ExceptionHandler(problemDetailsFactory, logger, environment)
+public class GlobalExceptionHandler : ExceptionHandler
 {
+    public GlobalExceptionHandler(
+        ProblemDetailsFactory problemDetailsFactory,
+        ILogger<GlobalExceptionHandler> logger,
+        IWebHostEnvironment environment) : base(problemDetailsFactory, logger, environment) { }
+
     protected override int? MapToStatusCode(Exception exception)
     {
         Logger.LogError($"Exception caught by global handler: \"{exception.Message}\"");

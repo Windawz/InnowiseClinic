@@ -7,13 +7,18 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 
-public class MappingExceptionHandler(
-    ProblemDetailsFactory problemDetailsFactory,
-    ILogger<MappingExceptionHandler> logger,
-    IWebHostEnvironment environment,
-    IOptions<MappingExceptionHandlerOptions> options) : ExceptionHandler(problemDetailsFactory, logger, environment)
+public class MappingExceptionHandler : ExceptionHandler
 {
-    private readonly MappingExceptionHandlerOptions _options = options.Value;
+    public MappingExceptionHandler(
+        ProblemDetailsFactory problemDetailsFactory,
+        ILogger<MappingExceptionHandler> logger,
+        IWebHostEnvironment environment,
+        IOptions<MappingExceptionHandlerOptions> options) : base(problemDetailsFactory, logger, environment)
+    {
+        _options = options.Value;
+    }
+
+    private readonly MappingExceptionHandlerOptions _options;
 
     protected override int? MapToStatusCode(Exception exception)
     {
