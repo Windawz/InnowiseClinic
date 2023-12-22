@@ -43,7 +43,7 @@ This file provides a list of configuration options that must be filled in. Confi
     - Should match `Auth:Generation:AccessTokens:Audience`
 - `Auth:Authentication:JwtBearer:IssuerSigningKey`
     - Type: string
-    - Length: that of `Auth:Generation:AccessTokens:Algorithm`
+    - Length: defined by `Auth:Generation:AccessTokens:Algorithm`
     - A random combination of characters
 - `Auth:Authentication:JwtBearer:ValidateLifetime`
     - Type: bool
