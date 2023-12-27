@@ -35,8 +35,14 @@ public class OfficeService : IOfficeService
         }
     }
 
+    /// <exception cref="OfficeNotFoundException"/>
     public async Task<ICollection<Office>> GetOfficePageAsync(int count, Guid? start = null)
     {
+        if (start is Guid guid && await _officeRepository.GetAsync(guid) is null)
+        {
+            throw new OfficeNotFoundException(guid);
+        }
+
         var officeEntities = await _officeRepository.GetPageAsync(count, start);
         // Ugly ToList() call.
         return officeEntities.Select(entity => _officeMapperService.MapFromOfficeEntity(entity))
@@ -56,6 +62,7 @@ public class OfficeService : IOfficeService
             RegistryPhoneNumber = input.RegistryPhoneNumber,
             IsActive = input.IsActive,
         };
+
         await _officeRepository.AddAsync(officeEntity);
         
         return officeEntity.Id;
