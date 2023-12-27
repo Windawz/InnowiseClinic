@@ -1,6 +1,7 @@
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
+using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +40,7 @@ public class AccountsController : ControllerBase
         await _registerService.RegisterAsync(request);
     }
 
-    [Authorize(Roles = "receptionist")]
+    [Authorize(Roles = RoleName.Receptionist)]
     [HttpPost("register/other")]
     public async Task RegisterOther(RegisterOtherRequest request)
     {
