@@ -46,10 +46,12 @@ public class OfficeService : IOfficeService
             .ToList();
     }
 
-    public async Task CreateOfficeAsync(OfficeCreationInput input)
+    public async Task<Guid> CreateOfficeAsync(OfficeCreationInput input)
     {
         var officeEntity = _officeCreationInputMapperService.MapToOfficeEntity(input);
         await _officeRepository.AddAsync(officeEntity);
+        
+        return officeEntity.Id;
     }
 
     /// <exception cref="OfficeNotFoundException"/>
