@@ -1,4 +1,8 @@
 using FluentValidation;
+using InnowiseClinic.Microservices.Offices.Application.Services.Implementations;
+using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
+using InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Implementations;
+using InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
@@ -27,12 +31,16 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
 
         builder.Services
+            .AddScoped<IOfficeService, OfficeService>()
             .AddScoped<IOfficeRepository, OfficeRepository>()
             .AddDbContext<OfficesDbContext>(dbContextOptionsBuilder =>
             {
                 dbContextOptionsBuilder.UseNpgsql(
                     builder.Configuration.GetConnectionString("Default"));
             });
+
+        builder.Services
+            .AddScoped<IOfficeMapperService, OfficeMapperService>();
 
         builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
