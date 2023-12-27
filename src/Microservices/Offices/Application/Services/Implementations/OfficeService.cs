@@ -11,16 +11,13 @@ public class OfficeService : IOfficeService
 {
     private readonly IOfficeRepository _officeRepository;
     private readonly IOfficeMapperService _officeMapperService;
-    private readonly IOfficeCreationInputMapperService _officeCreationInputMapperService;
 
     public OfficeService(
         IOfficeRepository officeRepository,
-        IOfficeMapperService officeMapperService,
-        IOfficeCreationInputMapperService officeCreationInputMapperService)
+        IOfficeMapperService officeMapperService)
     {
         _officeRepository = officeRepository;
         _officeMapperService = officeMapperService;
-        _officeCreationInputMapperService = officeCreationInputMapperService;
     }
 
     /// <exception cref="OfficeNotFoundException"/>
@@ -48,7 +45,17 @@ public class OfficeService : IOfficeService
 
     public async Task<Guid> CreateOfficeAsync(OfficeCreationInput input)
     {
-        var officeEntity = _officeCreationInputMapperService.MapToOfficeEntity(input);
+        var officeEntity = new OfficeEntity()
+        {
+            Id = Guid.NewGuid(),
+            City = input.City,
+            Street = input.Street,
+            HouseNumber = input.HouseNumber,
+            OfficeNumber = input.OfficeNumber,
+            PhotoId = input.PhotoId,
+            RegistryPhoneNumber = input.RegistryPhoneNumber,
+            IsActive = input.IsActive,
+        };
         await _officeRepository.AddAsync(officeEntity);
         
         return officeEntity.Id;
