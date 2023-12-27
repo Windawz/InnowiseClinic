@@ -2,7 +2,6 @@ using System.Globalization;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
@@ -11,11 +10,11 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
 {
     private const char _valueSeparator = '.';
     private static readonly CultureInfo _dateTimeFormat = CultureInfo.InvariantCulture;
-    private readonly IRoleMapperService _roleMapperService;
+    private readonly IRoleNameMapperService _roleNameMapperService;
 
-    public RefreshTokenStringMapperService(IRoleMapperService roleMapperService)
+    public RefreshTokenStringMapperService(IRoleNameMapperService roleNameMapperService)
     {
-        _roleMapperService = roleMapperService;
+        _roleNameMapperService = roleNameMapperService;
     }
 
     public string MapFromRefreshToken(RefreshToken refreshToken)
@@ -24,7 +23,7 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
             string.Join(
                 _valueSeparator,
                 refreshToken.TokenId.ToString(),
-                _roleMapperService.MapToRoleName(refreshToken.Role),
+                _roleNameMapperService.MapFromRole(refreshToken.Role),
                 refreshToken.CreatedAt.ToString(_dateTimeFormat),
                 refreshToken.ExpiresAt.ToString(_dateTimeFormat)));
     }
@@ -67,7 +66,7 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
 
         return new(
             TokenId: tokenId,
-            Role: _roleMapperService.MapFromRoleName(valueStrings[1]),
+            Role: _roleNameMapperService.MapToRole(valueStrings[1]),
             CreatedAt: createdAt,
             ExpiresAt: expiresAt);
     }

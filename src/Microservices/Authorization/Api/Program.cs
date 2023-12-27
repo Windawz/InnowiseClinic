@@ -72,6 +72,7 @@ public class Program
             .AddScoped<IRegisterRequestMapperService, RegisterRequestMapperService>()
             .AddScoped<IRegisterOtherRequestMapperService, RegisterOtherRequestMapperService>()
             .AddScoped<ITokenResponseMapperService, TokenResponseMapperService>()
+            .AddScoped<IRoleNameMapperService, RoleNameMapperService>()
             .AddScoped<IAccountMapperService, AccountMapperService>()
             .AddScoped<IRefreshTokenMapperService, RefreshTokenMapperService>()
             .AddScoped<IRoleMapperService, RoleMapperService>();

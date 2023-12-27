@@ -1,17 +1,16 @@
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 
 namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 
 public class RegisterOtherRequestMapperService : IRegisterOtherRequestMapperService
 {
-    private readonly IRoleMapperService _roleMapperService;
+    private readonly IRoleNameMapperService _roleNameMapperService;
 
-    public RegisterOtherRequestMapperService(IRoleMapperService roleMapperService)
+    public RegisterOtherRequestMapperService(IRoleNameMapperService roleNameMapperService)
     {
-        _roleMapperService = roleMapperService;
+        _roleNameMapperService = roleNameMapperService;
     }
 
     public (string Email, string Password, Role Role) MapToEmailPasswordRole(RegisterOtherRequest request)
@@ -19,6 +18,6 @@ public class RegisterOtherRequestMapperService : IRegisterOtherRequestMapperServ
         return (
             Email: request.Email.Trim(),
             Password: request.Password.Trim(),
-            Role: _roleMapperService.MapFromRoleName(request.Role.Trim()));
+            Role: _roleNameMapperService.MapToRole(request.Role.Trim()));
     }
 }
