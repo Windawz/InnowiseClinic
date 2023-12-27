@@ -20,7 +20,8 @@ public class OfficeRepository : AsyncRepository<OfficeEntity, OfficesDbContext>,
 
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
 
-        IQueryable<OfficeEntity> queryable = DbContext.Offices;
+        IQueryable<OfficeEntity> queryable = DbContext.Offices
+            .OrderBy(office => office.Id);
 
         if (start is Guid guid)
         {
