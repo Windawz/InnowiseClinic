@@ -29,27 +29,42 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<TokenResponse> LogIn(LogInRequest request)
+    [ProducesResponseType<TokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> LogIn(LogInRequest request)
     {
-        return await _logInService.LogInAsync(request);
+        var response = await _logInService.LogInAsync(request);
+        return Ok(response);
     }
 
     [HttpPost("register")]
-    public async Task Register(RegisterRequest request)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
         await _registerService.RegisterAsync(request);
+        return Created();
     }
 
     [Authorize(Roles = RoleName.Receptionist)]
     [HttpPost("register/other")]
-    public async Task RegisterOther(RegisterOtherRequest request)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> RegisterOther(RegisterOtherRequest request)
     {
         await _registerOtherService.RegisterOther(request);
+        return Created();
     }
 
     [HttpPost("refresh")]
-    public async Task<TokenResponse> Refresh(RefreshRequest request)
+    [ProducesResponseType<TokenResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Refresh(RefreshRequest request)
     {
-        return await _refreshService.RefreshAsync(request);
+        var response = await _refreshService.RefreshAsync(request);
+        return Ok(response);
     }
 }
