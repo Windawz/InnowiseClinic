@@ -1,5 +1,6 @@
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Responses;
+using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 
 [ApiController]
 [Route("offices")]
-[Authorize("receptionist")]
+[Authorize(Roles = RoleName.Receptionist)]
 public class OfficesController : ControllerBase
 {
     [HttpGet("{id}")]
