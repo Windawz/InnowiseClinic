@@ -14,7 +14,7 @@ public class OfficesController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType<GetOfficeResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Get(Guid id)
+    public Task<IActionResult> Get(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -24,14 +24,14 @@ public class OfficesController : ControllerBase
     [ProducesResponseType<ICollection<GetOfficeResponse>>(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetPage(int count, Guid? start)
+    public Task<IActionResult> GetPage(int count, Guid? start)
     {
         throw new NotImplementedException();
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(CreateOfficeRequest request, [FromForm] IFormFile? photo)
+    public Task<IActionResult> Create(CreateOfficeRequest request, [FromForm] IFormFile? photo)
     {
         throw new NotImplementedException();
     }
@@ -39,7 +39,7 @@ public class OfficesController : ControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Edit(Guid id, EditOfficeRequest request, [FromForm] IFormFile? photo)
+    public Task<IActionResult> Edit(Guid id, EditOfficeRequest request, [FromForm] IFormFile? photo)
     {
         throw new NotImplementedException();
     }
