@@ -7,7 +7,7 @@ public static class RequestMapping
 {
     public static (string Email, string Password) ToEmailPassword(LogInRequest request)
     {
-        var email = request.Email.Trim();
+        var email = request.Email.Trim().ToLowerInvariant();
         var password = request.Password.Trim();
         
         return (email, password);
@@ -21,7 +21,7 @@ public static class RequestMapping
     public static (string Email, string Password, Role Role) ToEmailPasswordRole(RegisterOtherRequest request)
     {
         return (
-            Email: request.Email.Trim(),
+            Email: request.Email.Trim().ToLowerInvariant(),
             Password: request.Password.Trim(),
             Role: RoleNameMapping.ToRole(request.Role.Trim()));
     }
@@ -29,7 +29,7 @@ public static class RequestMapping
     public static (string Email, string Password) ToEmailPassword(RegisterRequest request)
     {
         return (
-            Email: request.Email.Trim(),
+            Email: request.Email.Trim().ToLowerInvariant(),
             Password: request.Password.Trim());
     }
 }
