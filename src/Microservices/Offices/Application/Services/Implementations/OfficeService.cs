@@ -49,7 +49,7 @@ public class OfficeService : IOfficeService
     {
         var officeEntity = new OfficeEntity()
         {
-            Id = Guid.NewGuid(),
+            Id = default,
             City = input.City,
             Street = input.Street,
             HouseNumber = input.HouseNumber,
