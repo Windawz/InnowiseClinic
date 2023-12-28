@@ -64,10 +64,8 @@ public class RefreshTokenService : IRefreshTokenService
         {
             throw new InvalidRefreshTokenException(refreshToken.TokenId);
         }
-        else
-        {
-            return replacementRefreshToken;
-        }
+        
+        return replacementRefreshToken;
     }
 
     private static bool IsValid(RefreshToken refreshToken, DateTime currentDateTime)
