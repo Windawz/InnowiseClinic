@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Shared.Data.Repositories.Implementations;
 
-public abstract class AsyncRepository<TEntity, TContext> : IAsyncRepository<TEntity>
+public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
     where TEntity : Entity
     where TContext : DbContext
 {
-    public AsyncRepository(TContext dbContext)
+    public Repository(TContext dbContext)
     {
         DbContext = dbContext;
     }
