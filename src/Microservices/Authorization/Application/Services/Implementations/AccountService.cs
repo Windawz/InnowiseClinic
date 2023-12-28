@@ -63,6 +63,7 @@ public class AccountService : IAccountService
                 Role: role));
 
         await _accountRepository.AddAsync(account);
+        
         await _accountRepository.SaveAsync();
     }
 }

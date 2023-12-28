@@ -19,29 +19,25 @@ public static class RoleNameMapping
 
     public static string ToRoleName(Role role)
     {
-        if (_roleNameToRoleMap.TryGetValue(role, out var roleName))
-        {
-            return roleName;
-        }
-        else
+        if (!_roleNameToRoleMap.TryGetValue(role, out var roleName))
         {
             throw new ArgumentOutOfRangeException(
                 message: $"Invalid {nameof(Role)} value {role}",
                 paramName: nameof(role));
         }
+        
+        return roleName;
     }
 
     public static Role ToRole(string roleName)
     {
-        if (_roleToRoleNameMap.TryGetValue(roleName, out var role))
-        {
-            return role;
-        }
-        else
+        if (!_roleToRoleNameMap.TryGetValue(roleName, out var role))
         {
             throw new ArgumentOutOfRangeException(
                 message: $"Invalid {nameof(RoleName)} constant {roleName}",
                 paramName: nameof(roleName));
         }
+
+        return role;
     }
 }

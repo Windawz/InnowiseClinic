@@ -52,6 +52,7 @@ public class RefreshTokenService : IRefreshTokenService
         {
             var id = RefreshTokenMapping.ToRefreshTokenEntity(refreshToken).Id;
             var entity = await _refreshTokenRepository.GetAsync(id);
+            
             if (entity is not null)
             {
                 _refreshTokenRepository.Delete(entity);

@@ -37,6 +37,7 @@ public class AccountsController : ControllerBase
         var accessToken = await _accessTokenService.GenerateTokenAsync(account.Role);
         var refreshToken = await _refreshTokenService.CreateRefreshTokenAsync(account.Role);
         var response = ResponseMapping.ToTokenResponse(accessToken, refreshToken);
+        
         return Ok(response);
     }
 
@@ -47,6 +48,7 @@ public class AccountsController : ControllerBase
     {
         var (email, password) = RequestMapping.ToEmailPassword(request);
         await _accountService.CreateAccountAsync(email, password, Role.Patient);
+
         return Created();
     }
 
@@ -60,6 +62,7 @@ public class AccountsController : ControllerBase
     {
         var (email, password, role) = RequestMapping.ToEmailPasswordRole(request);
         await _accountService.CreateAccountAsync(email, password, role);
+
         return Created();
     }
 
@@ -73,6 +76,7 @@ public class AccountsController : ControllerBase
         var newRefreshToken = await _refreshTokenService.RecreateRefreshTokenAsync(refreshToken);
         var accessToken = await _accessTokenService.GenerateTokenAsync(newRefreshToken.Role);
         var response = ResponseMapping.ToTokenResponse(accessToken, newRefreshToken);
+
         return Ok(response);
     }
 }

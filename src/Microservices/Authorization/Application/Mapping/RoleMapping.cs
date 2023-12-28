@@ -6,16 +6,14 @@ public static class RoleMapping
 {
     public static Role ToRole(string roleName)
     {
-        if (Enum.TryParse(roleName, ignoreCase: true, out Role role))
-        {
-            return role;
-        }
-        else
+        if (!Enum.TryParse(roleName, ignoreCase: true, out Role role))
         {
             throw new ArgumentException(
                 message: $"Unknown role name \"{roleName}\"",
                 paramName: nameof(roleName));
         }
+
+        return role;
     }
 
     public static string ToRoleName(Role role)
