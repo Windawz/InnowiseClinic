@@ -3,8 +3,6 @@ using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Implementations;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Validators;
@@ -50,10 +48,6 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
 
         builder.Services
-            .AddScoped<ILogInService, LogInService>()
-            .AddScoped<IRefreshService, RefreshService>()
-            .AddScoped<IRegisterService, RegisterService>()
-            .AddScoped<IRegisterOtherService, RegisterOtherService>()
             .AddScoped<IAccessTokenService, AccessTokenService>()
             .AddScoped<IAccountService, AccountService>()
             .AddScoped<IRefreshTokenService, RefreshTokenService>()

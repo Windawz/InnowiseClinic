@@ -1,6 +1,8 @@
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Responses;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
+using InnowiseClinic.Microservices.Authorization.Application.Models;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,21 +13,33 @@ namespace InnowiseClinic.Microservices.Authorization.Api.Controllers;
 [Route("accounts")]
 public class AccountsController : ControllerBase
 {
-    private readonly ILogInService _logInService;
-    private readonly IRegisterService _registerService;
-    private readonly IRegisterOtherService _registerOtherService;
-    private readonly IRefreshService _refreshService;
+    private readonly IAccountService _accountService;
+    private readonly IAccessTokenService _accessTokenService;
+    private readonly IRefreshTokenService _refreshTokenService;
+    private readonly ILogInRequestMapperService _logInRequestMapperService;
+    private readonly IRegisterRequestMapperService _registerRequestMapperService;
+    private readonly IRegisterOtherRequestMapperService _registerOtherRequestMapperService;
+    private readonly IRefreshRequestMapperService _refreshRequestMapperService;
+    private readonly ITokenResponseMapperService _tokenResponseMapperService;
 
     public AccountsController(
-        ILogInService logInService,
-        IRegisterService registerService,
-        IRegisterOtherService registerOtherService,
-        IRefreshService refreshService)
+        IAccountService accountService,
+        IAccessTokenService accessTokenService,
+        IRefreshTokenService refreshTokenService,
+        ILogInRequestMapperService logInRequestMapperService,
+        IRegisterRequestMapperService registerRequestMapperService,
+        IRegisterOtherRequestMapperService registerOtherRequestMapperService,
+        IRefreshRequestMapperService refreshRequestMapperService,
+        ITokenResponseMapperService tokenResponseMapperService)
     {
-        _logInService = logInService;
-        _registerService = registerService;
-        _registerOtherService = registerOtherService;
-        _refreshService = refreshService;
+        _accountService = accountService;
+        _accessTokenService = accessTokenService;
+        _refreshTokenService = refreshTokenService;
+        _logInRequestMapperService = logInRequestMapperService;
+        _registerRequestMapperService = registerRequestMapperService;
+        _registerOtherRequestMapperService = registerOtherRequestMapperService;
+        _refreshRequestMapperService = refreshRequestMapperService;
+        _tokenResponseMapperService = tokenResponseMapperService;
     }
 
     [HttpPost("login")]
@@ -33,7 +47,11 @@ public class AccountsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> LogIn(LogInRequest request)
     {
-        var response = await _logInService.LogInAsync(request);
+        var (email, password) = _logInRequestMapperService.MapToEmailAndPassword(request);
+        var account = await _accountService.AccessAccountAsync(email, password);
+        var accessToken = await _accessTokenService.GenerateTokenAsync(account.Role);
+        var refreshToken = await _refreshTokenService.CreateRefreshTokenAsync(account.Role);
+        var response = _tokenResponseMapperService.MapFromTokenPair(accessToken, refreshToken);
         return Ok(response);
     }
 
@@ -42,7 +60,8 @@ public class AccountsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        await _registerService.RegisterAsync(request);
+        var (email, password) = _registerRequestMapperService.MapToEmailPassword(request);
+        await _accountService.CreateAccountAsync(email, password, Role.Patient);
         return Created();
     }
 
@@ -54,7 +73,8 @@ public class AccountsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RegisterOther(RegisterOtherRequest request)
     {
-        await _registerOtherService.RegisterOther(request);
+        var (email, password, role) = _registerOtherRequestMapperService.MapToEmailPasswordRole(request);
+        await _accountService.CreateAccountAsync(email, password, role);
         return Created();
     }
 
@@ -64,7 +84,10 @@ public class AccountsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh(RefreshRequest request)
     {
-        var response = await _refreshService.RefreshAsync(request);
+        var refreshToken = _refreshRequestMapperService.MapToRefreshToken(request);
+        var newRefreshToken = await _refreshTokenService.CreateReplacementRefreshTokenAsync(refreshToken);
+        var accessToken = await _accessTokenService.GenerateTokenAsync(newRefreshToken.Role);
+        var response = _tokenResponseMapperService.MapFromTokenPair(accessToken, newRefreshToken);
         return Ok(response);
     }
 }
