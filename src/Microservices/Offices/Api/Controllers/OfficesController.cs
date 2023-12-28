@@ -15,14 +15,11 @@ namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 public class OfficesController : ControllerBase
 {
     private readonly IOfficeService _officeService;
-    private readonly IPhotoUploaderService _photoUploaderService;
 
     public OfficesController(
-        IOfficeService officeService,
-        IPhotoUploaderService photoUploaderService)
+        IOfficeService officeService)
     {
         _officeService = officeService;
-        _photoUploaderService = photoUploaderService;
     }
 
     [HttpGet("{id}")]
@@ -57,13 +54,9 @@ public class OfficesController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create(CreateOfficeRequest request, [FromForm] IFormFile? photo)
+    public async Task<IActionResult> Create(CreateOfficeRequest request)
     {
-        Guid? photoId = photo is not null
-            ? await _photoUploaderService.UploadAsync(photo)
-            : null;
-
-        var input = RequestMapping.ToOfficeCreationInput(request, photoId);
+        var input = RequestMapping.ToOfficeCreationInput(request);
         Guid id = await _officeService.CreateOfficeAsync(input);
 
         return CreatedAtAction(nameof(Get), new { Id = id });
@@ -72,13 +65,9 @@ public class OfficesController : ControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Edit(Guid id, EditOfficeRequest request, [FromForm] IFormFile? photo)
+    public async Task<IActionResult> Edit(Guid id, EditOfficeRequest request)
     {
-        Guid? photoId = photo is not null
-            ? await _photoUploaderService.UploadAsync(photo)
-            : null;
-
-        var input = RequestMapping.ToOfficeEditInput(request, photoId);
+        var input = RequestMapping.ToOfficeEditInput(request);
 
         await _officeService.EditOfficeAsync(id, input);
 

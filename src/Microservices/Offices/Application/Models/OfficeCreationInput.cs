@@ -5,6 +5,5 @@ public record OfficeCreationInput(
     string Street,
     string HouseNumber,
     string? OfficeNumber,
-    Guid? PhotoId,
     string RegistryPhoneNumber,
     bool IsActive);

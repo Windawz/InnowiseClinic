@@ -58,7 +58,6 @@ public class OfficeService : IOfficeService
             Street = input.Street,
             HouseNumber = input.HouseNumber,
             OfficeNumber = input.OfficeNumber,
-            PhotoId = input.PhotoId,
             RegistryPhoneNumber = input.RegistryPhoneNumber,
             IsActive = input.IsActive,
         };
@@ -89,7 +88,6 @@ public class OfficeService : IOfficeService
             Street = input.Street ?? office.Street,
             HouseNumber = input.HouseNumber ?? office.HouseNumber,
             OfficeNumber = input.OfficeNumber ?? office.OfficeNumber,
-            PhotoId = input.PhotoId ?? office.PhotoId,
             RegistryPhoneNumber = input.RegistryPhoneNumber ?? office.RegistryPhoneNumber,
             IsActive = input.IsActive ?? office.IsActive,
         };

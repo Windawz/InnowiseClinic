@@ -14,7 +14,6 @@ public class OfficeMapperService : IOfficeMapperService
             Street: entity.Street,
             HouseNumber: entity.HouseNumber,
             OfficeNumber: entity.OfficeNumber,
-            PhotoId: entity.PhotoId,
             RegistryPhoneNumber: entity.RegistryPhoneNumber,
             IsActive: entity.IsActive);
     }
@@ -28,7 +27,6 @@ public class OfficeMapperService : IOfficeMapperService
             Street = office.Street,
             HouseNumber = office.HouseNumber,
             OfficeNumber = office.OfficeNumber,
-            PhotoId = office.PhotoId,
             RegistryPhoneNumber = office.RegistryPhoneNumber,
             IsActive = office.IsActive,
         };
