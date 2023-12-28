@@ -1,4 +1,5 @@
 using FluentValidation;
+using InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Implementations;
@@ -7,7 +8,7 @@ using InnowiseClinic.Microservices.Offices.Data.Contexts;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
-using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
+using InnowiseClinic.Microservices.Shared.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
@@ -25,7 +26,6 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
-        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
         builder.Services.AddLogging();
         builder.Services.AddFluentValidationAutoValidation();
@@ -54,7 +54,10 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseExceptionHandler();
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>(new Dictionary<Type, int>()
+        {
+            [typeof(OfficeNotFoundException)] = StatusCodes.Status404NotFound,
+        });
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
