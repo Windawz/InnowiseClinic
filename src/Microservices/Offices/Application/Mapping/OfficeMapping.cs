@@ -1,12 +1,11 @@
 using InnowiseClinic.Microservices.Offices.Application.Models;
-using InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Offices.Data.Entities;
 
-namespace InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Implementations;
+namespace InnowiseClinic.Microservices.Offices.Application.Mapping;
 
-public class OfficeMapperService : IOfficeMapperService
+public static class OfficeMapping
 {
-    public Office MapFromOfficeEntity(OfficeEntity entity)
+    public static Office ToOffice(OfficeEntity entity)
     {
         return new(
             Id: entity.Id,
@@ -18,11 +17,11 @@ public class OfficeMapperService : IOfficeMapperService
             IsActive: entity.IsActive);
     }
 
-    public OfficeEntity MapToOfficeEntity(Office office)
+    public static OfficeEntity ToOfficeEntity(Office office)
     {
         return new()
         {
-            Id = default,
+            Id = office.Id,
             City = office.City,
             Street = office.Street,
             HouseNumber = office.HouseNumber,

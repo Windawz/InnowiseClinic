@@ -1,7 +1,7 @@
+using InnowiseClinic.Microservices.Offices.Application.Mapping;
 using InnowiseClinic.Microservices.Offices.Application.Models;
 using InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
-using InnowiseClinic.Microservices.Offices.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Offices.Data.Entities;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
 
@@ -10,14 +10,11 @@ namespace InnowiseClinic.Microservices.Offices.Application.Services.Implementati
 public class OfficeService : IOfficeService
 {
     private readonly IOfficeRepository _officeRepository;
-    private readonly IOfficeMapperService _officeMapperService;
 
     public OfficeService(
-        IOfficeRepository officeRepository,
-        IOfficeMapperService officeMapperService)
+        IOfficeRepository officeRepository)
     {
         _officeRepository = officeRepository;
-        _officeMapperService = officeMapperService;
     }
 
     /// <exception cref="OfficeNotFoundException"/>
@@ -25,14 +22,12 @@ public class OfficeService : IOfficeService
     {
         OfficeEntity? officeEntity = await _officeRepository.GetAsync(id);
         
-        if (officeEntity is not null)
-        {
-            return _officeMapperService.MapFromOfficeEntity(officeEntity);
-        }
-        else
+        if (officeEntity is null)
         {
             throw new OfficeNotFoundException(id);
         }
+
+        return OfficeMapping.ToOffice(officeEntity);
     }
 
     /// <exception cref="OfficeNotFoundException"/>
@@ -44,8 +39,9 @@ public class OfficeService : IOfficeService
         }
 
         var officeEntities = await _officeRepository.GetPageAsync(count, start);
+
         // Ugly ToList() call.
-        return officeEntities.Select(entity => _officeMapperService.MapFromOfficeEntity(entity))
+        return officeEntities.Select(entity => OfficeMapping.ToOffice(entity))
             .ToList();
     }
 
@@ -80,7 +76,7 @@ public class OfficeService : IOfficeService
             throw new OfficeNotFoundException(id);
         }
 
-        var office = _officeMapperService.MapFromOfficeEntity(officeEntity);
+        var office = OfficeMapping.ToOffice(officeEntity);
 
         var newOffice = office with
         {
@@ -92,7 +88,7 @@ public class OfficeService : IOfficeService
             IsActive = input.IsActive ?? office.IsActive,
         };
 
-        var newOfficeEntity = _officeMapperService.MapToOfficeEntity(newOffice);
+        var newOfficeEntity = OfficeMapping.ToOfficeEntity(newOffice);
 
         _officeRepository.Update(newOfficeEntity);
     }
