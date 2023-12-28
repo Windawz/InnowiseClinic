@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
+namespace InnowiseClinic.Microservices.Offices.Application.Exceptions;
 
 public class OfficeNotFoundException : Exception
 {

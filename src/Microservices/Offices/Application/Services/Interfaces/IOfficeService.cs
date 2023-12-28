@@ -1,5 +1,5 @@
+using InnowiseClinic.Microservices.Offices.Application.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Models;
-using InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
 
 namespace InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 

@@ -1,6 +1,6 @@
+using InnowiseClinic.Microservices.Offices.Application.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Mapping;
 using InnowiseClinic.Microservices.Offices.Application.Models;
-using InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Offices.Data.Entities;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;

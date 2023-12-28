@@ -1,5 +1,5 @@
 using FluentValidation;
-using InnowiseClinic.Microservices.Offices.Application.Services.Exceptions;
+using InnowiseClinic.Microservices.Offices.Application.Exceptions;
 using InnowiseClinic.Microservices.Offices.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
