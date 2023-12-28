@@ -13,6 +13,6 @@ public class AccountRepository : Repository<AccountEntity, AuthorizationDbContex
     public async Task<AccountEntity?> GetAsync(string email)
     {
         return await DbContext.Accounts
-            .FirstOrDefaultAsync(account => EF.Functions.Like(account.Email, email));
+            .FirstOrDefaultAsync(account => account.Email == email);
     }
 }
