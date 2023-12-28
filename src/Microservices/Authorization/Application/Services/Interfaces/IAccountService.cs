@@ -1,5 +1,5 @@
+using InnowiseClinic.Microservices.Authorization.Application.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 
 namespace InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 

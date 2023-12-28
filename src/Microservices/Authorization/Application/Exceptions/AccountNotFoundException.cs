@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
+namespace InnowiseClinic.Microservices.Authorization.Application.Exceptions;
 
 public class AccountNotFoundException : Exception
 {

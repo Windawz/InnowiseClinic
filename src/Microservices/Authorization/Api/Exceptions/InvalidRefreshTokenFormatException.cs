@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
+namespace InnowiseClinic.Microservices.Authorization.Api.Exceptions;
 
 public class InvalidRefreshTokenFormatException : Exception
 {

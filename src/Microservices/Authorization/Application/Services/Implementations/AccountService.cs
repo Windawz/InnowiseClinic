@@ -1,6 +1,6 @@
+using InnowiseClinic.Microservices.Authorization.Application.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Mapping;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;

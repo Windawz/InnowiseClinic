@@ -1,5 +1,5 @@
 using System.Globalization;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
+using InnowiseClinic.Microservices.Authorization.Api.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using Microsoft.IdentityModel.Tokens;
 
