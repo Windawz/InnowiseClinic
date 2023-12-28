@@ -27,20 +27,16 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
             .AddAsync(entity);
     }
 
-    public async virtual Task UpdateAsync(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
         DbContext.Set<TEntity>()
             .Update(entity);
-        
-        await Task.CompletedTask;
     }
 
-    public async virtual Task DeleteAsync(TEntity entity)
+    public virtual void Delete(TEntity entity)
     {
         DbContext.Set<TEntity>()
             .Remove(entity);
-
-        await Task.CompletedTask;
     }
 
     public async virtual Task SaveAsync()
