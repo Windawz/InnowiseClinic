@@ -2,11 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
+using InnowiseClinic.Microservices.Authorization.Api.Middlewares;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Validators;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
@@ -15,7 +14,6 @@ using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
-using InnowiseClinic.Microservices.Shared.Api.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,15 +32,6 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
-        builder.Services.AddMappingExceptionHandler(options =>
-        {
-            options.MapStatusCode<AccountAlreadyExistsException>(StatusCodes.Status409Conflict)
-                .MapStatusCode<AccountNotFoundException>(StatusCodes.Status404NotFound)
-                .MapStatusCode<InvalidPasswordException>(StatusCodes.Status400BadRequest)
-                .MapStatusCode<InvalidRefreshTokenException>(StatusCodes.Status401Unauthorized)
-                .MapStatusCode<InvalidRefreshTokenFormatException>(StatusCodes.Status400BadRequest);
-        });
-        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
         builder.Services.AddLogging();
         builder.Services.AddFluentValidationAutoValidation();
@@ -93,7 +82,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseExceptionHandler();
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
