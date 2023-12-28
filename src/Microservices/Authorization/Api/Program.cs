@@ -2,10 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
-using InnowiseClinic.Microservices.Authorization.Api.Middlewares;
+using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Validators;
+using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
@@ -14,6 +15,7 @@ using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
+using InnowiseClinic.Microservices.Shared.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -82,7 +84,15 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>(new Dictionary<Type, int>()
+        {
+            [typeof(AccountAlreadyExistsException)] = StatusCodes.Status409Conflict,
+            [typeof(AccountNotFoundException)] = StatusCodes.Status404NotFound,
+            [typeof(InvalidPasswordException)] = StatusCodes.Status400BadRequest,
+            [typeof(InvalidRefreshTokenException)] = StatusCodes.Status401Unauthorized,
+            [typeof(InvalidRefreshTokenFormatException)] = StatusCodes.Status400BadRequest,
+        });
+        
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
