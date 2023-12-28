@@ -27,20 +27,23 @@ public class RefreshTokenService : IRefreshTokenService
     public async Task<RefreshToken> CreateRefreshTokenAsync(Role role)
     {
         var now = DateTime.UtcNow;
-        var id = Guid.NewGuid();
 
         var token = new RefreshToken(
-            TokenId: id,
+            TokenId: default,
             Role: role,
             CreatedAt: now,
             ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
 
-        await _refreshTokenRepository.AddAsync(
-            _refreshTokenMapperService.MapToRefreshTokenEntity(token));
+        var tokenEntity = _refreshTokenMapperService.MapToRefreshTokenEntity(token);
+
+        await _refreshTokenRepository.AddAsync(tokenEntity);
         
         await _refreshTokenRepository.SaveAsync();
 
-        return token;
+        return token with
+        {
+            TokenId = tokenEntity.Id,
+        };
     }
 
     public async Task<RefreshToken> CreateReplacementRefreshTokenAsync(RefreshToken refreshToken)
