@@ -54,7 +54,7 @@ public class RefreshTokenService : IRefreshTokenService
             var entity = await _refreshTokenRepository.GetAsync(id);
             if (entity is not null)
             {
-                await _refreshTokenRepository.DeleteAsync(entity);
+                _refreshTokenRepository.Delete(entity);
                 await _refreshTokenRepository.SaveAsync();
                 replacementRefreshToken = await CreateRefreshTokenAsync(refreshToken.Role);
             }
