@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Offices.Data.Repositories.Implementations;
 
-public class OfficeRepository : AsyncRepository<OfficeEntity, OfficesDbContext>, IOfficeRepository
+public class OfficeRepository : Repository<OfficeEntity, OfficesDbContext>, IOfficeRepository
 {
     public OfficeRepository(OfficesDbContext dbContext) : base(dbContext) { }
 
