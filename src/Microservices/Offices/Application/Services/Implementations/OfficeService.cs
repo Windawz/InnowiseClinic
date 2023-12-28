@@ -96,6 +96,6 @@ public class OfficeService : IOfficeService
 
         var newOfficeEntity = _officeMapperService.MapToOfficeEntity(newOffice);
 
-        await _officeRepository.UpdateAsync(newOfficeEntity);
+        _officeRepository.Update(newOfficeEntity);
     }
 }
