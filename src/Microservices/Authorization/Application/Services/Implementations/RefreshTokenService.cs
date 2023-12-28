@@ -1,8 +1,8 @@
+using InnowiseClinic.Microservices.Authorization.Application.Mapping;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 
@@ -11,16 +11,13 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Implem
 public class RefreshTokenService : IRefreshTokenService
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository;
-    private readonly IRefreshTokenMapperService _refreshTokenMapperService;
     private readonly RefreshTokenServiceOptions _options;
 
     public RefreshTokenService(
         IRefreshTokenRepository refreshTokenRepository,
-        IRefreshTokenMapperService refreshTokenMapperService,
         IOptions<RefreshTokenServiceOptions> options)
     {
         _refreshTokenRepository = refreshTokenRepository;
-        _refreshTokenMapperService = refreshTokenMapperService;
         _options = options.Value;
     }
 
@@ -34,7 +31,7 @@ public class RefreshTokenService : IRefreshTokenService
             CreatedAt: now,
             ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
 
-        var tokenEntity = _refreshTokenMapperService.MapToRefreshTokenEntity(token);
+        var tokenEntity = RefreshTokenMapping.ToRefreshTokenEntity(token);
 
         await _refreshTokenRepository.AddAsync(tokenEntity);
         
@@ -53,7 +50,7 @@ public class RefreshTokenService : IRefreshTokenService
 
         if (IsValid(refreshToken, now))
         {
-            var id = _refreshTokenMapperService.MapToRefreshTokenEntity(refreshToken).Id;
+            var id = RefreshTokenMapping.ToRefreshTokenEntity(refreshToken).Id;
             var entity = await _refreshTokenRepository.GetAsync(id);
             if (entity is not null)
             {

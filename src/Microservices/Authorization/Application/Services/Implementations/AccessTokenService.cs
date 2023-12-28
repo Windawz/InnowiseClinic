@@ -1,8 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
+using InnowiseClinic.Microservices.Authorization.Application.Mapping;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Authorization.Application.Options;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,16 +12,13 @@ public class AccessTokenService : IAccessTokenService
 {
     private const string _tokenType = "Bearer";
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
-    private readonly IRoleMapperService _roleMapperService;
     private readonly AccessTokenServiceOptions _options;
 
     public AccessTokenService(
         JwtSecurityTokenHandler jwtSecurityTokenHandler,
-        IRoleMapperService roleMapperService,
         IOptions<AccessTokenServiceOptions> options)
     {
         _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
-        _roleMapperService = roleMapperService;
         _options = options.Value;
     }
 
@@ -39,7 +36,7 @@ public class AccessTokenService : IAccessTokenService
                 algorithm: _options.Algorithm),
             claims:
             [
-                new(_options.RoleClaimType, _roleMapperService.MapToRoleName(role)),
+                new(_options.RoleClaimType, RoleMapping.ToRoleName(role)),
             ]);
 
         var signedToken = _jwtSecurityTokenHandler.WriteToken(token);

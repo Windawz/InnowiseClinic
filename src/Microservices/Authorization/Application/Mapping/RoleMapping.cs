@@ -1,11 +1,10 @@
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 
-namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
+namespace InnowiseClinic.Microservices.Authorization.Application.Mapping;
 
-public class RoleMapperService : IRoleMapperService
+public static class RoleMapping
 {
-    public Role MapFromRoleName(string roleName)
+    public static Role ToRole(string roleName)
     {
         if (Enum.TryParse(roleName, ignoreCase: true, out Role role))
         {
@@ -19,7 +18,7 @@ public class RoleMapperService : IRoleMapperService
         }
     }
 
-    public string MapToRoleName(Role role)
+    public static string ToRoleName(Role role)
     {
         return Enum.GetName(role)?.ToLowerInvariant()
             ?? throw new ArgumentOutOfRangeException(

@@ -3,14 +3,10 @@ using FluentValidation;
 using InnowiseClinic.Microservices.Authorization.Api.Configuration;
 using InnowiseClinic.Microservices.Authorization.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Api.Validators;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Exceptions;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Implementations;
 using InnowiseClinic.Microservices.Authorization.Application.Services.Interfaces;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Contexts;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
@@ -49,18 +45,6 @@ public class Program
                 dbContextOptionsBuilder.UseSqlServer(
                     builder.Configuration.GetConnectionString("Default"));
             });
-
-        builder.Services
-            .AddScoped<ILogInRequestMapperService, LogInRequestMapperService>()
-            .AddScoped<IRefreshRequestMapperService, RefreshRequestMapperService>()
-            .AddScoped<IRefreshTokenStringMapperService, RefreshTokenStringMapperService>()
-            .AddScoped<IRegisterRequestMapperService, RegisterRequestMapperService>()
-            .AddScoped<IRegisterOtherRequestMapperService, RegisterOtherRequestMapperService>()
-            .AddScoped<ITokenResponseMapperService, TokenResponseMapperService>()
-            .AddScoped<IRoleNameMapperService, RoleNameMapperService>()
-            .AddScoped<IAccountMapperService, AccountMapperService>()
-            .AddScoped<IRefreshTokenMapperService, RefreshTokenMapperService>()
-            .AddScoped<IRoleMapperService, RoleMapperService>();
 
         builder.Services
             .AddScoped<IValidator<LogInRequest>, LogInRequestValidator>()

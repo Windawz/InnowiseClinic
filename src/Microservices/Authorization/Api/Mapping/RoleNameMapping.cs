@@ -1,27 +1,25 @@
-using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
+namespace InnowiseClinic.Microservices.Authorization.Api.Mapping;
 
-public class RoleNameMapperService : IRoleNameMapperService
+public static class RoleNameMapping
 {
-    private static readonly IReadOnlyDictionary<Role, string> _roleNamesToRoles = new Dictionary<Role, string>()
+    private static readonly IReadOnlyDictionary<Role, string> _roleNameToRoleMap = new Dictionary<Role, string>()
     {
         [Role.Patient] = RoleName.Patient,
         [Role.Doctor] = RoleName.Doctor,
         [Role.Receptionist] = RoleName.Receptionist,
     };
-
-    private static readonly IReadOnlyDictionary<string, Role> _rolesToRoleNames = _roleNamesToRoles
+    private static readonly IReadOnlyDictionary<string, Role> _roleToRoleNameMap = _roleNameToRoleMap
         .ToDictionary(
             keySelector: kv => kv.Value,
             elementSelector: kv => kv.Key,
             comparer: StringComparer.OrdinalIgnoreCase);
 
-    public string MapFromRole(Role role)
+    public static string ToRoleName(Role role)
     {
-        if (_roleNamesToRoles.TryGetValue(role, out var roleName))
+        if (_roleNameToRoleMap.TryGetValue(role, out var roleName))
         {
             return roleName;
         }
@@ -33,9 +31,9 @@ public class RoleNameMapperService : IRoleNameMapperService
         }
     }
 
-    public Role MapToRole(string roleName)
+    public static Role ToRole(string roleName)
     {
-        if (_rolesToRoleNames.TryGetValue(roleName, out var role))
+        if (_roleToRoleNameMap.TryGetValue(roleName, out var role))
         {
             return role;
         }

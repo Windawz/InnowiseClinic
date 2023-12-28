@@ -1,34 +1,27 @@
 using System.Globalization;
 using InnowiseClinic.Microservices.Authorization.Api.Services.Exceptions;
-using InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Application.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace InnowiseClinic.Microservices.Authorization.Api.Services.Mappers.Implementations;
+namespace InnowiseClinic.Microservices.Authorization.Api.Mapping;
 
-public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
+public static class RefreshTokenStringMapping
 {
-    private const char _valueSeparator = '.';
-    private static readonly CultureInfo _dateTimeFormat = CultureInfo.InvariantCulture;
-    private readonly IRoleNameMapperService _roleNameMapperService;
+    private const char _refreshTokenStringValueSeparator = '.';
+    private static readonly CultureInfo _refreshTokenDateTimeFormat = CultureInfo.InvariantCulture;
 
-    public RefreshTokenStringMapperService(IRoleNameMapperService roleNameMapperService)
-    {
-        _roleNameMapperService = roleNameMapperService;
-    }
-
-    public string MapFromRefreshToken(RefreshToken refreshToken)
+    public static string ToString(RefreshToken refreshToken)
     {
         return Base64UrlEncoder.Encode(
             string.Join(
-                _valueSeparator,
+                _refreshTokenStringValueSeparator,
                 refreshToken.TokenId.ToString(),
-                _roleNameMapperService.MapFromRole(refreshToken.Role),
-                refreshToken.CreatedAt.ToString(_dateTimeFormat),
-                refreshToken.ExpiresAt.ToString(_dateTimeFormat)));
+                RoleNameMapping.ToRoleName(refreshToken.Role),
+                refreshToken.CreatedAt.ToString(_refreshTokenDateTimeFormat),
+                refreshToken.ExpiresAt.ToString(_refreshTokenDateTimeFormat)));
     }
 
-    public RefreshToken MapToRefreshToken(string refreshTokenString)
+    public static RefreshToken ToRefreshToken(string refreshTokenString)
     {
         refreshTokenString = refreshTokenString.Trim();
 
@@ -44,7 +37,7 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
         }
 
         var valueStrings = decodedString.Split(
-            separator: _valueSeparator,
+            separator: _refreshTokenStringValueSeparator,
             count: 4,
             options: StringSplitOptions.RemoveEmptyEntries 
                 | StringSplitOptions.TrimEntries);
@@ -56,8 +49,8 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
         try
         {
             tokenId = Guid.Parse(valueStrings[0]);
-            createdAt = DateTime.Parse(valueStrings[2], _dateTimeFormat);
-            expiresAt = DateTime.Parse(valueStrings[3], _dateTimeFormat);
+            createdAt = DateTime.Parse(valueStrings[2], _refreshTokenDateTimeFormat);
+            expiresAt = DateTime.Parse(valueStrings[3], _refreshTokenDateTimeFormat);
         }
         catch (FormatException)
         {
@@ -66,7 +59,7 @@ public class RefreshTokenStringMapperService : IRefreshTokenStringMapperService
 
         return new(
             TokenId: tokenId,
-            Role: _roleNameMapperService.MapToRole(valueStrings[1]),
+            Role: RoleNameMapping.ToRole(valueStrings[1]),
             CreatedAt: createdAt,
             ExpiresAt: expiresAt);
     }

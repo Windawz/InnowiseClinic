@@ -1,19 +1,11 @@
 using InnowiseClinic.Microservices.Authorization.Application.Models;
-using InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Authorization.Data.Entities;
 
-namespace InnowiseClinic.Microservices.Authorization.Application.Services.Mappers.Implementations;
+namespace InnowiseClinic.Microservices.Authorization.Application.Mapping;
 
-public class AccountMapperService : IAccountMapperService
+public static class AccountMapping
 {
-    private readonly IRoleMapperService _roleMapperService;
-
-    public AccountMapperService(IRoleMapperService roleMapperService)
-    {
-        _roleMapperService = roleMapperService;
-    }
-
-    public Account MapFromAccountEntity(AccountEntity entity)
+    public static Account ToAccount(AccountEntity entity)
     {
         return new(
             Id: entity.Id,
@@ -24,10 +16,10 @@ public class AccountMapperService : IAccountMapperService
             CreatedAt: entity.CreatedAt,
             UpdatedByEmail: entity.UpdatedByEmail,
             UpdatedAt: entity.UpdatedAt,
-            Role: _roleMapperService.MapFromRoleName(entity.Role));
+            Role: RoleMapping.ToRole(entity.Role));
     }
 
-    public AccountEntity MapToAccountEntity(Account account)
+    public static AccountEntity ToAccountEntity(Account account)
     {
         return new()
         {
@@ -39,7 +31,7 @@ public class AccountMapperService : IAccountMapperService
             CreatedAt = account.CreatedAt,
             UpdatedByEmail = account.UpdatedByEmail,
             UpdatedAt = account.UpdatedAt,
-            Role = _roleMapperService.MapToRoleName(account.Role),
+            Role = RoleMapping.ToRoleName(account.Role),
         };
     }
 }
