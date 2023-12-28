@@ -10,6 +10,6 @@ public class EntityConfiguration : IEntityTypeConfiguration<Entity>
         builder.UseTpcMappingStrategy();
         
         builder.Property(entity => entity.Id)
-            .ValueGeneratedNever();
+            .ValueGeneratedOnAdd();
     }
 }
