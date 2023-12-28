@@ -70,7 +70,7 @@ public class AccountsController : ControllerBase
     public async Task<IActionResult> Refresh(RefreshRequest request)
     {
         var refreshToken = RequestMapping.ToRefreshToken(request);
-        var newRefreshToken = await _refreshTokenService.CreateReplacementRefreshTokenAsync(refreshToken);
+        var newRefreshToken = await _refreshTokenService.RecreateRefreshTokenAsync(refreshToken);
         var accessToken = await _accessTokenService.GenerateTokenAsync(newRefreshToken.Role);
         var response = ResponseMapping.ToTokenResponse(accessToken, newRefreshToken);
         return Ok(response);

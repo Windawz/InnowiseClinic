@@ -43,7 +43,7 @@ public class RefreshTokenService : IRefreshTokenService
         };
     }
 
-    public async Task<RefreshToken> CreateReplacementRefreshTokenAsync(RefreshToken refreshToken)
+    public async Task<RefreshToken> RecreateRefreshTokenAsync(RefreshToken refreshToken)
     {
         var now = DateTime.UtcNow;
         RefreshToken? replacementRefreshToken = null;
