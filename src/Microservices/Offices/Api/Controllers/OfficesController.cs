@@ -1,7 +1,7 @@
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Responses;
+using InnowiseClinic.Microservices.Offices.Api.Mapping;
 using InnowiseClinic.Microservices.Offices.Api.Services.Interfaces;
-using InnowiseClinic.Microservices.Offices.Api.Services.Mappers.Interfaces;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
@@ -15,22 +15,13 @@ namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 public class OfficesController : ControllerBase
 {
     private readonly IOfficeService _officeService;
-    private readonly ICreateOfficeRequestMapperService _createOfficeRequestMapperService;
-    private readonly IEditOfficeRequestMapperService _editOfficeRequestMapperService;
-    private readonly IGetOfficeResponseMapperService _getOfficeResponseMapperService;
     private readonly IPhotoUploaderService _photoUploaderService;
 
     public OfficesController(
         IOfficeService officeService,
-        ICreateOfficeRequestMapperService createOfficeRequestMapperService,
-        IEditOfficeRequestMapperService editOfficeRequestMapperService,
-        IGetOfficeResponseMapperService getOfficeResponseMapperService,
         IPhotoUploaderService photoUploaderService)
     {
         _officeService = officeService;
-        _createOfficeRequestMapperService = createOfficeRequestMapperService;
-        _editOfficeRequestMapperService = editOfficeRequestMapperService;
-        _getOfficeResponseMapperService = getOfficeResponseMapperService;
         _photoUploaderService = photoUploaderService;
     }
 
@@ -40,7 +31,7 @@ public class OfficesController : ControllerBase
     public async Task<IActionResult> Get(Guid id)
     {
         var office = await _officeService.GetOfficeAsync(id);
-        var response = _getOfficeResponseMapperService.MapFromOffice(office);
+        var response = ResponseMapping.ToGetOfficeResponse(office);
 
         return Ok(response);
     }
@@ -72,7 +63,7 @@ public class OfficesController : ControllerBase
             ? await _photoUploaderService.UploadAsync(photo)
             : null;
 
-        var input = _createOfficeRequestMapperService.MapToOfficeCreationInput(request, photoId);
+        var input = RequestMapping.ToOfficeCreationInput(request, photoId);
         Guid id = await _officeService.CreateOfficeAsync(input);
 
         return CreatedAtAction(nameof(Get), new { Id = id });
@@ -87,7 +78,7 @@ public class OfficesController : ControllerBase
             ? await _photoUploaderService.UploadAsync(photo)
             : null;
 
-        var input = _editOfficeRequestMapperService.MapToOfficeEditInput(request, photoId);
+        var input = RequestMapping.ToOfficeEditInput(request, photoId);
 
         await _officeService.EditOfficeAsync(id, input);
 
