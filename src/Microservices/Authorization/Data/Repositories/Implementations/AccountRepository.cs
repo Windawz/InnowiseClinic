@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 
-public class AccountRepository : AsyncRepository<AccountEntity, AuthorizationDbContext>, IAccountRepository
+public class AccountRepository : Repository<AccountEntity, AuthorizationDbContext>, IAccountRepository
 {
     public AccountRepository(AuthorizationDbContext dbContext) : base(dbContext) { }
 

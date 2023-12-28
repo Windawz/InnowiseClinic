@@ -3,4 +3,4 @@ using InnowiseClinic.Microservices.Shared.Data.Repositories.Interfaces;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Interfaces;
 
-public interface IRefreshTokenRepository : IAsyncRepository<RefreshTokenEntity> { }
+public interface IRefreshTokenRepository : IRepository<RefreshTokenEntity> { }

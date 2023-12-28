@@ -5,7 +5,7 @@ using InnowiseClinic.Microservices.Shared.Data.Repositories.Implementations;
 
 namespace InnowiseClinic.Microservices.Authorization.Data.Repositories.Implementations;
 
-public class RefreshTokenRepository : AsyncRepository<RefreshTokenEntity, AuthorizationDbContext>, IRefreshTokenRepository
+public class RefreshTokenRepository : Repository<RefreshTokenEntity, AuthorizationDbContext>, IRefreshTokenRepository
 {
     public RefreshTokenRepository(AuthorizationDbContext dbContext) : base(dbContext) { }
 }
