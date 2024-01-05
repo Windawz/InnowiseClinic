@@ -7,7 +7,13 @@ public static class RequestMapping
 {
     public static OfficeCreationInput ToOfficeCreationInput(CreateOfficeRequest request)
     {
-        throw new NotImplementedException();
+        return new(
+            City: request.City.Trim(),
+            Street: request.Street.Trim(),
+            HouseNumber: request.HouseNumber.Trim(),
+            OfficeNumber: request.OfficeNumber?.Trim(),
+            RegistryPhoneNumber: request.RegistryPhoneNumber.Trim(),
+            IsActive: request.IsActive);
     }
 
     public static OfficeEditInput ToOfficeEditInput(EditOfficeRequest request)
