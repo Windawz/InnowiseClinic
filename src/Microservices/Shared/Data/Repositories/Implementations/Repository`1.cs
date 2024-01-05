@@ -29,18 +29,40 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
 
     public virtual void Update(TEntity entity)
     {
-        DbContext.Set<TEntity>()
-            .Update(entity);
+        var set = DbContext.Set<TEntity>();
+
+        if (GetTrackedEntity(entity) is TEntity trackedEntity)
+        {
+            var entry = set.Entry(trackedEntity);
+            entry.CurrentValues.SetValues(entity);
+        }
+        else
+        {
+            set.Update(entity);
+        }
     }
 
     public virtual void Delete(TEntity entity)
     {
-        DbContext.Set<TEntity>()
-            .Remove(entity);
+        var set = DbContext.Set<TEntity>();
+
+        if (GetTrackedEntity(entity) is TEntity trackedEntity)
+        {
+            set.Entry(trackedEntity).State = EntityState.Deleted;
+        }
+        else
+        {
+            set.Remove(entity);
+        }
     }
 
     public async virtual Task SaveAsync()
     {
         await DbContext.SaveChangesAsync();
+    }
+
+    private TEntity? GetTrackedEntity(TEntity entity)
+    {
+        return DbContext.Set<TEntity>().Local.FirstOrDefault(e => e.Id == entity.Id);
     }
 }
