@@ -7,6 +7,15 @@ public static class ResponseMapping
 {
     public static GetOfficeResponse ToGetOfficeResponse(Office office)
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            Id = office.Id,
+            City = office.City,
+            Street = office.Street,
+            HouseNumber = office.HouseNumber,
+            OfficeNumber = office.OfficeNumber,
+            RegistryPhoneNumber = office.RegistryPhoneNumber,
+            IsActive = office.IsActive,
+        };
     }
 }
