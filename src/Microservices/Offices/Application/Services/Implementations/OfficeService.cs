@@ -59,6 +59,8 @@ public class OfficeService : IOfficeService
         };
 
         await _officeRepository.AddAsync(officeEntity);
+
+        await _officeRepository.SaveAsync();
         
         return officeEntity.Id;
     }
@@ -91,5 +93,7 @@ public class OfficeService : IOfficeService
         var newOfficeEntity = OfficeMapping.ToOfficeEntity(newOffice);
 
         _officeRepository.Update(newOfficeEntity);
+
+        await _officeRepository.SaveAsync();
     }
 }
