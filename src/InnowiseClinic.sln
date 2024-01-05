@@ -5,6 +5,14 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{44398EC6-A4A7-4833-8AAC-8FF4675592B1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authorization", "Authorization", "{B34BA445-C3A7-4183-8CBA-505A03189F8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Api", "Microservices\Authorization\Api\InnowiseClinic.Microservices.Authorization.Api.csproj", "{896DE785-F5A7-4154-9ED5-7747ABEB422A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Application", "Microservices\Authorization\Application\InnowiseClinic.Microservices.Authorization.Application.csproj", "{A44CDF06-3523-4625-BC03-CFB85F3C0634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Authorization.Data", "Microservices\Authorization\Data\InnowiseClinic.Microservices.Authorization.Data.csproj", "{119B1976-B259-484B-9726-BDD50ABB0E0A}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FF36D1CB-1E5C-4A4E-91CA-A9B7381BD97D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Shared.Api", "Microservices\Shared\Api\InnowiseClinic.Microservices.Shared.Api.csproj", "{5EDF02A3-2247-4F28-BCF9-E3760B532D53}"
@@ -28,6 +36,18 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{896DE785-F5A7-4154-9ED5-7747ABEB422A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896DE785-F5A7-4154-9ED5-7747ABEB422A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{896DE785-F5A7-4154-9ED5-7747ABEB422A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896DE785-F5A7-4154-9ED5-7747ABEB422A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A44CDF06-3523-4625-BC03-CFB85F3C0634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A44CDF06-3523-4625-BC03-CFB85F3C0634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A44CDF06-3523-4625-BC03-CFB85F3C0634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A44CDF06-3523-4625-BC03-CFB85F3C0634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119B1976-B259-484B-9726-BDD50ABB0E0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119B1976-B259-484B-9726-BDD50ABB0E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119B1976-B259-484B-9726-BDD50ABB0E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119B1976-B259-484B-9726-BDD50ABB0E0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EDF02A3-2247-4F28-BCF9-E3760B532D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EDF02A3-2247-4F28-BCF9-E3760B532D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EDF02A3-2247-4F28-BCF9-E3760B532D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,6 +70,10 @@ Global
 		{B1F881AB-B6BE-4244-8901-692AF75E5D3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B34BA445-C3A7-4183-8CBA-505A03189F8F} = {44398EC6-A4A7-4833-8AAC-8FF4675592B1}
+		{896DE785-F5A7-4154-9ED5-7747ABEB422A} = {B34BA445-C3A7-4183-8CBA-505A03189F8F}
+		{A44CDF06-3523-4625-BC03-CFB85F3C0634} = {B34BA445-C3A7-4183-8CBA-505A03189F8F}
+		{119B1976-B259-484B-9726-BDD50ABB0E0A} = {B34BA445-C3A7-4183-8CBA-505A03189F8F}
 		{FF36D1CB-1E5C-4A4E-91CA-A9B7381BD97D} = {44398EC6-A4A7-4833-8AAC-8FF4675592B1}
 		{5EDF02A3-2247-4F28-BCF9-E3760B532D53} = {FF36D1CB-1E5C-4A4E-91CA-A9B7381BD97D}
 		{692085BD-65CB-43C4-9281-37D40B2EA2BF} = {FF36D1CB-1E5C-4A4E-91CA-A9B7381BD97D}
