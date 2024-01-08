@@ -15,32 +15,55 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
 
     protected TContext DbContext { get; }
 
-    public async virtual Task<TEntity?> GetAsync(Guid id)
+    public async Task<TEntity?> GetAsync(Guid id)
     {
         return await DbContext.Set<TEntity>()
             .FirstOrDefaultAsync(entity => entity.Id == id);
     }
 
-    public async virtual Task AddAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
         await DbContext.Set<TEntity>()
             .AddAsync(entity);
+
+        await DbContext.SaveChangesAsync();    
     }
 
-    public virtual void Update(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
-        DbContext.Set<TEntity>()
-            .Update(entity);
-    }
+        var set = DbContext.Set<TEntity>();
 
-    public virtual void Delete(TEntity entity)
-    {
-        DbContext.Set<TEntity>()
-            .Remove(entity);
-    }
+        if (GetTrackedEntity(entity) is TEntity trackedEntity)
+        {
+            var entry = set.Entry(trackedEntity);
+            entry.CurrentValues.SetValues(entity);
+        }
+        else
+        {
+            set.Update(entity);
+        }
 
-    public async virtual Task SaveAsync()
-    {
         await DbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(TEntity entity)
+    {
+        var set = DbContext.Set<TEntity>();
+
+        if (GetTrackedEntity(entity) is TEntity trackedEntity)
+        {
+            set.Entry(trackedEntity).State = EntityState.Deleted;
+        }
+        else
+        {
+            set.Remove(entity);
+        }
+
+        await DbContext.SaveChangesAsync();
+    }
+
+    private TEntity? GetTrackedEntity(TEntity entity)
+    {
+        return DbContext.Set<TEntity>().Local.FirstOrDefault(e => e.Id == entity.Id);
     }
 }

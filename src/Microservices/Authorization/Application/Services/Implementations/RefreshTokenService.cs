@@ -35,8 +35,6 @@ public class RefreshTokenService : IRefreshTokenService
 
         await _refreshTokenRepository.AddAsync(tokenEntity);
         
-        await _refreshTokenRepository.SaveAsync();
-
         return token with
         {
             TokenId = tokenEntity.Id,
@@ -55,8 +53,7 @@ public class RefreshTokenService : IRefreshTokenService
             
             if (entity is not null)
             {
-                _refreshTokenRepository.Delete(entity);
-                await _refreshTokenRepository.SaveAsync();
+                await _refreshTokenRepository.DeleteAsync(entity);
                 replacementRefreshToken = await CreateRefreshTokenAsync(refreshToken.Role);
             }
         }
