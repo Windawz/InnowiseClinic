@@ -15,19 +15,21 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
 
     protected TContext DbContext { get; }
 
-    public async virtual Task<TEntity?> GetAsync(Guid id)
+    public async Task<TEntity?> GetAsync(Guid id)
     {
         return await DbContext.Set<TEntity>()
             .FirstOrDefaultAsync(entity => entity.Id == id);
     }
 
-    public async virtual Task AddAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
         await DbContext.Set<TEntity>()
             .AddAsync(entity);
+
+        await DbContext.SaveChangesAsync();    
     }
 
-    public virtual void Update(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
         var set = DbContext.Set<TEntity>();
 
@@ -40,9 +42,11 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
         {
             set.Update(entity);
         }
+
+        await DbContext.SaveChangesAsync();
     }
 
-    public virtual void Delete(TEntity entity)
+    public async Task DeleteAsync(TEntity entity)
     {
         var set = DbContext.Set<TEntity>();
 
@@ -54,10 +58,7 @@ public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
         {
             set.Remove(entity);
         }
-    }
 
-    public async virtual Task SaveAsync()
-    {
         await DbContext.SaveChangesAsync();
     }
 
