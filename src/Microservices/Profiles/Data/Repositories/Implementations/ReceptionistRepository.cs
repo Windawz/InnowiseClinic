@@ -7,11 +7,11 @@ public class ReceptionistRepository : Repository<ReceptionistEntity>
 {
     public ReceptionistRepository(
         IDbConnectionFactory connectionFactory,
+        IEntityMetadataProvider<ReceptionistEntity> entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter) : base(
             connectionFactory,
+            entityMetadataProvider,
             sqlValueFormatter) { }
-
-    protected override string TableName => "Receptionists";
 
     protected override IEnumerable<(string Key, object? Value)> GetPropertyNamesAndValues(ReceptionistEntity entity)
     {

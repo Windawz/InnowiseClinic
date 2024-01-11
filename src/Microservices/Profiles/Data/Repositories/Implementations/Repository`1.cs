@@ -13,9 +13,11 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 {
     protected Repository(
         IDbConnectionFactory connectionFactory,
+        IEntityMetadataProvider<TEntity> entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter)
     {
         Connection = connectionFactory.CreateConnection();
+        EntityMetadataProvider = entityMetadataProvider;
         SqlValueFormatter = sqlValueFormatter;
     }
 
@@ -23,16 +25,16 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 
     protected bool Disposed { get; private set; }
 
-    protected ISqlValueFormatter SqlValueFormatter { get; }
+    protected IEntityMetadataProvider<TEntity> EntityMetadataProvider { get; }
 
-    protected abstract string TableName { get; }
+    protected ISqlValueFormatter SqlValueFormatter { get; }
 
     public async Task<TEntity?> GetAsync(Guid id)
     {
         ObjectDisposedException.ThrowIf(Disposed, this);
 
         string query = new StringBuilder()
-            .AppendLine(@$"SELECT * FROM {TableName}")
+            .AppendLine(@$"SELECT * FROM {EntityMetadataProvider.TableName}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(id)};")
             .ToString();
 
@@ -49,7 +51,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
             .Select(value => SqlValueFormatter.FormatToSql(value));
 
         string command = new StringBuilder()
-            .AppendLine(@$"INSERT INTO {TableName}")
+            .AppendLine(@$"INSERT INTO {EntityMetadataProvider.TableName}")
             .AppendLine(@$"({string.Join(',', namesAndValues.Keys)})")
             .AppendLine(@"VALUES")
             .AppendLine(@$"({string.Join(',', formattedValues)})")
@@ -69,7 +71,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
                     .Select(kv => @$"{kv.Key} = {kv.Value}"));
 
         string command = new StringBuilder()
-            .AppendLine(@$"UPDATE {TableName}")
+            .AppendLine(@$"UPDATE {EntityMetadataProvider.TableName}")
             .AppendLine(@$"SET {assignments}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
@@ -82,7 +84,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
         ObjectDisposedException.ThrowIf(Disposed, this);
 
         var command = new StringBuilder()
-            .AppendLine(@$"DELETE FROM {TableName}")
+            .AppendLine(@$"DELETE FROM {EntityMetadataProvider.TableName}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
 

@@ -7,11 +7,11 @@ public class DoctorRepository : Repository<DoctorEntity>
 {
     public DoctorRepository(
         IDbConnectionFactory connectionFactory,
+        IEntityMetadataProvider<DoctorEntity> entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter) : base(
             connectionFactory,
+            entityMetadataProvider,
             sqlValueFormatter) { }
-
-    protected override string TableName => "Doctors";
 
     protected override IEnumerable<(string Key, object? Value)> GetPropertyNamesAndValues(DoctorEntity entity)
     {
