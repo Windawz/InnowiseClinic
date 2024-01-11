@@ -5,7 +5,11 @@ namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementation
 
 public class ReceptionistRepository : Repository<ReceptionistEntity>
 {
-    public ReceptionistRepository(IDbConnectionFactory connectionFactory) : base(connectionFactory) { }
+    public ReceptionistRepository(
+        IDbConnectionFactory connectionFactory,
+        ISqlValueFormatter sqlValueFormatter) : base(
+            connectionFactory,
+            sqlValueFormatter) { }
 
     protected override string TableName => "Receptionists";
 

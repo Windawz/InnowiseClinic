@@ -5,7 +5,11 @@ namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementation
 
 public class DoctorRepository : Repository<DoctorEntity>
 {
-    public DoctorRepository(IDbConnectionFactory connectionFactory) : base(connectionFactory) { }
+    public DoctorRepository(
+        IDbConnectionFactory connectionFactory,
+        ISqlValueFormatter sqlValueFormatter) : base(
+            connectionFactory,
+            sqlValueFormatter) { }
 
     protected override string TableName => "Doctors";
 

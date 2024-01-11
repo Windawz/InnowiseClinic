@@ -11,14 +11,19 @@ namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementation
 public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDisposable
     where TEntity : IEntity
 {
-    protected Repository(IDbConnectionFactory connectionFactory)
+    protected Repository(
+        IDbConnectionFactory connectionFactory,
+        ISqlValueFormatter sqlValueFormatter)
     {
         Connection = connectionFactory.CreateConnection();
+        SqlValueFormatter = sqlValueFormatter;
     }
 
     protected IDbConnection Connection { get; private set; }
 
     protected bool Disposed { get; private set; }
+
+    protected ISqlValueFormatter SqlValueFormatter { get; }
 
     protected abstract string TableName { get; }
 
@@ -28,7 +33,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 
         string query = new StringBuilder()
             .AppendLine(@$"SELECT * FROM {TableName}")
-            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = '{id}';")
+            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(id)};")
             .ToString();
 
         return await Connection.QuerySingleOrDefaultAsync<TEntity>(query);
@@ -40,11 +45,14 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 
         var namesAndValues = GetPropertyNameValueDictionary(entity);
 
+        var formattedValues = namesAndValues.Values
+            .Select(value => SqlValueFormatter.FormatToSql(value));
+
         string command = new StringBuilder()
             .AppendLine(@$"INSERT INTO {TableName}")
             .AppendLine(@$"({string.Join(',', namesAndValues.Keys)})")
             .AppendLine(@"VALUES")
-            .AppendLine(@$"({string.Join(',', namesAndValues.Values)})")
+            .AppendLine(@$"({string.Join(',', formattedValues)})")
             .AppendLine(@$"RETURNING {nameof(IEntity.Id)};")
             .ToString();
 
@@ -63,7 +71,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
         string command = new StringBuilder()
             .AppendLine(@$"UPDATE {TableName}")
             .AppendLine(@$"SET {assignments}")
-            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = '{entity.Id}';")
+            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
 
         await Connection.ExecuteAsync(command);
@@ -75,7 +83,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 
         var command = new StringBuilder()
             .AppendLine(@$"DELETE FROM {TableName}")
-            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = '{entity.Id}';")
+            .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
 
         await Connection.ExecuteAsync(command);
