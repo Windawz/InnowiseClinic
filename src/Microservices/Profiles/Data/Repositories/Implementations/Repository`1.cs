@@ -15,7 +15,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
         IEntityMetadataProvider<TEntity> entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter)
     {
-        Connection = connectionFactory.CreateConnection();
+        Connection = connectionFactory.OpenNewConnection();
         EntityMetadataProvider = entityMetadataProvider;
         SqlValueFormatter = sqlValueFormatter;
     }

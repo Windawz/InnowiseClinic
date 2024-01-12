@@ -13,8 +13,10 @@ public class DbConnectionFactory : IDbConnectionFactory
         _connectionString = connectionString;
     }
 
-    public IDbConnection CreateConnection()
+    public IDbConnection OpenNewConnection()
     {
-        return new SqlConnection(_connectionString);
+        var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        return connection;
     }
 }
