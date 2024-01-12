@@ -10,7 +10,6 @@
     <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="FluentMigrator" Version="5.0.0" />
     <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="5.0.0" />
-    <PackageReference Include="FluentMigrator.Runner" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
