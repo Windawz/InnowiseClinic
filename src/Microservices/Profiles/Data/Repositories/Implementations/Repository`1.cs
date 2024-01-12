@@ -1,5 +1,4 @@
 using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
 using InnowiseClinic.Microservices.Profiles.Data.Entities.Interfaces;
