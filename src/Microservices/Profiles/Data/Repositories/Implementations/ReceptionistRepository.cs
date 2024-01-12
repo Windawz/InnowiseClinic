@@ -7,7 +7,7 @@ public class ReceptionistRepository : Repository<ReceptionistEntity>
 {
     public ReceptionistRepository(
         IDbConnectionFactory connectionFactory,
-        IEntityMetadataProvider<ReceptionistEntity> entityMetadataProvider,
+        IEntityMetadataProvider entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter) : base(
             connectionFactory,
             entityMetadataProvider,

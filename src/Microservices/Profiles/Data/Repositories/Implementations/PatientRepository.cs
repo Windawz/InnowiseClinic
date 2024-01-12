@@ -7,7 +7,7 @@ public class PatientRepository : Repository<PatientEntity>
 {
     public PatientRepository(
         IDbConnectionFactory connectionFactory,
-        IEntityMetadataProvider<PatientEntity> entityMetadataProvider,
+        IEntityMetadataProvider entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter) : base(
             connectionFactory,
             entityMetadataProvider,

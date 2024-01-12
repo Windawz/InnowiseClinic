@@ -12,7 +12,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 {
     protected Repository(
         IDbConnectionFactory connectionFactory,
-        IEntityMetadataProvider<TEntity> entityMetadataProvider,
+        IEntityMetadataProvider entityMetadataProvider,
         ISqlValueFormatter sqlValueFormatter)
     {
         Connection = connectionFactory.OpenNewConnection();
@@ -24,7 +24,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
 
     protected bool Disposed { get; private set; }
 
-    protected IEntityMetadataProvider<TEntity> EntityMetadataProvider { get; }
+    protected IEntityMetadataProvider EntityMetadataProvider { get; }
 
     protected ISqlValueFormatter SqlValueFormatter { get; }
 
@@ -33,7 +33,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
         ObjectDisposedException.ThrowIf(Disposed, this);
 
         string query = new StringBuilder()
-            .AppendLine(@$"SELECT * FROM {EntityMetadataProvider.TableName}")
+            .AppendLine(@$"SELECT * FROM {EntityMetadataProvider.GetTableName<TEntity>()}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(id)};")
             .ToString();
 
@@ -50,7 +50,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
             .Select(value => SqlValueFormatter.FormatToSql(value));
 
         string command = new StringBuilder()
-            .AppendLine(@$"INSERT INTO {EntityMetadataProvider.TableName}")
+            .AppendLine(@$"INSERT INTO {EntityMetadataProvider.GetTableName<TEntity>()}")
             .AppendLine(@$"({string.Join(',', namesAndValues.Keys)})")
             .AppendLine(@"VALUES")
             .AppendLine(@$"({string.Join(',', formattedValues)})")
@@ -70,7 +70,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
                     .Select(kv => @$"{kv.Key} = {kv.Value}"));
 
         string command = new StringBuilder()
-            .AppendLine(@$"UPDATE {EntityMetadataProvider.TableName}")
+            .AppendLine(@$"UPDATE {EntityMetadataProvider.GetTableName<TEntity>()}")
             .AppendLine(@$"SET {assignments}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
@@ -83,7 +83,7 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>, IDispo
         ObjectDisposedException.ThrowIf(Disposed, this);
 
         var command = new StringBuilder()
-            .AppendLine(@$"DELETE FROM {EntityMetadataProvider.TableName}")
+            .AppendLine(@$"DELETE FROM {EntityMetadataProvider.GetTableName<TEntity>()}")
             .AppendLine(@$"WHERE {nameof(IEntity.Id)} = {SqlValueFormatter.FormatToSql(entity.Id)};")
             .ToString();
 
