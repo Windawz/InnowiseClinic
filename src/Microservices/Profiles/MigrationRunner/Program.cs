@@ -11,17 +11,18 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
+        IConfiguration commandLineConfiguration = new ConfigurationBuilder()
             .AddCommandLine(args)
             .Build();
 
-        if (configuration.GetSection("File").Exists())
+        IConfiguration configuration = commandLineConfiguration;
+
+        if (commandLineConfiguration.GetSection("File").Value is string filePath)
         {
-            string filePath = configuration.GetRequiredSection("File").Value!;
             if (Path.GetExtension(filePath) == ".json" && File.Exists(filePath))
             {
                 configuration = new ConfigurationBuilder()
-                    .AddConfiguration(configuration)
+                    .AddConfiguration(commandLineConfiguration)
                     .AddJsonFile(filePath)
                     .Build();
             }
