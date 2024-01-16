@@ -41,7 +41,16 @@ public class Program
             .BuildServiceProvider(validateScopes: false)
             .CreateScope();
 
-        scope.ServiceProvider.GetRequiredService<IMigrationRunner>()
-            .MigrateUp();
+        var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+
+        if (commandLineConfiguration.GetSection("Rollback").Value is string argument
+            && int.TryParse(argument, out int stepCount))
+        {
+            runner.Rollback(stepCount);
+        }
+        else
+        {
+            runner.MigrateUp();
+        }
     }
 }
