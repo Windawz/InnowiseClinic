@@ -40,7 +40,6 @@ public class OfficeService : IOfficeService
 
         var officeEntities = await _officeRepository.GetPageAsync(count, start);
 
-        // Ugly ToList() call.
         return officeEntities.Select(entity => OfficeMapping.ToOffice(entity))
             .ToList();
     }
