@@ -33,7 +33,7 @@ public class Program
             .ConfigureRunner(builder => builder
                 .AddPostgres()
                 .WithGlobalConnectionString(configuration.GetConnectionString("Default")
-                    ?? configuration.GetRequiredSection("ConnectionString").Value!)
+                    ?? commandLineConfiguration.GetRequiredSection("ConnectionString").Value!)
                 .ScanIn(typeof(Initial).Assembly).For.Migrations())
             .AddLogging(builder => builder
                 .AddFluentMigratorConsole())
