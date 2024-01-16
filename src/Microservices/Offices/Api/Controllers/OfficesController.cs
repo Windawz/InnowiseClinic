@@ -1,10 +1,14 @@
+using FluentValidation;
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Responses;
+using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Targets;
 using InnowiseClinic.Microservices.Offices.Api.Mapping;
 using InnowiseClinic.Microservices.Offices.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Configuration;
 
 namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 
@@ -14,11 +18,14 @@ namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 public class OfficesController : ControllerBase
 {
     private readonly IOfficeService _officeService;
+    private readonly IValidator<EditOfficeTarget> _editOfficeTargetValidator;
 
     public OfficesController(
-        IOfficeService officeService)
+        IOfficeService officeService,
+        IValidator<EditOfficeTarget> editOfficeTargetValidator)
     {
         _officeService = officeService;
+        _editOfficeTargetValidator = editOfficeTargetValidator;
     }
 
     [HttpGet("{id}")]
@@ -57,9 +64,27 @@ public class OfficesController : ControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Edit(Guid id, EditOfficeRequest request)
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Edit(Guid id, [FromBody] JsonPatchDocument<EditOfficeTarget> patchDocument)
     {
-        var input = RequestMapping.ToOfficeEditInput(request);
+        var patchTarget = TargetMapping.FromOffice(
+            await _officeService.GetOfficeAsync(id));
+        
+        patchDocument.ApplyTo(patchTarget);
+
+        var validationResult = await _editOfficeTargetValidator.ValidateAsync(patchTarget);
+        
+        if (!validationResult.IsValid)
+        {
+            foreach (var error in validationResult.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return UnprocessableEntity(ModelState);
+        }
+
+        var input = TargetMapping.ToOfficeEditInput(patchTarget);
 
         await _officeService.EditOfficeAsync(id, input);
 

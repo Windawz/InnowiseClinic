@@ -1,16 +1,16 @@
 using FluentValidation;
-using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Requests;
+using InnowiseClinic.Microservices.Offices.Api.DataTransferObjects.Targets;
 
 namespace InnowiseClinic.Microservices.Offices.Api.Validators;
 
-public class EditOfficeRequestValidator : AbstractValidator<EditOfficeRequest>
+public class EditOfficeTargetValidator : AbstractValidator<EditOfficeTarget>
 {
-    public EditOfficeRequestValidator()
+    public EditOfficeTargetValidator()
     {
-        RuleFor(request => request.City).NotEmpty().Unless(value => value is null);
-        RuleFor(request => request.Street).NotEmpty().Unless(value => value is null);
-        RuleFor(request => request.HouseNumber).NotEmpty().Unless(value => value is null);
-        RuleFor(request => request.OfficeNumber).NotEmpty().Unless(value => value is null);
-        RuleFor(request => request.RegistryPhoneNumber).NotEmpty().RegistryPhoneNumber().Unless(value => value is null);
+        RuleFor(target => target.City).NotEmpty().Unless(value => value is null);
+        RuleFor(target => target.Street).NotEmpty().Unless(value => value is null);
+        RuleFor(target => target.HouseNumber).NotEmpty().Unless(value => value is null);
+        RuleFor(target => target.OfficeNumber).NotEmpty().Unless(value => value is null);
+        RuleFor(target => target.RegistryPhoneNumber).NotEmpty().RegistryPhoneNumber().Unless(value => value is null);
     }
 }

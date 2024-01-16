@@ -65,30 +65,21 @@ public class OfficeService : IOfficeService
     /// <exception cref="OfficeNotFoundException"/>
     public async Task EditOfficeAsync(Guid id, OfficeEditInput input)
     {
-         // Didn't want to use reflection here due to how
-        // slow it is.
-
-        OfficeEntity? officeEntity = await _officeRepository.GetAsync(id);
-        
-        if (officeEntity is null)
-        {
-            throw new OfficeNotFoundException(id);
-        }
-
-        var office = OfficeMapping.ToOffice(officeEntity);
+        var office = OfficeMapping.ToOffice(
+            await _officeRepository.GetAsync(id)
+                ?? throw new OfficeNotFoundException(id));
 
         var newOffice = office with
         {
-            City = input.City ?? office.City,
-            Street = input.Street ?? office.Street,
-            HouseNumber = input.HouseNumber ?? office.HouseNumber,
-            OfficeNumber = input.OfficeNumber ?? office.OfficeNumber,
-            RegistryPhoneNumber = input.RegistryPhoneNumber ?? office.RegistryPhoneNumber,
-            IsActive = input.IsActive ?? office.IsActive,
+            City = input.City,
+            Street = input.Street,
+            HouseNumber = input.HouseNumber,
+            OfficeNumber = input.OfficeNumber,
+            RegistryPhoneNumber = input.RegistryPhoneNumber,
+            IsActive = input.IsActive,
         };
 
-        var newOfficeEntity = OfficeMapping.ToOfficeEntity(newOffice);
-
-        await _officeRepository.UpdateAsync(newOfficeEntity);
+        await _officeRepository.UpdateAsync(
+            OfficeMapping.ToOfficeEntity(newOffice));
     }
 }
