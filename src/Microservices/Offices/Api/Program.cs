@@ -29,6 +29,7 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
 
         builder.Services
+            .AddScoped<IValidator<CreateOfficeRequest>, CreateOfficeRequestValidator>()
             .AddScoped<IOfficeService, OfficeService>()
             .AddScoped<IOfficeRepository, OfficeRepository>()
             .AddDbContext<OfficesDbContext>(dbContextOptionsBuilder =>
