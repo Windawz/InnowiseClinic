@@ -12,12 +12,6 @@ public class OfficeRepository : Repository<OfficeEntity, OfficesDbContext>, IOff
 
     public async Task<ICollection<OfficeEntity>> GetPageAsync(int count, Guid? start = null)
     {
-            // The drawback of paging at the data access layer
-           // is that we prevent any opportunities for streaming.
-          //
-         // Should've tried IAsyncEnumerable instead, then
-        // implemented pagination at the application/API layer.
-
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
 
         IQueryable<OfficeEntity> queryable = DbContext.Offices
