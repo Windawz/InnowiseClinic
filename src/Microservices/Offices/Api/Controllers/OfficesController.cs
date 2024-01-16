@@ -40,15 +40,8 @@ public class OfficesController : ControllerBase
     public async Task<IActionResult> GetPage(int count, Guid? start)
     {
         var offices = await _officeService.GetOfficePageAsync(count, start);
-        
-        if (offices.Count > 0)
-        {
-            return Ok(offices);
-        }
-        else
-        {
-            return NoContent();
-        }
+
+        return Ok(offices);
     }
 
     [HttpPost]
