@@ -3,6 +3,7 @@ using System;
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InnowiseClinic.Microservices.Offices.Data.Migrations
 {
     [DbContext(typeof(OfficesDbContext))]
-    partial class OfficesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117065301_AddMaxLengthToStrings")]
+    partial class AddMaxLengthToStrings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
