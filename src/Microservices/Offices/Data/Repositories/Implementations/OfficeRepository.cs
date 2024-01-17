@@ -1,6 +1,7 @@
 using InnowiseClinic.Microservices.Offices.Data.Contexts;
 using InnowiseClinic.Microservices.Offices.Data.Entities;
 using InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
+using InnowiseClinic.Microservices.Offices.Data.Views;
 using InnowiseClinic.Microservices.Shared.Data.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ public class OfficeRepository : Repository<OfficeEntity, OfficesDbContext>, IOff
 {
     public OfficeRepository(OfficesDbContext dbContext) : base(dbContext) { }
 
-    public async Task<ICollection<OfficeEntity>> GetPageAsync(int count, Guid? start = null)
+    public async Task<ICollection<OfficePageEntryView>> GetPageAsync(int count, Guid? start = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
 
@@ -24,7 +25,22 @@ public class OfficeRepository : Repository<OfficeEntity, OfficesDbContext>, IOff
         }
 
         return await queryable
+            .Select(office => new
+            {
+                OfficeId = office.Id,
+                office.OfficeNumber,
+                office.RegistryPhoneNumber,
+                office.IsActive,
+            })
             .Take(count)
+            .AsAsyncEnumerable()
+            .Select(selection => new OfficePageEntryView()
+            {
+                OfficeId = selection.OfficeId,
+                OfficeNumber = selection.OfficeNumber,
+                RegistryPhoneNumber = selection.RegistryPhoneNumber,
+                IsActive = selection.IsActive,
+            })
             .ToListAsync();
     }
 }

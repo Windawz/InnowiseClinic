@@ -18,4 +18,15 @@ public static class ResponseMapping
             IsActive = office.IsActive,
         };
     }
+
+    public static GetOfficePageResponse ToGetOfficePageResponse(OfficePageEntry officePageEntry)
+    {
+        return new()
+        {
+            OfficeId = officePageEntry.OfficeId,
+            OfficeNumber = officePageEntry.OfficeNumber,
+            RegistryPhoneNumber = officePageEntry.RegistryPhoneNumber,
+            IsActive = officePageEntry.IsActive,
+        };
+    }
 }

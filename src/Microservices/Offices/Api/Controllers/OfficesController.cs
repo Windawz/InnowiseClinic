@@ -46,9 +46,9 @@ public class OfficesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPage(int count, Guid? start)
     {
-        var offices = await _officeService.GetOfficePageAsync(count, start);
-
-        return Ok(offices);
+        return Ok(
+            (await _officeService.GetOfficePageAsync(count, start))
+                .Select(entry => ResponseMapping.ToGetOfficePageResponse(entry)));
     }
 
     [HttpPost]
