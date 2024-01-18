@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Profiles.MigrationRunner", "Microservices\Profiles\MigrationRunner\InnowiseClinic.Microservices.Profiles.MigrationRunner.csproj", "{1AF5DBCE-8245-4857-9C95-A17F1CBD48BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnowiseClinic.Microservices.Profiles.Api", "Microservices\Profiles\Api\InnowiseClinic.Microservices.Profiles.Api.csproj", "{75F7B803-BE28-485D-83B5-9703C0F2F9D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{1AF5DBCE-8245-4857-9C95-A17F1CBD48BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AF5DBCE-8245-4857-9C95-A17F1CBD48BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AF5DBCE-8245-4857-9C95-A17F1CBD48BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F7B803-BE28-485D-83B5-9703C0F2F9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F7B803-BE28-485D-83B5-9703C0F2F9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F7B803-BE28-485D-83B5-9703C0F2F9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F7B803-BE28-485D-83B5-9703C0F2F9D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B34BA445-C3A7-4183-8CBA-505A03189F8F} = {44398EC6-A4A7-4833-8AAC-8FF4675592B1}
@@ -74,5 +80,6 @@ Global
 		{E7B59C90-2346-437B-AE3B-975B8D4D068C} = {44398EC6-A4A7-4833-8AAC-8FF4675592B1}
 		{AD2A92D6-B6E9-4D9B-9BDB-DBF2AD4783BE} = {E7B59C90-2346-437B-AE3B-975B8D4D068C}
 		{1AF5DBCE-8245-4857-9C95-A17F1CBD48BB} = {E7B59C90-2346-437B-AE3B-975B8D4D068C}
+		{75F7B803-BE28-485D-83B5-9703C0F2F9D6} = {E7B59C90-2346-437B-AE3B-975B8D4D068C}
 	EndGlobalSection
 EndGlobal
