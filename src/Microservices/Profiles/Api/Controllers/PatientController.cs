@@ -10,6 +10,7 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 public class PatientController : ControllerBase
 {
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public IActionResult Create(CreatePatientRequest request)
     {
         throw new NotImplementedException();
