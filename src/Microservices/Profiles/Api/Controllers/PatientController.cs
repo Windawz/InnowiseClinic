@@ -39,4 +39,11 @@ public class PatientController : ControllerBase
     {
         throw new NotImplementedException();
     }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }
