@@ -8,7 +8,6 @@ using InnowiseClinic.Microservices.Shared.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Configuration;
 
 namespace InnowiseClinic.Microservices.Offices.Api.Controllers;
 
