@@ -57,7 +57,7 @@ public class OfficesController : ControllerBase
         var input = RequestMapping.ToOfficeCreationInput(request);
         Guid id = await _officeService.CreateOfficeAsync(input);
 
-        return CreatedAtAction(nameof(Get), new { id = id }, null);
+        return CreatedAtAction(nameof(Get), new { id }, null);
     }
 
     [HttpPatch("{id}")]
