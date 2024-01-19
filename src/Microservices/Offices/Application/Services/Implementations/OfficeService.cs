@@ -30,15 +30,9 @@ public class OfficeService : IOfficeService
         return OfficeMapping.ToOffice(officeEntity);
     }
 
-    /// <exception cref="OfficeNotFoundException"/>
-    public async Task<ICollection<OfficePageEntry>> GetOfficePageAsync(int count, Guid? start = null)
+    public async Task<ICollection<OfficePageEntry>> GetOfficePageAsync(int count, int offset)
     {
-        if (start is Guid guid && await _officeRepository.GetAsync(guid) is null)
-        {
-            throw new OfficeNotFoundException(guid);
-        }
-
-        var views = await _officeRepository.GetPageAsync(count, start);
+        var views = await _officeRepository.GetPageAsync(count, offset);
 
         return views.Select(view => OfficePageEntryMapping.FromView(view))
             .ToList();

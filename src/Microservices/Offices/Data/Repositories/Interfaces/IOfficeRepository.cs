@@ -6,5 +6,5 @@ namespace InnowiseClinic.Microservices.Offices.Data.Repositories.Interfaces;
 
 public interface IOfficeRepository : IRepository<OfficeEntity>
 {
-    Task<ICollection<OfficePageEntryView>> GetPageAsync(int count, Guid? start = null);
+    Task<ICollection<OfficePageEntryView>> GetPageAsync(int count, int offset);
 }

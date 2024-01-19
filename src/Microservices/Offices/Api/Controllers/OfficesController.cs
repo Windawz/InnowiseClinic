@@ -44,11 +44,11 @@ public class OfficesController : ControllerBase
     [ProducesResponseType<ICollection<GetOfficeResponse>>(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetPage(int count, Guid? start)
+    public async Task<IActionResult> GetPage(int count, int? offset)
     {
         return Ok(
-            (await _officeService.GetOfficePageAsync(count, start))
-                .Select(entry => ResponseMapping.ToGetOfficePageResponse(entry)));
+            (await _officeService.GetOfficePageAsync(count, offset ?? default))
+                .Select(ResponseMapping.ToGetOfficePageResponse));
     }
 
     [HttpPost]

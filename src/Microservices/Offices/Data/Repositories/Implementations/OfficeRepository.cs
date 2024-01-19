@@ -11,20 +11,14 @@ public class OfficeRepository : Repository<OfficeEntity, OfficesDbContext>, IOff
 {
     public OfficeRepository(OfficesDbContext dbContext) : base(dbContext) { }
 
-    public async Task<ICollection<OfficePageEntryView>> GetPageAsync(int count, Guid? start = null)
+    public async Task<ICollection<OfficePageEntryView>> GetPageAsync(int count, int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
-        IQueryable<OfficeEntity> queryable = DbContext.Offices
-            .OrderBy(office => office.Id);
-
-        if (start is Guid guid)
-        {
-            queryable = queryable
-                .Where(office => office.Id.CompareTo(guid) > 0);
-        }
-
-        return await queryable
+        return await DbContext.Offices
+            .OrderBy(office => office.Id)
+            .Skip(offset)
             .Select(office => new
             {
                 OfficeId = office.Id,

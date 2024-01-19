@@ -7,8 +7,7 @@ public interface IOfficeService
 {
     /// <exception cref="OfficeNotFoundException"/>
     Task<Office> GetOfficeAsync(Guid id);
-    /// <exception cref="OfficeNotFoundException"/>
-    Task<ICollection<OfficePageEntry>> GetOfficePageAsync(int count, Guid? start = null);
+    Task<ICollection<OfficePageEntry>> GetOfficePageAsync(int count, int offset);
     Task<Guid> CreateOfficeAsync(OfficeCreationInput input);
     /// <exception cref="OfficeNotFoundException"/>
     Task EditOfficeAsync(Guid id, OfficeEditInput input);
