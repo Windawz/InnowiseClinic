@@ -18,6 +18,13 @@ public class PatientController : ControllerBase
     {
         throw new NotImplementedException();
     }
+
+    [HttpGet]
+    [ProducesResponseType<ICollection<GetPatientPageEntryResponse>>(StatusCodes.Status200OK)]
+    public IActionResult GetPage(int count, int? offset)
+    {
+        throw new NotImplementedException();
+    }
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
