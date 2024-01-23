@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 
 [ApiController]
+[Route("patients")]
 [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
 public class PatientController : ControllerBase
 {
