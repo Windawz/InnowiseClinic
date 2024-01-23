@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.28" />
-    <PackageReference Include="FluentMigrator" Version="5.0.0" />
-    <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="5.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
   </ItemGroup>
 
 </Project>
