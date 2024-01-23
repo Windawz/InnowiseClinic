@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Api\InnowiseClinic.Microservices.Shared.Api.csproj" />
     <ProjectReference Include="..\Data\InnowiseClinic.Microservices.Profiles.Data.csproj" />
+    <ProjectReference Include="..\Application\InnowiseClinic.Microservices.Profiles.Application.csproj" />
   </ItemGroup>
 
 </Project>
