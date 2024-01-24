@@ -2,6 +2,7 @@ namespace InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests
 
 public class CreateDoctorRequest
 {
+    public required Guid AccountId { get; init; }
     public required Guid OfficeId { get; init; }
     public required Guid SpecializationId { get; init; }
     public required string FirstName { get; init; }
