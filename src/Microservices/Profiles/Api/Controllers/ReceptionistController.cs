@@ -14,14 +14,14 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 public class ReceptionistController : ControllerBase
 {
     [HttpGet("{id}")]
-    [ProducesResponseType<GetPatientResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<GetReceptionistResponse>(StatusCodes.Status200OK)]
     public IActionResult Get(Guid id)
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
-    [ProducesResponseType<ICollection<GetPatientPageResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ICollection<GetReceptionistPageResponse>>(StatusCodes.Status200OK)]
     public IActionResult GetPage(int count, int? offset)
     {
         throw new NotImplementedException();
@@ -29,14 +29,14 @@ public class ReceptionistController : ControllerBase
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(CreatePatientRequest request)
+    public IActionResult Create(CreateReceptionistRequest request)
     {
         throw new NotImplementedException();
     }
 
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Edit(Guid id, JsonPatchDocument<EditPatientTarget> patchDocument)
+    public IActionResult Edit(Guid id, JsonPatchDocument<EditReceptionistTarget> patchDocument)
     {
         throw new NotImplementedException();
     }
