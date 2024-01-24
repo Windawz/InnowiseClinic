@@ -14,7 +14,7 @@ public class DoctorController : ControllerBase
 {
     [HttpGet("{id}")]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
-    [ProducesResponseType<GetPatientResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<GetDoctorResponse>(StatusCodes.Status200OK)]
     public IActionResult Get(Guid id)
     {
         throw new NotImplementedException();
@@ -22,7 +22,7 @@ public class DoctorController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
-    [ProducesResponseType<ICollection<GetPatientPageResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ICollection<GetDoctorPageResponse>>(StatusCodes.Status200OK)]
     public IActionResult GetPage(int count, int? offset)
     {
         throw new NotImplementedException();
@@ -39,7 +39,7 @@ public class DoctorController : ControllerBase
     [HttpPatch("{id}")]
     [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Edit(Guid id, JsonPatchDocument<EditPatientTarget> patchDocument)
+    public IActionResult Edit(Guid id, JsonPatchDocument<EditDoctorTarget> patchDocument)
     {
         throw new NotImplementedException();
     }
