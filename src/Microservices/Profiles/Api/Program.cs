@@ -25,9 +25,9 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
         
         builder.Services
-            .AddScoped<IProfileRepository<PatientProfileEntity>, PatientProfileRepository>()
-            .AddScoped<IProfileRepository<DoctorProfileEntity>, DoctorProfileRepository>()
-            .AddScoped<IProfileRepository<ReceptionistProfileEntity>, ReceptionistProfileRepository>()
+            .AddScoped<IRepository<PatientEntity>, PatientRepository>()
+            .AddScoped<IRepository<DoctorEntity>, DoctorRepository>()
+            .AddScoped<IRepository<ReceptionistEntity>, ReceptionistRepository>()
             .AddSingleton<IMongoClient, MongoClient>(_ =>
             {
                 return new(builder.Configuration.GetConnectionString("Default")

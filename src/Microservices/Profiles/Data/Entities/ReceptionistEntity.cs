@@ -1,13 +1,13 @@
 namespace InnowiseClinic.Microservices.Profiles.Data.Entities;
 
-public record ReceptionistProfileEntity(
+public record ReceptionistEntity(
     Guid Id,
     Guid AccountId,
     Guid OfficeId,
     string FirstName,
     string LastName,
     string? MiddleName)
-        : ProfileEntity(
+        : Entity(
             Id: Id,
             AccountId: AccountId,
             FirstName: FirstName,

@@ -1,14 +1,17 @@
 namespace InnowiseClinic.Microservices.Profiles.Data.Entities;
 
-public record PatientProfileEntity(
+public record DoctorEntity(
     Guid Id,
     Guid AccountId,
+    Guid OfficeId,
+    Guid SpecializationId,
     string FirstName,
     string LastName,
     string? MiddleName,
-    string PhoneNumber,
-    DateOnly DateOfBirth)
-        : ProfileEntity(
+    DateOnly DateOfBirth,
+    int CareerStartYear,
+    DoctorStatus Status)
+        : Entity(
             Id: Id,
             AccountId: AccountId,
             FirstName: FirstName,

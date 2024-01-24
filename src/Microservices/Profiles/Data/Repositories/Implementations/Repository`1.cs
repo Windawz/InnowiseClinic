@@ -4,21 +4,21 @@ using MongoDB.Driver;
 
 namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementations;
 
-public abstract partial class ProfileRepository<TProfileEntity> : IProfileRepository<TProfileEntity>
-    where TProfileEntity : ProfileEntity
+public abstract partial class Repository<TEntity> : IRepository<TEntity>
+    where TEntity : Entity
 {
-    protected ProfileRepository(IMongoDatabase database)
+    protected Repository(IMongoDatabase database)
     {
-        Entities = database.GetCollection<TProfileEntity>(TableName);
+        Entities = database.GetCollection<TEntity>(TableName);
     }
 
-    protected IMongoCollection<TProfileEntity> Entities { get; }
+    protected IMongoCollection<TEntity> Entities { get; }
 
     protected abstract string TableName { get; }
 
-    public async Task<TProfileEntity?> GetAsync(Guid id)
+    public async Task<TEntity?> GetAsync(Guid id)
     {
-        var filter = Builders<TProfileEntity>.Filter.Eq(entity => entity.Id, id);
+        var filter = Builders<TEntity>.Filter.Eq(entity => entity.Id, id);
 
         return await Entities.Find(filter).FirstOrDefaultAsync();
     }
@@ -30,7 +30,7 @@ public abstract partial class ProfileRepository<TProfileEntity> : IProfileReposi
     // and right now there is no need for it, so better
     // leave that for another time.
 
-    public async Task<Guid> AddAsync(TProfileEntity entity)
+    public async Task<Guid> AddAsync(TEntity entity)
     {
         var newId = Guid.NewGuid();
 
@@ -39,16 +39,16 @@ public abstract partial class ProfileRepository<TProfileEntity> : IProfileReposi
         return newId;
     }
 
-    public async Task UpdateAsync(TProfileEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
-        var filter = Builders<TProfileEntity>.Filter.Eq(entity => entity.Id, entity.Id);
+        var filter = Builders<TEntity>.Filter.Eq(entity => entity.Id, entity.Id);
 
         await Entities.ReplaceOneAsync(filter, entity);
     }
 
-    public async Task DeleteAsync(TProfileEntity entity)
+    public async Task DeleteAsync(TEntity entity)
     {
-        var filter = Builders<TProfileEntity>.Filter.Eq(entity => entity.Id, entity.Id);
+        var filter = Builders<TEntity>.Filter.Eq(entity => entity.Id, entity.Id);
 
         await Entities.DeleteOneAsync(filter);
     }
