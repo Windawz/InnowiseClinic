@@ -10,7 +10,7 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 
 [ApiController]
 [Route("receptionists")]
-[Authorize(Roles = $"{RoleName.Receptionist}")]
+[Authorize(Roles = RoleName.Receptionist)]
 public class ReceptionistController : ControllerBase
 {
     [HttpGet("{id}")]
