@@ -5,5 +5,10 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Entities.Configuration
 
 public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTokenEntity>
 {
-    public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder) { }
+    public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
+    {
+        builder.HasOne(token => token.Account)
+            .WithMany()
+            .HasForeignKey(token => token.AccountId);
+    }
 }

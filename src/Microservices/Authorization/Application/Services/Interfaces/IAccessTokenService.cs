@@ -4,5 +4,5 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Interf
 
 public interface IAccessTokenService
 {
-    Task<AccessToken> GenerateTokenAsync(Role role);
+    Task<AccessToken> GenerateTokenAsync(Guid accountId, Role role);
 }

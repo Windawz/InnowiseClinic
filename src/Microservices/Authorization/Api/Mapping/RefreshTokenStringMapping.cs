@@ -16,6 +16,7 @@ public static class RefreshTokenStringMapping
             string.Join(
                 _refreshTokenStringValueSeparator,
                 refreshToken.TokenId.ToString(),
+                refreshToken.AccountId.ToString(),
                 RoleNameMapping.ToRoleName(refreshToken.Role),
                 refreshToken.CreatedAt.ToString(_refreshTokenDateTimeFormat),
                 refreshToken.ExpiresAt.ToString(_refreshTokenDateTimeFormat)));
@@ -38,19 +39,21 @@ public static class RefreshTokenStringMapping
 
         var valueStrings = decodedString.Split(
             separator: _refreshTokenStringValueSeparator,
-            count: 4,
+            count: 5,
             options: StringSplitOptions.RemoveEmptyEntries 
                 | StringSplitOptions.TrimEntries);
 
         Guid tokenId;
+        Guid accountId;
         DateTime createdAt;
         DateTime expiresAt;
 
         try
         {
             tokenId = Guid.Parse(valueStrings[0]);
-            createdAt = DateTime.Parse(valueStrings[2], _refreshTokenDateTimeFormat);
-            expiresAt = DateTime.Parse(valueStrings[3], _refreshTokenDateTimeFormat);
+            accountId = Guid.Parse(valueStrings[1]);
+            createdAt = DateTime.Parse(valueStrings[3], _refreshTokenDateTimeFormat);
+            expiresAt = DateTime.Parse(valueStrings[4], _refreshTokenDateTimeFormat);
         }
         catch (FormatException)
         {
@@ -59,7 +62,8 @@ public static class RefreshTokenStringMapping
 
         return new(
             TokenId: tokenId,
-            Role: RoleNameMapping.ToRole(valueStrings[1]),
+            AccountId: accountId,
+            Role: RoleNameMapping.ToRole(valueStrings[2]),
             CreatedAt: createdAt,
             ExpiresAt: expiresAt);
     }
