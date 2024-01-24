@@ -22,7 +22,7 @@ public class DoctorController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
-    [ProducesResponseType<ICollection<GetPatientPageEntryResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ICollection<GetPatientPageResponse>>(StatusCodes.Status200OK)]
     public IActionResult GetPage(int count, int? offset)
     {
         throw new NotImplementedException();

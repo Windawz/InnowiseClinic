@@ -21,7 +21,7 @@ public class ReceptionistController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType<ICollection<GetPatientPageEntryResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ICollection<GetPatientPageResponse>>(StatusCodes.Status200OK)]
     public IActionResult GetPage(int count, int? offset)
     {
         throw new NotImplementedException();
