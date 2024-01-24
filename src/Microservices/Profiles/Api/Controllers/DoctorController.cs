@@ -31,7 +31,7 @@ public class DoctorController : ControllerBase
     [HttpPost]
     [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(CreatePatientRequest request)
+    public IActionResult Create(CreateDoctorRequest request)
     {
         throw new NotImplementedException();
     }
