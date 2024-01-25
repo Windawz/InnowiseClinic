@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Shared\Api\InnowiseClinic.Microservices.Shared.Api.csproj" />
     <ProjectReference Include="..\Data\InnowiseClinic.Microservices.Profiles.Data.csproj" />
     <ProjectReference Include="..\Application\InnowiseClinic.Microservices.Profiles.Application.csproj" />
+    <ProjectReference Include="..\..\Shared\Utilities\InnowiseClinic.Microservices.Shared.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
