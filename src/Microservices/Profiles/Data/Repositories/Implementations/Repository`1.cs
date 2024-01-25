@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using InnowiseClinic.Microservices.Profiles.Data.Entities;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories.Interfaces;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementations;
 
@@ -23,12 +25,33 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>
         return await Entities.Find(filter).FirstOrDefaultAsync();
     }
 
-    // There was supposed to be a method allowing to query
-    // a set of profiles filtered by multiple predicate expression
-    // trees.
-    // There are, however, more urgent things to do,
-    // and right now there is no need for it, so better
-    // leave that for another time.
+    public async Task<ICollection<TEntity>> GetPageAsync(int offset, int count)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset);
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+
+        return await Entities.Aggregate()
+            .Skip(offset)
+            .Limit(count)
+            .ToListAsync();
+    }
+
+    public async Task<ICollection<TEntity>> GetPageFilteredAsync<TProperty>(
+        int offset,
+        int count,
+        Expression<Func<TEntity, TProperty>> filterSelector,
+        TProperty filterValue)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset);
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+
+        var filter = Builders<TEntity>.Filter.Eq(filterSelector, filterValue);
+
+        return await Entities.Find(filter)
+            .Skip(offset)
+            .Limit(count)
+            .ToListAsync();
+    }
 
     public async Task<Guid> AddAsync(TEntity entity)
     {
