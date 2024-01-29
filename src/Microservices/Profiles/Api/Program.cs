@@ -1,4 +1,7 @@
 using FluentValidation;
+using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
+using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
+using InnowiseClinic.Microservices.Profiles.Api.Validators;
 using InnowiseClinic.Microservices.Profiles.Data.Entities;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementations;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories.Interfaces;
@@ -25,6 +28,12 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
         
         builder.Services
+            .AddScoped<IValidator<CreatePatientRequest>, CreatePatientRequestValidator>()
+            .AddScoped<IValidator<CreateDoctorRequest>, CreateDoctorRequestValidator>()
+            .AddScoped<IValidator<CreateReceptionistRequest>, CreateReceptionistRequestValidator>()
+            .AddScoped<IValidator<EditPatientTarget>, EditPatientTargetValidator>()
+            .AddScoped<IValidator<EditDoctorTarget>, EditDoctorTargetValidator>()
+            .AddScoped<IValidator<EditReceptionistTarget>, EditReceptionistTargetValidator>()
             .AddScoped<IRepository<PatientEntity>, PatientRepository>()
             .AddScoped<IRepository<DoctorEntity>, DoctorRepository>()
             .AddScoped<IRepository<ReceptionistEntity>, ReceptionistRepository>()
