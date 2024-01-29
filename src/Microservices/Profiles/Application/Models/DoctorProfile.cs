@@ -7,10 +7,19 @@ public record DoctorProfile(
     Guid SpecializationId,
     string FirstName,
     string LastName,
-    string? MiddleName) :
+    string? MiddleName,
+    DateOnly DateOfBirth,
+    int CareerStartYear,
+    DoctorStatus Status) :
         Profile(
             Id: Id,
             AccountId: AccountId,
             FirstName: FirstName,
             LastName: LastName,
-            MiddleName: MiddleName);
+            MiddleName: MiddleName)
+{
+    public int Experience =>
+        Math.Max(0,
+            DateOnly.FromDateTime(DateTime.UtcNow)
+                .Year - CareerStartYear) + 1;
+}

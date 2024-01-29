@@ -10,7 +10,7 @@ public record DoctorEntity(
     string? MiddleName,
     DateOnly DateOfBirth,
     int CareerStartYear,
-    DoctorStatus Status)
+    int Status)
         : Entity(
             Id: Id,
             AccountId: AccountId,

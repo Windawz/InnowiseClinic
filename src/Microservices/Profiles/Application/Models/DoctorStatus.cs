@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Profiles.Data.Entities;
+namespace InnowiseClinic.Microservices.Profiles.Application.Models;
 
 public enum DoctorStatus
 {
