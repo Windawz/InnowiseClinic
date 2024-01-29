@@ -10,8 +10,8 @@ public record DoctorProfile(
     string? MiddleName,
     DateOnly DateOfBirth,
     int CareerStartYear,
-    DoctorStatus Status) :
-        Profile(
+    DoctorStatus Status)
+        : Profile(
             Id: Id,
             AccountId: AccountId,
             FirstName: FirstName,
