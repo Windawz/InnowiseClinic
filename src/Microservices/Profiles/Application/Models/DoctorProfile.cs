@@ -5,18 +5,14 @@ public record DoctorProfile(
     Guid AccountId,
     Guid OfficeId,
     Guid SpecializationId,
-    string FirstName,
-    string LastName,
-    string? MiddleName,
+    Name Name,
     DateOnly DateOfBirth,
     int CareerStartYear,
     DoctorStatus Status)
         : Profile(
             Id: Id,
             AccountId: AccountId,
-            FirstName: FirstName,
-            LastName: LastName,
-            MiddleName: MiddleName)
+            Name: Name)
 {
     public int Experience =>
         Math.Max(0,

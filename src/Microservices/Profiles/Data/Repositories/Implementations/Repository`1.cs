@@ -6,7 +6,7 @@ using MongoDB.Driver.Linq;
 
 namespace InnowiseClinic.Microservices.Profiles.Data.Repositories.Implementations;
 
-public abstract partial class Repository<TEntity> : IRepository<TEntity>
+public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : Entity
 {
     protected Repository(IMongoDatabase database)
@@ -20,9 +20,25 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>
 
     public async Task<TEntity?> GetAsync(Guid id)
     {
-        var filter = Builders<TEntity>.Filter.Eq(entity => entity.Id, id);
+        return await Entities.AsQueryable()
+            .SingleOrDefaultAsync(entity => entity.Id == id);
+    }
 
-        return await Entities.Find(filter).FirstOrDefaultAsync();
+    public async Task<TEntity?> GetByNamePartsAsync(string firstName, string lastName, string? middleName)
+    {
+        // Could've tried a static method here instead
+        // to compare name parts in a uniform manner,
+        // but I'm not sure how the MongoDB driver will
+        // translate a static method call, if at all.
+        return await Entities.AsQueryable()
+            .SingleOrDefaultAsync(entity =>
+                entity.FirstName.Equals(firstName, StringComparison.InvariantCulture)
+                && entity.LastName.Equals(lastName, StringComparison.InvariantCulture)
+                && (middleName == null 
+                    && entity.MiddleName == null
+                    || middleName != null
+                    && entity.MiddleName != null
+                    && middleName.Equals(entity.MiddleName, StringComparison.InvariantCultureIgnoreCase)));
     }
 
     public async Task<ICollection<TEntity>> GetPageAsync(int offset, int count)
@@ -30,26 +46,9 @@ public abstract partial class Repository<TEntity> : IRepository<TEntity>
         ArgumentOutOfRangeException.ThrowIfNegative(offset);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-        return await Entities.Aggregate()
+        return await Entities.AsQueryable()
             .Skip(offset)
-            .Limit(count)
-            .ToListAsync();
-    }
-
-    public async Task<ICollection<TEntity>> GetPageFilteredAsync<TProperty>(
-        int offset,
-        int count,
-        Expression<Func<TEntity, TProperty>> filterSelector,
-        TProperty filterValue)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegative(offset);
-        ArgumentOutOfRangeException.ThrowIfNegative(count);
-
-        var filter = Builders<TEntity>.Filter.Eq(filterSelector, filterValue);
-
-        return await Entities.Find(filter)
-            .Skip(offset)
-            .Limit(count)
+            .Take(count)
             .ToListAsync();
     }
 

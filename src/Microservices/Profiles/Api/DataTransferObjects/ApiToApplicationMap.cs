@@ -5,16 +5,16 @@ using InnowiseClinic.Microservices.Profiles.Application.Models;
 
 namespace InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects;
 
-public static class Map
+public static class ApiToApplicationMap
 {
     public static PatientProfile FromRequest(CreatePatientRequest value)
     {
         return new(
             Id: default,
             AccountId: value.AccountId,
-            FirstName: value.FirstName.Trim(),
-            LastName: value.LastName.Trim(),
-            MiddleName: value.MiddleName?.Trim(),
+            Name: new(value.FirstName.Trim(),
+                value.LastName.Trim(),
+                value.MiddleName?.Trim()),
             PhoneNumber: value.PhoneNumber.Trim(),
             DateOfBirth: value.DateOfBirth);
     }
@@ -26,9 +26,9 @@ public static class Map
             AccountId: value.AccountId,
             OfficeId: value.OfficeId,
             SpecializationId: value.SpecializationId,
-            FirstName: value.FirstName.Trim(),
-            LastName: value.LastName.Trim(),
-            MiddleName: value.MiddleName?.Trim(),
+            Name: new(value.FirstName.Trim(),
+                value.LastName.Trim(),
+                value.MiddleName?.Trim()),
             DateOfBirth: value.DateOfBirth,
             CareerStartYear: value.CareerStartYear,
             // Validation is supposed to happen elsewhere.
@@ -41,9 +41,9 @@ public static class Map
             Id: default,
             AccountId: value.AccountId,
             OfficeId: value.OfficeId,
-            FirstName: value.FirstName.Trim(),
-            LastName: value.LastName.Trim(),
-            MiddleName: value.MiddleName?.Trim());
+            Name: new(value.FirstName.Trim(),
+                value.LastName.Trim(),
+                value.MiddleName?.Trim()));
     }
 
     public static GetPatientResponse ToResponse(PatientProfile value)
@@ -51,9 +51,9 @@ public static class Map
         return new()
         {
             AccountId = value.AccountId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             PhoneNumber = value.PhoneNumber,
             DateOfBirth = value.DateOfBirth,
         };
@@ -66,9 +66,9 @@ public static class Map
             AccountId = value.AccountId,
             OfficeId = value.OfficeId,
             SpecializationId = value.SpecializationId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             DateOfBirth = value.DateOfBirth,
             CareerStartYear = value.CareerStartYear,
             Experience = value.Experience,
@@ -82,9 +82,9 @@ public static class Map
         {
             AccountId = value.AccountId,
             OfficeId = value.OfficeId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
         };
     }
 
@@ -93,9 +93,9 @@ public static class Map
         return new()
         {
             Id = value.Id,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             PhoneNumber = value.PhoneNumber,
         };
     }
@@ -107,9 +107,9 @@ public static class Map
             Id = value.Id,
             OfficeId = value.OfficeId,
             SpecializationId = value.SpecializationId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             Experience = value.Experience,
         };
     }
@@ -120,9 +120,9 @@ public static class Map
         {
             Id = value.Id,
             OfficeId = value.OfficeId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
         };
     }
 
@@ -130,9 +130,9 @@ public static class Map
     {
         return new()
         {
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             PhoneNumber = value.PhoneNumber,
             DateOfBirth = value.DateOfBirth,
         };
@@ -144,9 +144,9 @@ public static class Map
         {
             OfficeId = value.OfficeId,
             SpecializationId = value.SpecializationId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
             DateOfBirth = value.DateOfBirth,
             CareerStartYear = value.CareerStartYear,
             Status = (int)value.Status,
@@ -158,9 +158,9 @@ public static class Map
         return new()
         {
             OfficeId = value.OfficeId,
-            FirstName = value.FirstName,
-            LastName = value.LastName,
-            MiddleName = value.MiddleName,
+            FirstName = value.Name.First,
+            LastName = value.Name.Last,
+            MiddleName = value.Name.Middle,
         };
     }
 
@@ -169,9 +169,9 @@ public static class Map
         return new(
             Id: original.Id,
             AccountId: original.AccountId,
-            FirstName: value.FirstName,
-            LastName: value.LastName,
-            MiddleName: value.MiddleName,
+            Name: new(value.FirstName,
+                value.LastName,
+                value.MiddleName),
             PhoneNumber: value.PhoneNumber,
             DateOfBirth: value.DateOfBirth);
     }
@@ -183,9 +183,9 @@ public static class Map
             AccountId: original.AccountId,
             OfficeId: value.OfficeId,
             SpecializationId: value.SpecializationId,
-            FirstName: value.FirstName,
-            LastName: value.LastName,
-            MiddleName: value.MiddleName,
+            Name: new(value.FirstName,
+                value.LastName,
+                value.MiddleName),
             DateOfBirth: value.DateOfBirth,
             CareerStartYear: value.CareerStartYear,
             // Validation is supposed to happen elsewhere.
@@ -198,8 +198,8 @@ public static class Map
             Id: original.Id,
             AccountId: original.AccountId,
             OfficeId: value.OfficeId,
-            FirstName: value.FirstName,
-            LastName: value.LastName,
-            MiddleName: value.MiddleName);
+            Name: new(value.FirstName,
+                value.LastName,
+                value.MiddleName));
     }
 }
