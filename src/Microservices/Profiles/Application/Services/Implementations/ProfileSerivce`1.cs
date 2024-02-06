@@ -19,11 +19,6 @@ public abstract class ProfileService<TProfile> : IProfileSerivce<TProfile> where
     {
         var name = newProfile.Name;
 
-        if (await Repository.GetAsync<TProfile>(new NameFilter(name)) is not null)
-        {
-            throw new ProfileWithGivenNameAlreadyExistsException(name);
-        }
-
         await Repository.AddAsync(newProfile);
     }
 
@@ -62,9 +57,12 @@ public abstract class ProfileService<TProfile> : IProfileSerivce<TProfile> where
             ?? throw new ProfileNotFoundByIdException(id);
     }
 
-    public async Task<TProfile?> GetByNameAsync(Name name)
+    public async Task<ICollection<TProfile>> GetManyByNameAsync(Name name, int? lastPosition, int? maxCount)
     {
-        return await Repository.GetAsync<TProfile>(new NameFilter(name));
+        return await Repository.GetManyAsync<TProfile>(
+            filter: new NameFilter(name),
+            lastPosition: lastPosition,
+            maxCount: maxCount);
     }
 
     public async Task<ICollection<TProfile>> GetManyAsync(int? lastPosition, int? maxCount)

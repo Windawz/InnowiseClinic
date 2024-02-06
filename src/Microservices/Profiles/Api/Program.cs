@@ -68,7 +68,6 @@ public class Program
             [typeof(DateOutOfRangeException)] = StatusCodes.Status400BadRequest,
             [typeof(ProfileNotFoundByIdException)] = StatusCodes.Status404NotFound,
             [typeof(ProfileNotFoundByNameException)] = StatusCodes.Status404NotFound,
-            [typeof(ProfileWithGivenNameAlreadyExistsException)] = StatusCodes.Status409Conflict,
             [typeof(YearOutOfRangeException)] = StatusCodes.Status400BadRequest,
         });
 
