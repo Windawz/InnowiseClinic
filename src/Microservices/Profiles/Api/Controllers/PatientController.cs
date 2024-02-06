@@ -1,8 +1,11 @@
 using FluentValidation;
+using InnowiseClinic.Microservices.Profiles.Api.Attributes;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
+using InnowiseClinic.Microservices.Profiles.Application.Models;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filters;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using InnowiseClinic.Microservices.Shared.Api.Validators;
@@ -42,6 +45,24 @@ public class PatientController : ControllerBase
     public async Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPage(int count, int? offset)
     {
         var profiles = await _patientProfileService.GetManyAsync(lastPosition: offset, maxCount: count);
+        var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
+
+        return pageResponses;
+    }
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [QueryParameterConstraint(nameof(firstName))]
+    [QueryParameterConstraint(nameof(lastName))]
+    public async Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPageByName(
+        int count,
+        int? offset,
+        string firstName,
+        string lastName,
+        string? middleName)
+    {
+        Name name = ApiToApplicationMap.ToName(firstName, lastName, middleName);
+        var profiles = await _patientProfileService.GetManyByNameAsync(name: name, lastPosition: offset, maxCount: count);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;

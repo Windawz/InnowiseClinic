@@ -179,7 +179,7 @@ public static class ApiToApplicationMap
         value.Name = ToName(target.FirstName, target.LastName, target.MiddleName);
     }
 
-    private static Name ToName(string firstName, string lastName, string? middleName)
+    public static Name ToName(string firstName, string lastName, string? middleName)
     {
         static string CleanUp(string namePart)
         {
