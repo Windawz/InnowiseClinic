@@ -7,10 +7,10 @@ public class EditDoctorTargetValidator : AbstractValidator<EditDoctorTarget>
 {
     public EditDoctorTargetValidator()
     {
-        RuleFor(target => target.FirstName).NamePart();
-        RuleFor(target => target.LastName).NamePart();
-        RuleFor(target => target.MiddleName).OptionalNamePart();
-        RuleFor(target => target.CareerStartYear).CareerStartYear(target => target.DateOfBirth);
-        RuleFor(target => target.Status).DoctorStatus();
+        RuleFor(target => target.FirstName).NotEmpty();
+        RuleFor(target => target.LastName).NotEmpty();
+        RuleFor(target => target.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
+        RuleFor(target => target.CareerStartYear).GreaterThanOrEqualTo(0);
+        RuleFor(target => target.Status).ValidDoctorStatus();
     }
 }

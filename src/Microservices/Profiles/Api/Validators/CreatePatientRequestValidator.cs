@@ -7,9 +7,9 @@ public class CreatePatientRequestValidator : AbstractValidator<CreatePatientRequ
 {
     public CreatePatientRequestValidator()
     {
-        RuleFor(request => request.FirstName).NamePart();
-        RuleFor(request => request.LastName).NamePart();
-        RuleFor(request => request.MiddleName).OptionalNamePart();
-        RuleFor(request => request.PhoneNumber).PhoneNumber();
+        RuleFor(request => request.FirstName).NotEmpty();
+        RuleFor(request => request.LastName).NotEmpty();
+        RuleFor(request => request.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
+        RuleFor(request => request.PhoneNumber).NotEmpty();
     }
 }

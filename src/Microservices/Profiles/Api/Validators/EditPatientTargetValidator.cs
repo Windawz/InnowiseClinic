@@ -7,9 +7,9 @@ public class EditPatientTargetValidator : AbstractValidator<EditPatientTarget>
 {
     public EditPatientTargetValidator()
     {
-        RuleFor(target => target.FirstName).NamePart();
-        RuleFor(target => target.LastName).NamePart();
-        RuleFor(target => target.MiddleName).OptionalNamePart();
-        RuleFor(target => target.PhoneNumber).PhoneNumber();
+        RuleFor(target => target.FirstName).NotEmpty();
+        RuleFor(target => target.LastName).NotEmpty();
+        RuleFor(target => target.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
+        RuleFor(target => target.PhoneNumber).NotEmpty();
     }
 }

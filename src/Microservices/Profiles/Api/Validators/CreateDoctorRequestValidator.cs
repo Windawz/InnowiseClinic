@@ -7,10 +7,10 @@ public class CreateDoctorRequestValidator : AbstractValidator<CreateDoctorReques
 {
     public CreateDoctorRequestValidator()
     {
-        RuleFor(request => request.FirstName).NamePart();
-        RuleFor(request => request.LastName).NamePart();
-        RuleFor(request => request.MiddleName).OptionalNamePart();
-        RuleFor(request => request.CareerStartYear).CareerStartYear(request => request.DateOfBirth);
-        RuleFor(request => request.Status).DoctorStatus();
+        RuleFor(request => request.FirstName).NotEmpty();
+        RuleFor(request => request.LastName).NotEmpty();
+        RuleFor(request => request.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
+        RuleFor(request => request.CareerStartYear).GreaterThanOrEqualTo(0);
+        RuleFor(request => request.Status).ValidDoctorStatus();
     }
 }

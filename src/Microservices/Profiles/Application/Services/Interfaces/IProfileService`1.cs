@@ -2,12 +2,12 @@ using InnowiseClinic.Microservices.Profiles.Application.Models;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 
-public interface IProfileService<TProfile> where TProfile : Profile
+public interface IProfileSerivce<TProfile> where TProfile : Profile
 {
-    Task<TProfile> GetByIdAsync(Guid id);
-    Task<TProfile> GetByNameAsync(Name name);
-    Task<ICollection<TProfile>> GetPageAsync(int offset, int count);
-    Task<TProfile> CreateAsync(TProfile input);
-    Task EditAsync(Guid id, TProfile input);
+    Task<TProfile> GetAsync(Guid id);
+    Task<ICollection<TProfile>> GetManyAsync(int? lastPosition, int? maxCount);
+    Task<TProfile?> GetByNameAsync(Name name);
+    Task CreateAsync(TProfile newProfile);
+    Task EditAsync(Guid id, Action<TProfile> editAction);
     Task DeleteAsync(Guid id);
 }

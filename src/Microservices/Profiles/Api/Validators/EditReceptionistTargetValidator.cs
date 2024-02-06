@@ -7,8 +7,8 @@ public class EditReceptionistTargetValidator : AbstractValidator<EditReceptionis
 {
     public EditReceptionistTargetValidator()
     {
-        RuleFor(target => target.FirstName).NamePart();
-        RuleFor(target => target.LastName).NamePart();
-        RuleFor(target => target.MiddleName).OptionalNamePart();
+        RuleFor(target => target.FirstName).NotEmpty();
+        RuleFor(target => target.LastName).NotEmpty();
+        RuleFor(target => target.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
     }
 }

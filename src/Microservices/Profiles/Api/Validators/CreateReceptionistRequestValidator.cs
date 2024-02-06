@@ -7,8 +7,8 @@ public class CreateReceptionistRequestValidator : AbstractValidator<CreateRecept
 {
     public CreateReceptionistRequestValidator()
     {
-        RuleFor(request => request.FirstName).NamePart();
-        RuleFor(request => request.LastName).NamePart();
-        RuleFor(request => request.MiddleName).OptionalNamePart();
+        RuleFor(request => request.FirstName).NotEmpty();
+        RuleFor(request => request.LastName).NotEmpty();
+        RuleFor(request => request.MiddleName).NotEmpty().Unless(request => request.MiddleName is null);
     }
 }

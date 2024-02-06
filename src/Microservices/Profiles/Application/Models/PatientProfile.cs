@@ -1,12 +1,29 @@
 namespace InnowiseClinic.Microservices.Profiles.Application.Models;
 
-public record PatientProfile(
-    Guid Id,
-    Guid AccountId,
-    Name Name,
-    string PhoneNumber,
-    DateOnly DateOfBirth)
-        : Profile(
-            Id: Id,
-            AccountId: AccountId,
-            Name: Name);
+public class PatientProfile : Profile
+{
+    private DateOnly _dateOfBirth;
+
+    public PatientProfile(
+        Guid accountId,
+        Name name,
+        string phoneNumber,
+        DateOnly dateOfBirth) : base(accountId, name)
+    {
+        PhoneNumber = phoneNumber;
+        DateOfBirth = dateOfBirth;
+    }
+    
+    public string PhoneNumber { get; set; }
+
+    public DateOnly DateOfBirth
+    {
+        get => _dateOfBirth;
+        set
+        {
+            Dates.ThrowIfDateIsOutOfRange(value);
+
+            _dateOfBirth = value;
+        }
+    }
+}
