@@ -33,7 +33,7 @@ public class DoctorProfileService : ProfileService<DoctorProfile>, IDoctorProfil
             maxCount: maxCount);
     }
 
-    public async Task<ICollection<DoctorProfile>> GetManyBySpecialization(Guid specializationId, int? lastPosition, int? maxCount)
+    public async Task<ICollection<DoctorProfile>> GetManyBySpecializationAsync(Guid specializationId, int? lastPosition, int? maxCount)
     {
         return await Repository.GetManyAsync<DoctorProfile>(
             filter: new SpecializationFilter(specializationId),
