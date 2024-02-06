@@ -21,6 +21,7 @@ public class DoctorProfile : Profile
         SpecializationId = specializationId;
         DateOfBirth = dateOfBirth;
         CareerStartYear = careerStartYear;
+        Status = status;
     }
 
     public Guid OfficeId { get; set; }
