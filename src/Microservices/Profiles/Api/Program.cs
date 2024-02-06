@@ -4,6 +4,8 @@ using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
 using InnowiseClinic.Microservices.Profiles.Api.Validators;
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
+using InnowiseClinic.Microservices.Profiles.Application.Services.Implementations;
+using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.Middlewares;
@@ -35,6 +37,9 @@ public class Program
             .AddScoped<IValidator<EditPatientTarget>, EditPatientTargetValidator>()
             .AddScoped<IValidator<EditDoctorTarget>, EditDoctorTargetValidator>()
             .AddScoped<IValidator<EditReceptionistTarget>, EditReceptionistTargetValidator>()
+            .AddScoped<IPatientProfileService, PatientProfileService>()
+            .AddScoped<IDoctorProfileService, DoctorProfileService>()
+            .AddScoped<IReceptionistProfileService, ReceptionistProfileService>()
             .AddScoped<IProfileRepository, ProfileRepository>()
             .AddSingleton<IMongoClient, MongoClient>(_ =>
             {
