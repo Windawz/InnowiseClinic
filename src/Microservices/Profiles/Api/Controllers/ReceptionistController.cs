@@ -20,12 +20,10 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 public class ReceptionistController : ControllerBase
 {
     private readonly IReceptionistProfileService _receptionistProfileService;
-    private readonly IValidator<EditReceptionistTarget> _editReceptionistTargetValidator;
 
-    public ReceptionistController(IReceptionistProfileService receptionistProfileService, IValidator<EditReceptionistTarget> editReceptionistTargetValidator)
+    public ReceptionistController(IReceptionistProfileService receptionistProfileService)
     {
         _receptionistProfileService = receptionistProfileService;
-        _editReceptionistTargetValidator = editReceptionistTargetValidator;
     }
 
     [HttpGet("{id}")]
@@ -83,12 +81,15 @@ public class ReceptionistController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-    public async Task<ActionResult> Edit(Guid id, JsonPatchDocument<EditReceptionistTarget> patchDocument)
+    public async Task<ActionResult> Edit(
+        Guid id,
+        JsonPatchDocument<EditReceptionistTarget> patchDocument,
+        [FromServices] IValidator<EditReceptionistTarget> validator)
     {
         var profile = await _receptionistProfileService.GetAsync(id);
         var target = ApiToApplicationMap.ToTarget(profile);
 
-        await patchDocument.ApplyToAndValidateAsync(target, _editReceptionistTargetValidator, ModelState);
+        await patchDocument.ApplyToAndValidateAsync(target, validator, ModelState);
         if (!ModelState.IsValid)
         {
             return UnprocessableEntity(ModelState);

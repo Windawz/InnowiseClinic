@@ -19,12 +19,10 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 public class DoctorController : ControllerBase
 {
     private readonly IDoctorProfileService _doctorProfileService;
-    private readonly IValidator<EditDoctorTarget> _editDoctorTargetValidator;
 
-    public DoctorController(IDoctorProfileService doctorProfileService, IValidator<EditDoctorTarget> editDoctorTargetValidator)
+    public DoctorController(IDoctorProfileService doctorProfileService)
     {
         _doctorProfileService = doctorProfileService;
-        _editDoctorTargetValidator = editDoctorTargetValidator;
     }
 
     [HttpGet("{id}")]
@@ -111,12 +109,15 @@ public class DoctorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-    public async Task<ActionResult> Edit(Guid id, JsonPatchDocument<EditDoctorTarget> patchDocument)
+    public async Task<ActionResult> Edit(
+        Guid id,
+        JsonPatchDocument<EditDoctorTarget> patchDocument,
+        [FromServices] IValidator<EditDoctorTarget> validator)
     {
         var profile = await _doctorProfileService.GetAsync(id);
         var target = ApiToApplicationMap.ToTarget(profile);
 
-        await patchDocument.ApplyToAndValidateAsync(target, _editDoctorTargetValidator, ModelState);
+        await patchDocument.ApplyToAndValidateAsync(target, validator, ModelState);
         if (!ModelState.IsValid)
         {
             return UnprocessableEntity(ModelState);
