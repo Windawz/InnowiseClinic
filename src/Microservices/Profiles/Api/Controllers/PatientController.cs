@@ -14,36 +14,36 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Controllers;
 public class PatientController : ControllerBase
 {
     [HttpGet("{id}")]
-    [ProducesResponseType<GetPatientResponse>(StatusCodes.Status200OK)]
-    public IActionResult Get(Guid id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<ActionResult<GetPatientResponse>> Get(Guid id)
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
-    [ProducesResponseType<ICollection<GetPatientPageResponse>>(StatusCodes.Status200OK)]
-    public IActionResult GetPage(int count, int? offset)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPage(int count, int? offset)
     {
         throw new NotImplementedException();
     }
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(CreatePatientRequest request)
+    public Task<ActionResult> Create(CreatePatientRequest request)
     {
         throw new NotImplementedException();
     }
 
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Edit(Guid id, JsonPatchDocument<EditPatientTarget> patchDocument)
+    public Task<ActionResult> Edit(Guid id, JsonPatchDocument<EditPatientTarget> patchDocument)
     {
         throw new NotImplementedException();
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult Delete(Guid id)
+    public Task<ActionResult> Delete(Guid id)
     {
         throw new NotImplementedException();
     }

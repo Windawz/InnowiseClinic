@@ -14,16 +14,16 @@ public class DoctorController : ControllerBase
 {
     [HttpGet("{id}")]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
-    [ProducesResponseType<GetDoctorResponse>(StatusCodes.Status200OK)]
-    public IActionResult Get(Guid id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<ActionResult<GetDoctorResponse>> Get(Guid id)
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
-    [ProducesResponseType<ICollection<GetDoctorPageResponse>>(StatusCodes.Status200OK)]
-    public IActionResult GetPage(int count, int? offset)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<ActionResult<GetDoctorPageResponse>> GetPage(int count, int? offset)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +31,7 @@ public class DoctorController : ControllerBase
     [HttpPost]
     [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(CreateDoctorRequest request)
+    public Task<ActionResult> Create(CreateDoctorRequest request)
     {
         throw new NotImplementedException();
     }
@@ -39,7 +39,7 @@ public class DoctorController : ControllerBase
     [HttpPatch("{id}")]
     [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Edit(Guid id, JsonPatchDocument<EditDoctorTarget> patchDocument)
+    public Task<ActionResult> Edit(Guid id, JsonPatchDocument<EditDoctorTarget> patchDocument)
     {
         throw new NotImplementedException();
     }
@@ -47,7 +47,7 @@ public class DoctorController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult Delete(Guid id)
+    public Task<ActionResult> Delete(Guid id)
     {
         throw new NotImplementedException();
     }
