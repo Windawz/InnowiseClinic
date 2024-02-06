@@ -2,9 +2,11 @@ using FluentValidation;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
 using InnowiseClinic.Microservices.Profiles.Api.Validators;
+using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
+using InnowiseClinic.Microservices.Shared.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MongoDB.Driver;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
@@ -59,6 +61,16 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>(new Dictionary<Type, int>
+        {
+            [typeof(DateOfBirthExceedsCareerStartYearException)] = StatusCodes.Status400BadRequest,
+            [typeof(DateOutOfRangeException)] = StatusCodes.Status400BadRequest,
+            [typeof(ProfileNotFoundByIdException)] = StatusCodes.Status404NotFound,
+            [typeof(ProfileNotFoundByNameException)] = StatusCodes.Status404NotFound,
+            [typeof(ProfileWithGivenNameAlreadyExistsException)] = StatusCodes.Status409Conflict,
+            [typeof(YearOutOfRangeException)] = StatusCodes.Status400BadRequest,
+        });
 
         app.UseHttpsRedirection();
         app.UseAuthentication();
