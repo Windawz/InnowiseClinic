@@ -48,8 +48,7 @@ public class Program
             })
             .AddScoped(serviceProvider =>
             {
-                string databaseName = builder.Configuration
-                    .GetRequiredSection("DatabaseName").Value!;
+                const string databaseName = $"InnowiseClinic_Microservices_Profiles_Data";
 
                 return serviceProvider.GetRequiredService<IMongoClient>()
                     .GetDatabase(databaseName);
