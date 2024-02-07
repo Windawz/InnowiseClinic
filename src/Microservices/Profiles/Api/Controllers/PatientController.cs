@@ -5,7 +5,6 @@ using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
-using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filters;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using InnowiseClinic.Microservices.Shared.Api.Validators;
