@@ -10,6 +10,9 @@ using InnowiseClinic.Microservices.Profiles.Data.Repositories;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
@@ -21,7 +24,11 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options =>
+        {
+            options.InputFormatters.Insert(0,
+                GetJsonPatchInputFormatter());
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -81,5 +88,20 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()
+    {
+        return new ServiceCollection()
+            .AddLogging()
+            .AddMvc()
+            .AddNewtonsoftJson()
+            .Services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<MvcOptions>>()
+            .Value
+            .InputFormatters
+            .OfType<NewtonsoftJsonPatchInputFormatter>()
+            .First();
     }
 }
