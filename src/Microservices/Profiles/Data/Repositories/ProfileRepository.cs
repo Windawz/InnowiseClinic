@@ -89,8 +89,9 @@ public class ProfileRepository : IProfileRepository
             queryable = queryable.Take(count);
         }
 
-        return await queryable.Select(document => DataToApplicationMap.ToProfile<TProfile>(document))
-            .ToListAsync();
+        return (await queryable.ToListAsync())
+            .Select(document => DataToApplicationMap.ToProfile<TProfile>(document))
+            .ToList();
     }
 
     public Task<RepositoryUpdateResult> UpdateAsync<TProfile>(TProfile profile) where TProfile : Profile
