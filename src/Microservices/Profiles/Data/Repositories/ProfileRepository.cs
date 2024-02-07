@@ -94,9 +94,19 @@ public class ProfileRepository : IProfileRepository
             .ToList();
     }
 
-    public Task<RepositoryUpdateResult> UpdateAsync<TProfile>(TProfile profile) where TProfile : Profile
+    public async Task<RepositoryUpdateResult> UpdateAsync<TProfile>(TProfile profile) where TProfile : Profile
     {
-        throw new NotImplementedException();
+        if (profile.IsTransient)
+        {
+            return RepositoryUpdateResult.DoesNotExist;
+        }
+
+        var replacement = DataToApplicationMap.ToDocument(profile);
+        var filter = Builders<ProfileDocument>.Filter.Eq(document => document.Id, replacement.Id);
+
+        await _collection.ReplaceOneAsync(filter, replacement);
+
+        return RepositoryUpdateResult.Updated;
     }
 
     private class FilterVisitor : IFilterVisitor
