@@ -39,9 +39,9 @@ public class ReceptionistController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ICollection<GetReceptionistPageResponse>>> GetPage(int count, int? offset)
+    public async Task<ActionResult<ICollection<GetReceptionistPageResponse>>> GetPage(int? lastPosition, int? maxCount)
     {
-        var profiles = await _receptionistProfileService.GetManyAsync(lastPosition: offset, maxCount: count);
+        var profiles = await _receptionistProfileService.GetManyAsync(lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
@@ -52,14 +52,14 @@ public class ReceptionistController : ControllerBase
     [QueryParameterConstraint(nameof(firstName))]
     [QueryParameterConstraint(nameof(lastName))]
     public async Task<ActionResult<ICollection<GetReceptionistPageResponse>>> GetPageByName(
-        int count,
-        int? offset,
+        int? lastPosition,
+        int? maxCount,
         string firstName,
         string lastName,
         string? middleName)
     {
         Name name = ApiToApplicationMap.ToName(firstName, lastName, middleName);
-        var profiles = await _receptionistProfileService.GetManyByNameAsync(name: name, lastPosition: offset, maxCount: count);
+        var profiles = await _receptionistProfileService.GetManyByNameAsync(name: name, lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;

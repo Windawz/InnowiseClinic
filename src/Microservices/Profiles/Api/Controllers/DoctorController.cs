@@ -40,9 +40,9 @@ public class DoctorController : ControllerBase
     [HttpGet]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPage(int count, int? offset)
+    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPage(int? lastPosition, int? maxCount)
     {
-        var profiles = await _doctorProfileService.GetManyAsync(lastPosition: offset, maxCount: count);
+        var profiles = await _doctorProfileService.GetManyAsync(lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
@@ -54,14 +54,14 @@ public class DoctorController : ControllerBase
     [QueryParameterConstraint(nameof(firstName))]
     [QueryParameterConstraint(nameof(lastName))]
     public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageByName(
-        int count,
-        int? offset,
+        int? lastPosition,
+        int? maxCount,
         string firstName,
         string lastName,
         string? middleName)
     {
         Name name = ApiToApplicationMap.ToName(firstName, lastName, middleName);
-        var profiles = await _doctorProfileService.GetManyByNameAsync(name: name, lastPosition: offset, maxCount: count);
+        var profiles = await _doctorProfileService.GetManyByNameAsync(name: name, lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
@@ -71,9 +71,12 @@ public class DoctorController : ControllerBase
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [QueryParameterConstraint(nameof(officeId))]
-    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageByOffice(int count, int? offset, Guid officeId)
+    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageByOffice(
+        int? lastPosition,
+        int? maxCount,
+        Guid officeId)
     {
-        var profiles = await _doctorProfileService.GetManyByOfficeAsync(officeId: officeId, lastPosition: offset, maxCount: count);
+        var profiles = await _doctorProfileService.GetManyByOfficeAsync(officeId: officeId, lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
@@ -83,9 +86,12 @@ public class DoctorController : ControllerBase
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [QueryParameterConstraint(nameof(specializationId))]
-    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageBySpecialization(int count, int? offset, Guid specializationId)
+    public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageBySpecialization(
+        int? lastPosition,
+        int? maxCount,
+        Guid specializationId)
     {
-        var profiles = await _doctorProfileService.GetManyBySpecializationAsync(specializationId: specializationId, lastPosition: offset, maxCount: count);
+        var profiles = await _doctorProfileService.GetManyBySpecializationAsync(specializationId: specializationId, lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;

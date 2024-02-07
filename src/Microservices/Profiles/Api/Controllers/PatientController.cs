@@ -39,9 +39,9 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPage(int count, int? offset)
+    public async Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPage(int? lastPosition, int? maxCount)
     {
-        var profiles = await _patientProfileService.GetManyAsync(lastPosition: offset, maxCount: count);
+        var profiles = await _patientProfileService.GetManyAsync(lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
@@ -52,14 +52,14 @@ public class PatientController : ControllerBase
     [QueryParameterConstraint(nameof(firstName))]
     [QueryParameterConstraint(nameof(lastName))]
     public async Task<ActionResult<ICollection<GetPatientPageResponse>>> GetPageByName(
-        int count,
-        int? offset,
+        int? lastPosition,
+        int? maxCount,
         string firstName,
         string lastName,
         string? middleName)
     {
         Name name = ApiToApplicationMap.ToName(firstName, lastName, middleName);
-        var profiles = await _patientProfileService.GetManyByNameAsync(name: name, lastPosition: offset, maxCount: count);
+        var profiles = await _patientProfileService.GetManyByNameAsync(name: name, lastPosition: lastPosition, maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;
