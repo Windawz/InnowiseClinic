@@ -1,7 +1,6 @@
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
-using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filters;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Services.Implementations;
@@ -28,7 +27,7 @@ public class DoctorProfileService : ProfileService<DoctorProfile>, IDoctorProfil
     public async Task<ICollection<DoctorProfile>> GetManyByOfficeAsync(Guid officeId, int? lastPosition, int? maxCount)
     {
         return await Repository.GetManyAsync<DoctorProfile>(
-            filter: new OfficeFilter(officeId),
+            filter: new Filter { OfficeId = officeId },
             lastPosition: lastPosition,
             maxCount: maxCount);
     }
@@ -36,7 +35,7 @@ public class DoctorProfileService : ProfileService<DoctorProfile>, IDoctorProfil
     public async Task<ICollection<DoctorProfile>> GetManyBySpecializationAsync(Guid specializationId, int? lastPosition, int? maxCount)
     {
         return await Repository.GetManyAsync<DoctorProfile>(
-            filter: new SpecializationFilter(specializationId),
+            filter: new Filter { SpecializationId = specializationId },
             lastPosition: lastPosition,
             maxCount: maxCount);
     }

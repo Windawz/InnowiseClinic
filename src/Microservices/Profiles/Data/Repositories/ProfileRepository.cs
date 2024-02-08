@@ -1,6 +1,5 @@
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
-using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filters;
 using InnowiseClinic.Microservices.Profiles.Data.Documents;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -54,37 +53,24 @@ public class ProfileRepository : IProfileRepository
             : null;
     }
 
-    public async Task<TProfile?> GetAsync<TProfile>(IFilter filter) where TProfile : Profile
-    {
-        var visitor = new FilterVisitor(_collection.AsQueryable());
-        filter.Accept(visitor);
-        var document = await visitor.Queryable.SingleOrDefaultAsync();
-        
-        return document is not null
-            ? DataToApplicationMap.ToProfile<TProfile>(document)
-            : null;
-    }
-
     public async Task<ICollection<TProfile>> GetManyAsync<TProfile>(
-        IFilter? filter,
+        Filter? filter,
         int? lastPosition,
         int? maxCount) where TProfile : Profile
     {
         var queryable = _collection.AsQueryable();
-
+        
         if (filter is not null)
         {
-            var visitor = new FilterVisitor(queryable);
-            filter.Accept(visitor);
-            queryable = visitor.Queryable;
+            ApplyFilter(queryable, filter);
         }
 
-        if (lastPosition is { } position)
+        if (lastPosition is int position)
         {
             queryable = queryable.Skip(position);
         }
 
-        if (maxCount is { } count)
+        if (maxCount is int count)
         {
             queryable = queryable.Take(count);
         }
@@ -109,35 +95,28 @@ public class ProfileRepository : IProfileRepository
         return RepositoryUpdateResult.Updated;
     }
 
-    private class FilterVisitor : IFilterVisitor
+    private static IMongoQueryable<ProfileDocument> ApplyFilter(IMongoQueryable<ProfileDocument> queryable, Filter filter)
     {
-        public FilterVisitor(IMongoQueryable<ProfileDocument> queryable)
+        if (filter.Name is Name name)
         {
-            Queryable = queryable;
+            queryable = queryable.Where(document =>
+                document.FirstName == name.First
+                && document.LastName == name.Last
+                && document.MiddleName == name.Middle);
         }
 
-        public IMongoQueryable<ProfileDocument> Queryable { get; private set; }
-
-        public void VisitNameFilter(NameFilter filter)
+        if (filter.OfficeId is Guid officeId)
         {
-            Queryable = Queryable.Where(document =>
-                document.FirstName == filter.Name.First
-                && document.LastName == filter.Name.Last
-                && document.MiddleName == filter.Name.Middle);
+            queryable = queryable.Where(document =>
+                document.OfficeId == officeId);
         }
 
-        public void VisitOfficeFilter(OfficeFilter filter)
+        if (filter.SpecializationId is Guid specializationId)
         {
-            Queryable = Queryable.Where(document =>
-                document.OfficeId.HasValue
-                && document.OfficeId.Value == filter.OfficeId);
+            queryable = queryable.Where(document =>
+                document.SpecializationId == specializationId);
         }
 
-        public void VisitSpecializationFilter(SpecializationFilter filter)
-        {
-            Queryable = Queryable.Where(document =>
-                document.SpecializationId.HasValue
-                && document.SpecializationId.Value == filter.SpecializationId);
-        }
+        return queryable;
     }
 }

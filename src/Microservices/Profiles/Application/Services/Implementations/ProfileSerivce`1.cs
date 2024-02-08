@@ -1,7 +1,6 @@
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
-using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filters;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Services.Implementations;
@@ -17,8 +16,6 @@ public abstract class ProfileService<TProfile> : IProfileSerivce<TProfile> where
 
     public async Task CreateAsync(TProfile newProfile)
     {
-        var name = newProfile.Name;
-
         await Repository.AddAsync(newProfile);
     }
 
@@ -60,7 +57,7 @@ public abstract class ProfileService<TProfile> : IProfileSerivce<TProfile> where
     public async Task<ICollection<TProfile>> GetManyByNameAsync(Name name, int? lastPosition, int? maxCount)
     {
         return await Repository.GetManyAsync<TProfile>(
-            filter: new NameFilter(name),
+            filter: new Filter() { Name = name },
             lastPosition: lastPosition,
             maxCount: maxCount);
     }
