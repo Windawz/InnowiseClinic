@@ -5,7 +5,7 @@ namespace InnowiseClinic.Microservices.Authorization.Application.Services.Interf
 
 public interface IRefreshTokenService
 {
-    Task<RefreshToken> CreateRefreshTokenAsync(Role role);
+    Task<RefreshToken> CreateRefreshTokenAsync(Guid accountId, Role role);
     
     /// <exception cref="InvalidRefreshTokenException"/>
     Task<RefreshToken> RecreateRefreshTokenAsync(RefreshToken refreshToken);

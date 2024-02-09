@@ -1,0 +1,15 @@
+namespace InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Responses;
+
+public class GetDoctorResponse
+{
+    public required Guid AccountId { get; init; }
+    public required Guid OfficeId { get; init; }
+    public required Guid SpecializationId { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public string? MiddleName { get; init; }
+    public required DateOnly DateOfBirth { get; init; }
+    public required int CareerStartYear { get; init; }
+    public required int Experience { get; init; }
+    public required int Status { get; init; }
+}

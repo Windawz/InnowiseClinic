@@ -21,12 +21,13 @@ public class RefreshTokenService : IRefreshTokenService
         _options = options.Value;
     }
 
-    public async Task<RefreshToken> CreateRefreshTokenAsync(Role role)
+    public async Task<RefreshToken> CreateRefreshTokenAsync(Guid accountId, Role role)
     {
         var now = DateTime.UtcNow;
 
         var token = new RefreshToken(
             TokenId: default,
+            AccountId: accountId,
             Role: role,
             CreatedAt: now,
             ExpiresAt: now.AddSeconds(_options.ExpirationSeconds));
@@ -54,7 +55,7 @@ public class RefreshTokenService : IRefreshTokenService
             if (entity is not null)
             {
                 await _refreshTokenRepository.DeleteAsync(entity);
-                replacementRefreshToken = await CreateRefreshTokenAsync(refreshToken.Role);
+                replacementRefreshToken = await CreateRefreshTokenAsync(refreshToken.AccountId, refreshToken.Role);
             }
         }
 

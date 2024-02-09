@@ -84,6 +84,9 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Migrations
                 {
                     b.HasBaseType("InnowiseClinic.Microservices.Shared.Data.Entities.Entity");
 
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -94,7 +97,20 @@ namespace InnowiseClinic.Microservices.Authorization.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasIndex("AccountId");
+
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("InnowiseClinic.Microservices.Authorization.Data.Entities.RefreshTokenEntity", b =>
+                {
+                    b.HasOne("InnowiseClinic.Microservices.Authorization.Data.Entities.AccountEntity", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,5 +10,6 @@ public class AccessTokenServiceOptions
     public required SecurityKey SecurityKey { get; set; }
     public string Algorithm { get; set; } = SecurityAlgorithms.HmacSha256Signature;
     public int ExpirationSeconds { get; set; } = 30;
+    public string NameClaimType { get; set; } = ClaimTypes.Name;
     public string RoleClaimType { get; set; } = ClaimTypes.Role;
 }
