@@ -1,4 +1,5 @@
 using InnowiseClinic.Microservices.Profiles.Application.Models;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Repositories;
 

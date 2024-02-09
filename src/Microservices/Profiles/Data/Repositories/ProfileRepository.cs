@@ -1,5 +1,6 @@
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 using InnowiseClinic.Microservices.Profiles.Data.Documents;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -97,12 +98,26 @@ public class ProfileRepository : IProfileRepository
 
     private static IMongoQueryable<ProfileDocument> ApplyFilter(IMongoQueryable<ProfileDocument> queryable, Filter filter)
     {
-        if (filter.Name is Name name)
+        if (filter.FilteredName is FilteredName filteredName)
         {
-            queryable = queryable.Where(document =>
-                document.FirstName == name.First
-                && document.LastName == name.Last
-                && document.MiddleName == name.Middle);
+            var first = filteredName.First;
+            var last = filteredName.Last;
+            var middle = filteredName.Middle;
+
+            if (first is not null)
+            {
+                queryable = queryable.Where(document => document.FirstName == first);
+            }
+
+            if (last is not null)
+            {
+                queryable = queryable.Where(document => document.LastName == last);
+            }
+
+            if (middle is not null)
+            {
+                queryable = queryable.Where(document => document.MiddleName == middle);
+            }
         }
 
         if (filter.OfficeId is Guid officeId)

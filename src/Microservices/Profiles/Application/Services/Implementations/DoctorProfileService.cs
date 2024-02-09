@@ -1,6 +1,7 @@
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Services.Implementations;

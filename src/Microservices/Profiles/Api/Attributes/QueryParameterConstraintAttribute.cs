@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 namespace InnowiseClinic.Microservices.Profiles.Api.Attributes;
 
 /// <summary>
-/// An action constraint attribute, whose main purpose is
+/// Makes the action only get called if any parameter with one of the
+/// provided names is present in the query section of the URL.
+/// <para/>
+/// Its main purpose is
 /// to make possible controller action overloading based on
 /// what parameters are present.
 /// <para/>
@@ -14,22 +17,23 @@ namespace InnowiseClinic.Microservices.Profiles.Api.Attributes;
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class QueryParameterConstraintAttribute : Attribute, IActionConstraint
 {
-    private readonly string _parameterName;
+    private readonly string[] _parameterNames;
 
-    public QueryParameterConstraintAttribute(string parameterName)
+    public QueryParameterConstraintAttribute(params string[] parameterNames)
     {
-        _parameterName = parameterName;
+        _parameterNames = parameterNames;
     }
 
     public int Order => default;
 
     public bool Accept(ActionConstraintContext context)
     {
-        return context.RouteContext
+        var queryParameterKeys = context.RouteContext
             .HttpContext
             .Request
             .Query
-            .Keys
-            .Contains(_parameterName, StringComparer.InvariantCultureIgnoreCase);
+            .Keys;
+
+        return _parameterNames.Any(name => queryParameterKeys.Contains(name));
     }
 }

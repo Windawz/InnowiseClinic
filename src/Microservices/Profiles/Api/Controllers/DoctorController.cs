@@ -4,7 +4,7 @@ using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
-using InnowiseClinic.Microservices.Profiles.Application.Models;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Shared.Api.Constants;
 using InnowiseClinic.Microservices.Shared.Api.Validators;
@@ -51,8 +51,7 @@ public class DoctorController : ControllerBase
     [HttpGet]
     [Authorize(Roles = $"{RoleName.Patient},{RoleName.Doctor},{RoleName.Receptionist}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [QueryParameterConstraint(nameof(firstName))]
-    [QueryParameterConstraint(nameof(lastName))]
+    [QueryParameterConstraint(nameof(firstName), nameof(lastName), nameof(middleName))]
     public async Task<ActionResult<ICollection<GetDoctorPageResponse>>> GetPageByName(
         int? lastPosition,
         int? maxCount,
@@ -60,8 +59,11 @@ public class DoctorController : ControllerBase
         string lastName,
         string? middleName)
     {
-        Name name = ApiToApplicationMap.ToName(firstName, lastName, middleName);
-        var profiles = await _doctorProfileService.GetManyByNameAsync(name: name, lastPosition: lastPosition, maxCount: maxCount);
+        var filteredName = new FilteredName(firstName, lastName, middleName);
+        var profiles = await _doctorProfileService.GetManyByNameAsync(
+            filteredName: filteredName,
+            lastPosition: lastPosition,
+            maxCount: maxCount);
         var pageResponses = profiles.Select(ApiToApplicationMap.ToPageResponse).ToArray();
 
         return pageResponses;

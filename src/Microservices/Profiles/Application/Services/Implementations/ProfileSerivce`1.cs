@@ -1,6 +1,7 @@
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
+using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 
 namespace InnowiseClinic.Microservices.Profiles.Application.Services.Implementations;
@@ -54,10 +55,10 @@ public abstract class ProfileService<TProfile> : IProfileSerivce<TProfile> where
             ?? throw new ProfileNotFoundByIdException(id);
     }
 
-    public async Task<ICollection<TProfile>> GetManyByNameAsync(Name name, int? lastPosition, int? maxCount)
+    public async Task<ICollection<TProfile>> GetManyByNameAsync(FilteredName filteredName, int? lastPosition, int? maxCount)
     {
         return await Repository.GetManyAsync<TProfile>(
-            filter: new Filter() { Name = name },
+            filter: new Filter() { FilteredName = filteredName },
             lastPosition: lastPosition,
             maxCount: maxCount);
     }
