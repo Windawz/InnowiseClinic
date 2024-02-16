@@ -18,7 +18,7 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
 
-        builder.Services.AddScoped<IDocumentContainer, DocumentContainer>();
+        builder.Services.AddScoped<IContainerProvider, ContainerProvider>();
         builder.Services.AddScoped(serviceProvider =>
         {
             // Default Azurite account.

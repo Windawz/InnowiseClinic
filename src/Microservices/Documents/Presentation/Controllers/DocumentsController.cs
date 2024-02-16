@@ -7,11 +7,11 @@ namespace InnowiseClinic.Microservices.Documents.Presentation.Controllers;
 [ApiController]
 public class DocumentsController : ControllerBase
 {
-    private readonly IDocumentContainer _container;
+    private readonly IContainer _container;
 
-    public DocumentsController(IDocumentContainer container)
+    public DocumentsController(IContainerProvider containerProvider)
     {
-        _container = container;
+        _container = containerProvider.GetOfKind(ContainerKind.Photos);
     }
 
     [HttpGet("{id}")]
@@ -20,22 +20,28 @@ public class DocumentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetById(Guid id)
     {
+        var downloadInfo = await _container.GetDownloadInfo(id);
+
         // FileStreamResult disposes of the passed stream.
         // Hence no `await using`.
         // See `https://stackoverflow.com/questions/26275764/does-filestreamresult-close-stream`.
-        var downloadStream = await _container.OpenDownloadStreamIfExistsAsync(id);
-
-        return downloadStream is not null
-            ? new FileStreamResult(downloadStream, "application/octet-stream")
-            : NotFound();
+        return downloadInfo is null
+            ? NotFound()
+            : new FileStreamResult(
+                await downloadInfo.OpenOutputStreamAsync(),
+                "application/octet-stream");
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> Post(IFormFile documentFile)
     {
-        await using var documentStream = documentFile.OpenReadStream();
-        Guid documentId = await _container.UploadFromStreamAsync(documentStream);
+        string? extension = Path.GetExtension(documentFile.FileName);
+
+        Guid documentId = await _container.Upload(new DocumentUploadInfo(
+            documentFile.OpenReadStream,
+            new DocumentInfo(
+                extension: extension)));
 
         return CreatedAtAction(
             actionName: nameof(GetById),

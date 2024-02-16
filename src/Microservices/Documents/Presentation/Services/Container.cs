@@ -4,20 +4,22 @@ using InnowiseClinic.Microservices.Documents.Presentation.Services.Exceptions;
 
 namespace InnowiseClinic.Microservices.Documents.Presentation.Services;
 
-public class DocumentContainer : IDocumentContainer
+public class Container : IContainer
 {
-    private static readonly string _containerName = "documents";
     private readonly BlobServiceClient _serviceClient;
     private BlobContainerClient? _cachedContainerClient;
 
-    public DocumentContainer(BlobServiceClient serviceClient)
+    public Container(BlobServiceClient serviceClient, ContainerKind kind)
     {
         _serviceClient = serviceClient;
+        Kind = kind;
     }
 
-    public async Task<Stream?> OpenDownloadStreamIfExistsAsync(Guid documentId)
+    public ContainerKind Kind { get; }
+
+    public async Task<DocumentDownloadInfo?> GetDownloadInfo(Guid documentId)
     {
-        Stream? downloadStream = null;
+        DocumentDownloadInfo? downloadInfo = null;
 
         var client = await GetContainerClientAsync();
         var pages = client.GetBlobsAsync(prefix: documentId.ToString())
@@ -33,25 +35,37 @@ public class DocumentContainer : IDocumentContainer
             if (item is not null)
             {
                 var blobClient = client.GetBlobClient(item.Name);
-                var response = await blobClient.DownloadStreamingAsync();
-      
-                downloadStream = response.Value.Content;
+                string extension = Path.GetExtension(item.Name);
+
+                downloadInfo = new DocumentDownloadInfo(
+                    async () => (await blobClient.DownloadStreamingAsync()).Value.Content,
+                    new DocumentInfo(
+                        extension: extension));
             }
         }
 
-        return downloadStream;
+        return downloadInfo;
     }
 
-    public async Task<Guid> UploadFromStreamAsync(Stream inputStream)
+    public async Task<Guid> Upload(DocumentUploadInfo uploadInfo)
     {
+        string? extension = uploadInfo.DocumentInfo.Extension;
+
+        if (extension is null || !Kind.PermittedExtensions.Contains(extension))
+        {
+            throw new UnpermittedDocumentExtensionException(Kind.Name, uploadInfo.DocumentInfo.Extension);
+        }
+
         var documentId = Guid.NewGuid();
         var containerClient = await GetContainerClientAsync();
-        var blobClient = containerClient.GetBlobClient(blobName: documentId.ToString());
+        string blobName = $"{documentId}{extension}";
+        var blobClient = containerClient.GetBlobClient(blobName);
         
         // `overwrite` isn't optional and only accepts `true`.
-        await using var blobWriteStream = await blobClient.OpenWriteAsync(overwrite: true);
+        await using var blobOutputStream = await blobClient.OpenWriteAsync(overwrite: true);
+        using var uploadInputStream = uploadInfo.OpenInputStream();
 
-        await inputStream.CopyToAsync(blobWriteStream);
+        await uploadInputStream.CopyToAsync(blobOutputStream);
 
         return documentId;
     }
@@ -78,21 +92,21 @@ public class DocumentContainer : IDocumentContainer
         //
         // TODO: The catch-block is now the primary execution path.
         // Need to find a better way.
-
         BlobContainerClient containerClient;
+        string containerName = Kind.Name;
 
         try
         {
-            containerClient = await _serviceClient.CreateBlobContainerAsync(_containerName);
+            containerClient = await _serviceClient.CreateBlobContainerAsync(containerName);
         }
         catch (RequestFailedException)
         {
-            containerClient = _serviceClient.GetBlobContainerClient(_containerName);
+            containerClient = _serviceClient.GetBlobContainerClient(containerName);
             bool exists = await containerClient.ExistsAsync();
 
             if (!exists)
             {
-                throw new ContainerObtainmentException(_containerName);
+                throw new ContainerObtainmentException(containerName);
             }
         }
 
