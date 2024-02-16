@@ -1,7 +1,9 @@
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using InnowiseClinic.Microservices.Documents.Presentation.Services;
+using InnowiseClinic.Microservices.Documents.Presentation.Services.Exceptions;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
+using InnowiseClinic.Microservices.Shared.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Microservices.Documents.Presentation;
@@ -40,6 +42,11 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>(new Dictionary<Type, int>
+        {
+            [typeof(UnpermittedDocumentExtensionException)] = StatusCodes.Status400BadRequest,
+        });
 
         app.UseHttpsRedirection();
         app.UseAuthentication();
