@@ -1,3 +1,4 @@
+using Azure;
 using Azure.Storage.Blobs;
 using InnowiseClinic.Microservices.Documents.Presentation.Services.Exceptions;
 
@@ -62,21 +63,40 @@ public class DocumentContainer : IDocumentContainer
             return _cachedContainerClient;
         }
 
-        _cachedContainerClient = _serviceClient.GetBlobContainerClient(_containerName);
+        // Container creation throws if container already exists.
+        //
+        // There's a possible race condition that can occur
+        // if two instances of the microservice attempt to
+        // create the container.
+        //
+        // To avoid the race condition, creation is attempted first.
+        // On failure, container is assumed to exist,
+        // so a client for it is obtained.
+        // If existance check on the client returns false,
+        // then the creation attempt must've failed for some
+        // other reason, so it's considered an unrecoverable error.
+        //
+        // TODO: The catch-block is now the primary execution path.
+        // Need to find a better way.
 
-        if (!await _cachedContainerClient.ExistsAsync())
+        BlobContainerClient containerClient;
+
+        try
         {
-            var response = await _serviceClient.CreateBlobContainerAsync(_containerName);
+            containerClient = await _serviceClient.CreateBlobContainerAsync(_containerName);
+        }
+        catch (RequestFailedException)
+        {
+            containerClient = _serviceClient.GetBlobContainerClient(_containerName);
+            bool exists = await containerClient.ExistsAsync();
 
-            try
+            if (!exists)
             {
-                _cachedContainerClient = response.Value;
-            }
-            catch (Exception inner)
-            {
-                throw new ContainerCreationFailedException(_containerName, inner);
+                throw new ContainerObtainmentException(_containerName);
             }
         }
+
+        _cachedContainerClient = containerClient;
 
         return _cachedContainerClient;
     }
