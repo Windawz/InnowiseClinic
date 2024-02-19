@@ -7,6 +7,7 @@ public class OutputContentTypeMapperProvider : IOutputContentTypeMapperProvider
         new Dictionary<ContainerKind, IOutputContentTypeMapper>
         {
             [ContainerKind.Photos] = new ImageOutputContentTypeMapper(),
+            [ContainerKind.AppointmentResults] = new DocumentOutputContentTypeMapper(),
         };
 
     public IOutputContentTypeMapper GetForContainerKind(ContainerKind kind)

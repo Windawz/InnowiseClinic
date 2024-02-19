@@ -8,6 +8,10 @@ public class ContainerKind : IEquatable<ContainerKind>
         ".png",
         ".tga");
 
+    public static readonly ContainerKind AppointmentResults = new("appointmentResults",
+        ".docx",
+        ".pdf");
+
     private ContainerKind(string name, params string[] permittedExtensions)
     {
         Name = name.ToLower();
