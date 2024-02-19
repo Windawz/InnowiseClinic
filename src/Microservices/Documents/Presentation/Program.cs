@@ -21,6 +21,7 @@ public class Program
             .AddJwtBearer();
 
         builder.Services.AddScoped<IContainerProvider, ContainerProvider>();
+        builder.Services.AddScoped<IOutputContentTypeMapperProvider, OutputContentTypeMapperProvider>();
         builder.Services.AddScoped(serviceProvider =>
         {
             // Default Azurite account.
