@@ -24,6 +24,7 @@ public class Program
         builder.Services.AddMassTransit(configurator =>
         {
             configurator.AddConsumer<ProfilePhotoUpdatedConsumer>();
+            configurator.AddConsumer<AppointmentResultCreatedConsumer>();
 
             configurator.UsingRabbitMq((context, configurator) =>
             {
