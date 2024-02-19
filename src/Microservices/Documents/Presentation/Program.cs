@@ -1,9 +1,11 @@
 using Azure.Storage;
 using Azure.Storage.Blobs;
+using InnowiseClinic.Microservices.Documents.Presentation.Consumers;
 using InnowiseClinic.Microservices.Documents.Presentation.Services;
 using InnowiseClinic.Microservices.Documents.Presentation.Services.Exceptions;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.Middlewares;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InnowiseClinic.Microservices.Documents.Presentation;
@@ -19,6 +21,15 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
+        builder.Services.AddMassTransit(configurator =>
+        {
+            configurator.AddConsumer<ProfilePhotoUpdatedConsumer>();
+
+            configurator.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.ConfigureEndpoints(context);
+            });
+        });
 
         builder.Services.AddScoped<IContainerProvider, ContainerProvider>();
         builder.Services.AddScoped<IOutputContentTypeMapperProvider, OutputContentTypeMapperProvider>();
