@@ -28,7 +28,7 @@ public class PhotosController : ControllerBase
     [Authorize]
     public async Task<ActionResult> GetById(Guid id)
     {
-        DocumentDownloadInfo? downloadInfo = await _container.GetDownloadInfo(id);
+        DocumentDownloadInfo? downloadInfo = await _container.GetDownloadInfoAsync(id);
 
         if (downloadInfo is not null)
         {
@@ -53,7 +53,7 @@ public class PhotosController : ControllerBase
     {
         string? extension = Path.GetExtension(documentFile.FileName);
 
-        Guid documentId = await _container.Upload(new DocumentUploadInfo(
+        Guid documentId = await _container.UploadAsync(new DocumentUploadInfo(
             documentFile.OpenReadStream,
             new DocumentInfo(
                 extension: extension)));

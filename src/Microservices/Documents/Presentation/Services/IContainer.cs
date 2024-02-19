@@ -4,6 +4,6 @@ public interface IContainer
 {
     ContainerKind Kind { get; }
 
-    Task<DocumentDownloadInfo?> GetDownloadInfo(Guid documentId);
-    Task<Guid> Upload(DocumentUploadInfo uploadInfo);
+    Task<DocumentDownloadInfo?> GetDownloadInfoAsync(Guid documentId);
+    Task<Guid> UploadAsync(DocumentUploadInfo uploadInfo);
 }

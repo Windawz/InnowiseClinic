@@ -17,7 +17,7 @@ public class Container : IContainer
 
     public ContainerKind Kind { get; }
 
-    public async Task<DocumentDownloadInfo?> GetDownloadInfo(Guid documentId)
+    public async Task<DocumentDownloadInfo?> GetDownloadInfoAsync(Guid documentId)
     {
         DocumentDownloadInfo? downloadInfo = null;
 
@@ -47,7 +47,7 @@ public class Container : IContainer
         return downloadInfo;
     }
 
-    public async Task<Guid> Upload(DocumentUploadInfo uploadInfo)
+    public async Task<Guid> UploadAsync(DocumentUploadInfo uploadInfo)
     {
         string? extension = uploadInfo.DocumentInfo.Extension;
 
