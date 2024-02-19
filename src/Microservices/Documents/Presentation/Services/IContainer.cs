@@ -6,4 +6,5 @@ public interface IContainer
 
     Task<DocumentDownloadInfo?> GetDownloadInfoAsync(Guid documentId);
     Task<Guid> UploadAsync(DocumentUploadInfo uploadInfo);
+    Task UploadWithIdAsync(Guid documentId, DocumentUploadInfo uploadInfo);
 }

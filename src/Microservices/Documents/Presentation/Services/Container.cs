@@ -49,6 +49,15 @@ public class Container : IContainer
 
     public async Task<Guid> UploadAsync(DocumentUploadInfo uploadInfo)
     {
+        var documentId = Guid.NewGuid();
+
+        await UploadWithIdAsync(documentId, uploadInfo);
+
+        return documentId;
+    }
+
+    public async Task UploadWithIdAsync(Guid documentId, DocumentUploadInfo uploadInfo)
+    {
         string? extension = uploadInfo.DocumentInfo.Extension;
 
         if (extension is null || !Kind.PermittedExtensions.Contains(extension))
@@ -56,18 +65,15 @@ public class Container : IContainer
             throw new UnpermittedDocumentExtensionException(Kind.Name, uploadInfo.DocumentInfo.Extension);
         }
 
-        var documentId = Guid.NewGuid();
         var containerClient = await GetContainerClientAsync();
         string blobName = $"{documentId}{extension}";
         var blobClient = containerClient.GetBlobClient(blobName);
-        
+
         // `overwrite` isn't optional and only accepts `true`.
         await using var blobOutputStream = await blobClient.OpenWriteAsync(overwrite: true);
         using var uploadInputStream = uploadInfo.OpenInputStream();
 
         await uploadInputStream.CopyToAsync(blobOutputStream);
-
-        return documentId;
     }
 
     private async Task<BlobContainerClient> GetContainerClientAsync()
