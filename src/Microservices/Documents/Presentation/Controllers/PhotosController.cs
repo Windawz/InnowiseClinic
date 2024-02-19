@@ -5,13 +5,19 @@ namespace InnowiseClinic.Microservices.Documents.Presentation.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class DocumentsController : ControllerBase
+public class PhotosController : ControllerBase
 {
     private readonly IContainer _container;
+    private readonly IOutputContentTypeMapper _contentTypeMapper;
 
-    public DocumentsController(IContainerProvider containerProvider)
+    public PhotosController(
+        IContainerProvider containerProvider,
+        IOutputContentTypeMapperProvider contentTypeMapperProvider)
     {
-        _container = containerProvider.GetOfKind(ContainerKind.Photos);
+        var containerKind = ContainerKind.Photos;
+
+        _container = containerProvider.GetOfKind(containerKind);
+        _contentTypeMapper = contentTypeMapperProvider.GetForContainerKind(containerKind);
     }
 
     [HttpGet("{id}")]
@@ -20,16 +26,22 @@ public class DocumentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetById(Guid id)
     {
-        var downloadInfo = await _container.GetDownloadInfo(id);
+        DocumentDownloadInfo? downloadInfo = await _container.GetDownloadInfo(id);
 
-        // FileStreamResult disposes of the passed stream.
-        // Hence no `await using`.
-        // See `https://stackoverflow.com/questions/26275764/does-filestreamresult-close-stream`.
-        return downloadInfo is null
-            ? NotFound()
-            : new FileStreamResult(
+        if (downloadInfo is not null)
+        {
+            string? extension = downloadInfo.DocumentInfo.Extension;
+            var contentType = extension is not null
+                ? _contentTypeMapper.MapExtension(extension)
+                : "application/octet-stream";
+
+            // FileStreamResult disposes of the passed stream.
+            return new FileStreamResult(
                 await downloadInfo.OpenOutputStreamAsync(),
-                "application/octet-stream");
+                contentType);
+        }
+
+        return NotFound();
     }
 
     [HttpPost]
