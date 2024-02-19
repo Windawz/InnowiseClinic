@@ -1,4 +1,5 @@
 using InnowiseClinic.Microservices.Documents.Presentation.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InnowiseClinic.Microservices.Documents.Presentation.Controllers;
@@ -24,6 +25,7 @@ public class PhotosController : ControllerBase
     [Produces("application/octet-stream")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<ActionResult> GetById(Guid id)
     {
         DocumentDownloadInfo? downloadInfo = await _container.GetDownloadInfo(id);
@@ -46,6 +48,7 @@ public class PhotosController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [Authorize]
     public async Task<ActionResult> Post(IFormFile documentFile)
     {
         string? extension = Path.GetExtension(documentFile.FileName);
