@@ -1,6 +1,7 @@
 using FluentValidation;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
+using InnowiseClinic.Microservices.Profiles.Api.Services;
 using InnowiseClinic.Microservices.Profiles.Api.Validators;
 using InnowiseClinic.Microservices.Profiles.Application.Exceptions;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories;
@@ -9,6 +10,7 @@ using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
 using InnowiseClinic.Microservices.Profiles.Data.Repositories;
 using InnowiseClinic.Microservices.Shared.Api.Configuration;
 using InnowiseClinic.Microservices.Shared.Api.Middlewares;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -36,6 +38,13 @@ public class Program
         builder.Services.AddProblemDetails();
         builder.Services.AddLogging();
         builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddMassTransit(configurator =>
+        {
+            configurator.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.ConfigureEndpoints(context);
+            });
+        });
         
         builder.Services
             .AddScoped<IValidator<CreatePatientRequest>, CreatePatientRequestValidator>()
@@ -44,6 +53,7 @@ public class Program
             .AddScoped<IValidator<EditPatientTarget>, EditPatientTargetValidator>()
             .AddScoped<IValidator<EditDoctorTarget>, EditDoctorTargetValidator>()
             .AddScoped<IValidator<EditReceptionistTarget>, EditReceptionistTargetValidator>()
+            .AddScoped<IPhotoService, PhotoService>()
             .AddScoped<IPatientProfileService, PatientProfileService>()
             .AddScoped<IDoctorProfileService, DoctorProfileService>()
             .AddScoped<IReceptionistProfileService, ReceptionistProfileService>()

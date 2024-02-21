@@ -4,6 +4,7 @@ using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Requests;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Responses;
 using InnowiseClinic.Microservices.Profiles.Api.DataTransferObjects.Targets;
+using InnowiseClinic.Microservices.Profiles.Api.Services;
 using InnowiseClinic.Microservices.Profiles.Application.Models;
 using InnowiseClinic.Microservices.Profiles.Application.Repositories.Filtering;
 using InnowiseClinic.Microservices.Profiles.Application.Services.Interfaces;
@@ -110,6 +111,22 @@ public class PatientController : ControllerBase
     public async Task<ActionResult> Delete(Guid id)
     {
         await _patientProfileService.DeleteAsync(id);
+
+        return Ok();
+    }
+
+    [HttpPut("{id}/photo")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdatePhoto(
+        Guid id,
+        IFormFile photoFile,
+        [FromServices] IPhotoService photoService)
+    {
+        string? extension = Path.GetExtension(photoFile.FileName);
+        await using var stream = photoFile.OpenReadStream();
+
+        await photoService.UpdateAsync<PatientProfile>(id, stream, extension);
 
         return Ok();
     }
