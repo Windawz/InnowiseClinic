@@ -46,22 +46,4 @@ public class AppointmentResultsController : ControllerBase
 
         return NotFound();
     }
-
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [Authorize(Roles = $"{RoleName.Doctor},{RoleName.Receptionist}")]
-    public async Task<ActionResult> Post(IFormFile documentFile)
-    {
-        string? extension = Path.GetExtension(documentFile.FileName);
-
-        Guid documentId = await _container.UploadAsync(new DocumentUploadInfo(
-            documentFile.OpenReadStream,
-            new DocumentInfo(
-                extension: extension)));
-
-        return CreatedAtAction(
-            actionName: nameof(GetById),
-            routeValues: new { id = documentId },
-            value: null);
-    }
 }
