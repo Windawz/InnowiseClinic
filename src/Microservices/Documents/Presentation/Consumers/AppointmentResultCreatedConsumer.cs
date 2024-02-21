@@ -1,5 +1,5 @@
-using InnowiseClinic.Microservices.Documents.Presentation.Contracts;
 using InnowiseClinic.Microservices.Documents.Presentation.Services;
+using InnowiseClinic.Microservices.Shared.Api.Contracts;
 using MassTransit;
 
 namespace InnowiseClinic.Microservices.Documents.Presentation.Consumers;

@@ -1,4 +1,4 @@
-namespace InnowiseClinic.Microservices.Documents.Presentation.Contracts;
+namespace InnowiseClinic.Microservices.Shared.Api.Contracts;
 
 public class ProfilePhotoUpdated
 {
