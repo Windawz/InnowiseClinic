@@ -116,6 +116,7 @@ public class ReceptionistController : ControllerBase
     }
 
     [HttpPut("{id}/photo")]
+    [Authorize(Roles = RoleName.Receptionist)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdatePhoto(
