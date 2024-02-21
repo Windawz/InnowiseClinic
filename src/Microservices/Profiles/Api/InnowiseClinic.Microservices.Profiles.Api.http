@@ -1,0 +1,6 @@
+@InnowiseClinic.Microservices.Profiles.Api_HostAddress = http://localhost:5056
+
+GET {{InnowiseClinic.Microservices.Profiles.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -23,6 +23,10 @@ This file provides a list of configuration options that must be filled in. Confi
 - `Auth:Generation:AccessTokens:ExpirationSeconds`
     - Type: positive int
     - Amount of seconds that must pass for an access token to expire
+- `Auth:Generation:AccessTokens:NameClaimType`
+    - Type: URI/string
+    - Optional
+    - Default: `"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"`
 - `Auth:Generation:AccessTokens:RoleClaimType`
     - Type: URI/string
     - Optional

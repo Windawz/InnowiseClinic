@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.8.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

@@ -22,7 +22,7 @@ public class AccessTokenService : IAccessTokenService
         _options = options.Value;
     }
 
-    public async Task<AccessToken> GenerateTokenAsync(Role role)
+    public async Task<AccessToken> GenerateTokenAsync(Guid accountId, Role role)
     {
         var now = DateTime.UtcNow;
 
@@ -36,6 +36,7 @@ public class AccessTokenService : IAccessTokenService
                 algorithm: _options.Algorithm),
             claims:
             [
+                new(_options.NameClaimType, accountId.ToString()),
                 new(_options.RoleClaimType, RoleMapping.ToRoleName(role)),
             ]);
 
