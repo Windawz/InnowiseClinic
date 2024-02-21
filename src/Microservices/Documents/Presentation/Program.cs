@@ -1,0 +1,71 @@
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using InnowiseClinic.Microservices.Documents.Presentation.Consumers;
+using InnowiseClinic.Microservices.Documents.Presentation.Services;
+using InnowiseClinic.Microservices.Documents.Presentation.Services.Exceptions;
+using InnowiseClinic.Microservices.Shared.Api.Configuration;
+using InnowiseClinic.Microservices.Shared.Api.Middlewares;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace InnowiseClinic.Microservices.Documents.Presentation;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+        builder.Services.AddMassTransit(configurator =>
+        {
+            configurator.AddConsumer<ProfilePhotoUpdatedConsumer>();
+            configurator.AddConsumer<AppointmentResultCreatedConsumer>();
+
+            configurator.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.ConfigureEndpoints(context);
+            });
+        });
+
+        builder.Services.AddScoped<IContainerProvider, ContainerProvider>();
+        builder.Services.AddScoped<IOutputContentTypeMapperProvider, OutputContentTypeMapperProvider>();
+        builder.Services.AddScoped(serviceProvider =>
+        {
+            // Default Azurite account.
+            const string accountName = "devstoreaccount1";
+            const string accountKey = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+
+            var uri = new Uri($"http://127.0.0.1:10000/{accountName}");
+            var credential = new StorageSharedKeyCredential(accountName, accountKey);
+
+            return new BlobServiceClient(uri, credential);
+        });
+
+        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>(new Dictionary<Type, int>
+        {
+            [typeof(UnpermittedDocumentExtensionException)] = StatusCodes.Status400BadRequest,
+        });
+
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.Run();
+    }
+}
